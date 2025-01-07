@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bh0wee65eoi72"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/ItemStatic.cs" id="1_ked38"]
+
+[resource]
+script = ExtResource("1_ked38")
+p_name = ""
+p_nbMaxStack = 0

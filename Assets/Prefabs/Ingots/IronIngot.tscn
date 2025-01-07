@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2y0l5pql3pqs"]
+
+[ext_resource type="ArrayMesh" uid="uid://bncakrv6lj84e" path="res://Assets/Model/Ingots/ingot.obj" id="1_81j6y"]
+[ext_resource type="Material" uid="uid://daritwjagyq0t" path="res://Assets/Model/Ingots/Texture/ironIngot.tres" id="2_qec0c"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d6l1n"]
+size = Vector3(0.25, 0.04, 0.09)
+
+[node name="Node3D" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_81j6y")
+surface_material_override/0 = ExtResource("2_qec0c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_d6l1n")

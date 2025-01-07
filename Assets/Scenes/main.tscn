@@ -1,10 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=14 format=3 uid="uid://dvxxm2v6se3nl"]
 
-[ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Scenes/Characters_rigging.tscn" id="1_6t2fw"]
+[ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
 [ext_resource type="Texture2D" uid="uid://bjkeu8gkmr1us" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player.cs" id="2_qehyv"]
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
 [ext_resource type="Resource" uid="uid://buyrurxe32h8w" path="res://Assets/Resource/MineraiDeFer.tres" id="5_wgohv"]
+[ext_resource type="PackedScene" uid="uid://d1sm2k2wi1mon" path="res://Assets/Prefabs/Ingots/CopperIngot.tscn" id="6_a5w2q"]
+[ext_resource type="PackedScene" uid="uid://80o6l61aiwhw" path="res://Assets/Prefabs/Ingots/GoldIngot.tscn" id="7_psixa"]
+[ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Prefabs/Ingots/IronIngot.tscn" id="8_e4di4"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -18,7 +21,7 @@ albedo_color = Color(0.626639, 0.235014, 0.481232, 1)
 albedo_texture = ExtResource("1_q455m")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_w527i"]
-size = Vector3(2, 0.05, 2)
+size = Vector3(2, 0, 2)
 
 [node name="Main" type="Node3D"]
 
@@ -31,7 +34,6 @@ shadow_enabled = true
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
-visible = false
 material_overlay = SubResource("StandardMaterial3D_ymlic")
 mesh = SubResource("PlaneMesh_64wmt")
 surface_material_override/0 = SubResource("StandardMaterial3D_q7c0q")
@@ -47,3 +49,12 @@ script = ExtResource("2_qehyv")
 [node name="Manager" type="Node" parent="."]
 script = ExtResource("4_gc2hg")
 items = [ExtResource("5_wgohv")]
+
+[node name="Node3D" parent="." instance=ExtResource("6_a5w2q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25056, 0, -6.22618)
+
+[node name="Node3D2" parent="." instance=ExtResource("7_psixa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.46082)
+
+[node name="Node3D3" parent="." instance=ExtResource("8_e4di4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.44309, 0, -6.10137)
