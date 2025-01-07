@@ -1,11 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=11 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Scenes/Characters_rigging.tscn" id="1_6t2fw"]
+[ext_resource type="Texture2D" uid="uid://bjkeu8gkmr1us" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player.cs" id="2_qehyv"]
+[ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
+[ext_resource type="Resource" uid="uid://buyrurxe32h8w" path="res://Assets/Resource/MineraiDeFer.tres" id="5_wgohv"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ymlic"]
+albedo_texture = ExtResource("1_q455m")
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_64wmt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q7c0q"]
+albedo_color = Color(0.626639, 0.235014, 0.481232, 1)
+albedo_texture = ExtResource("1_q455m")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_w527i"]
 size = Vector3(2, 0.05, 2)
@@ -20,8 +30,11 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
+visible = false
+material_overlay = SubResource("StandardMaterial3D_ymlic")
 mesh = SubResource("PlaneMesh_64wmt")
+surface_material_override/0 = SubResource("StandardMaterial3D_q7c0q")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 
@@ -30,3 +43,7 @@ shape = SubResource("BoxShape3D_w527i")
 
 [node name="Characters_rigging" parent="." instance=ExtResource("1_6t2fw")]
 script = ExtResource("2_qehyv")
+
+[node name="Manager" type="Node" parent="."]
+script = ExtResource("4_gc2hg")
+items = [ExtResource("5_wgohv")]
