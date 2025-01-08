@@ -13,10 +13,13 @@ public partial class Player : CharacterBody3D
 
 	public override void _Ready()
 	{
+
 		Armature = GetNode<Node3D>("Armature");
 		Pivot = GetNode<Node3D>("Pivot");
 		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
 		AnimTree = GetNode<AnimationTree>("AnimationTree");
+		GD.Print(Pivot.Position);
+		GD.Print(SpringArm.Position);
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
@@ -27,7 +30,11 @@ public partial class Player : CharacterBody3D
 		{
 			GetTree().Quit();
 		}
-
+		if (IsOnFloor() && Input.IsActionJustPressed("Jump"))
+		{
+			//saut
+			Velocity = new Vector3(Velocity.X, 5.0f, Velocity.Z);
+		}
 		if (@event is InputEventMouseMotion mouseMotionEvent)
 		{
 			Pivot.RotateY(-mouseMotionEvent.Relative.X* 0.005f);
@@ -35,6 +42,8 @@ public partial class Player : CharacterBody3D
 			Vector3 springArmRotation = SpringArm.Rotation;
 			springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 4, Mathf.Pi / 4);
 			SpringArm.Rotation = springArmRotation;
+			GD.Print(Pivot.Position);
+			GD.Print(SpringArm.Position);
 		}
 	}
 
@@ -43,9 +52,9 @@ public partial class Player : CharacterBody3D
 		// Add gravity if not on the floor.
 		if (!IsOnFloor())
 		{
-			Velocity += GetGravity();
+			Velocity += GetGravity() * (float)delta;
 		}
-	
+
 		
 		// Get input direction and handle movement and deceleration.
 		Vector2 inputDir = Input.GetVector("left", "right", "forward", "backward");

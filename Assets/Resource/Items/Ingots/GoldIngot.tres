@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://bo6dg83rdtx2s"]
+
+[ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Prefabs/Ingots/IronIngot.tscn" id="1_5hyt4"]
+[ext_resource type="Script" path="res://Assets/Scripts/ItemStatic.cs" id="2_u6pu8"]
+[ext_resource type="Material" uid="uid://ciyjaua6jtpmh" path="res://Assets/Texture/Ingots/GoldIngot.tres" id="3_c6oy5"]
+
+[resource]
+script = ExtResource("2_u6pu8")
+p_nbMaxStack = 0
+prefabs = ExtResource("1_5hyt4")
+texture = ExtResource("3_c6oy5")

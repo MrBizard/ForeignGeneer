@@ -1,13 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=11 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
 [ext_resource type="Texture2D" uid="uid://bjkeu8gkmr1us" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player.cs" id="2_qehyv"]
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
-[ext_resource type="Resource" uid="uid://buyrurxe32h8w" path="res://Assets/Resource/MineraiDeFer.tres" id="5_wgohv"]
-[ext_resource type="PackedScene" uid="uid://d1sm2k2wi1mon" path="res://Assets/Prefabs/Ingots/CopperIngot.tscn" id="6_a5w2q"]
-[ext_resource type="PackedScene" uid="uid://80o6l61aiwhw" path="res://Assets/Prefabs/Ingots/GoldIngot.tscn" id="7_psixa"]
-[ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Prefabs/Ingots/IronIngot.tscn" id="8_e4di4"]
+[ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="5_rqphn"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -46,15 +43,9 @@ shape = SubResource("BoxShape3D_w527i")
 [node name="Characters_rigging" parent="." instance=ExtResource("1_6t2fw")]
 script = ExtResource("2_qehyv")
 
-[node name="Manager" type="Node" parent="."]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("ingot")]
 script = ExtResource("4_gc2hg")
-items = [ExtResource("5_wgohv")]
+item = ExtResource("5_rqphn")
+ingot = NodePath("Ingot")
 
-[node name="Node3D" parent="." instance=ExtResource("6_a5w2q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25056, 0, -6.22618)
-
-[node name="Node3D2" parent="." instance=ExtResource("7_psixa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.46082)
-
-[node name="Node3D3" parent="." instance=ExtResource("8_e4di4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.44309, 0, -6.10137)
+[node name="Ingot" type="Node" parent="Manager"]
