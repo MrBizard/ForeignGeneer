@@ -8,4 +8,4 @@
 .mono/
 *.mono/ 
 *.vpp.bak_*
-*..vpp.lck
+*.vpp.lck
