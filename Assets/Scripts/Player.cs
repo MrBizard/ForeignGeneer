@@ -5,11 +5,13 @@ public partial class Player : CharacterBody3D
 {
 	public const float Speed = 5.0f;
 	public const float LerpVal = 0.5f;
-
+	private bool b_IsSprinting = false; 
+	
 	private Node3D Armature;
 	private Node3D Pivot;
 	private SpringArm3D SpringArm;
 	private AnimationTree AnimTree;
+	
 
 	public override void _Ready()
 	{
