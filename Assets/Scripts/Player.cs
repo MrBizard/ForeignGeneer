@@ -49,8 +49,29 @@ public partial class Player : CharacterBody3D
 		}
 	}
 
+
+	// public void ShowInventory(){
+	// 	var TypeTempInv = GetNode("../Inventory Manager");
+	// 		GD.Print(TypeTempInv);
+	// 	var TempInv = GetNode<Control>("../Inventory Manager");
+		
+
+	// 	if (TempInv != null && TempInv.Visible){
+	// 		TempInv.Show();
+	// 	}
+	// 	else
+	// 	{
+	// 		TempInv.Hide();
+	// 	}
+		
+
+	// }
 	public override void _PhysicsProcess(double delta)
-	{
+	{	
+		if (Input.IsKeyPressed(Key.E))
+		{
+
+		}
 		// Add gravity if not on the floor.
 		if (!IsOnFloor())
 		{

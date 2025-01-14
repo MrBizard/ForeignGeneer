@@ -1,6 +1,6 @@
 using Godot;
 using System;
-public partial class StackItem : StaticBody3D
+public partial class StackItem 
 {
 	public ItemStatic _resource;
 	public int stack;
@@ -10,40 +10,30 @@ public partial class StackItem : StaticBody3D
 		_resource = resource;
 		stack = nb;
 	}
-	public override void _EnterTree()
-	{
-		base._EnterTree();
 
-	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-
-	}
-
-	public void instantiate(ItemStatic res)
-	{
-		_resource = res;
-		var mat = res.material;
-		GetChild<MeshInstance3D>(0).MaterialOverride = mat;
-	}
 	
-	public void add(int nb)
+	public int Add(int nb)
 	{
 		if (stack + nb <= _resource.p_nbMaxStack)
 		{
 			stack += nb;
+			return 0;
 		}
 		else
 		{
-			var newStack = new StackItem(_resource, _resource.p_nbMaxStack - stack);
-			AddChild(newStack);
-			stack = nb - (_resource.p_nbMaxStack - stack);
+			var newStack = stack + nb -_resource.p_nbMaxStack;
+			stack = _resource.p_nbMaxStack;
+			return newStack;
 		}
 	}
-	public void substract(int nb){
+	public int substract(int nb){
 		stack = Math.Max(0,stack - nb);
+		return stack;
+	}
+
+	public bool isEmpty(){
+		return stack == 0;
 	}
 	
 	
