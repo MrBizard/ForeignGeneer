@@ -1,11 +1,11 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://bh0wee65eoi72"]
 
-[ext_resource type="Material" uid="uid://ciyjaua6jtpmh" path="res://Assets/Texture/Ingots/GoldIngot.tres" id="1_ii1m2"]
-[ext_resource type="Script" path="res://Assets/Scripts/ItemStatic.cs" id="1_ked38"]
+[ext_resource type="Material" uid="uid://daritwjagyq0t" path="res://Assets/Texture/Ingots/ironIngot.tres" id="1_0wnc8"]
 [ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Prefabs/Ingots/IronIngot.tscn" id="1_t3m65"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="3_d1byk"]
 
 [resource]
-script = ExtResource("1_ked38")
-p_nbMaxStack = 0
+script = ExtResource("3_d1byk")
+p_nbMaxStack = 100
 prefabs = ExtResource("1_t3m65")
-material = ExtResource("1_ii1m2")
+material = ExtResource("1_0wnc8")

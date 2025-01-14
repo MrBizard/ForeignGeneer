@@ -11,14 +11,23 @@ public partial class Inventory
 	{
 		_nbCase = nbCase;
 		items = new StackItem[nbCase];
-		
 	}
 
-	public StackItem Add_Item(StackItem item, int CurrentCase){
+	public void addItem(StackItem item, int CurrentCase){
 		StackItem currItem = this.items[CurrentCase];
-		
-
+		if (currItem == null) return;
+		if (currItem._resource != item._resource)return;
+        currItem.substract(currItem.Add(item.stack));
 	}
 	
+	public StackItem split(int CurrentCase)
+	{
+		StackItem currItem = this.items[CurrentCase];
+		if (currItem == null) return null;
+		int valueSub = currItem.stack / 2;
+		currItem.substract(valueSub);
+        return new StackItem(currItem._resource, valueSub);
+	}
 	
+
 }

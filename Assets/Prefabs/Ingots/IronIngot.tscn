@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://b2y0l5pql3pqs"]
+[gd_scene load_steps=5 format=3 uid="uid://b2y0l5pql3pqs"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/StackItem.cs" id="1_7ydgu"]
-[ext_resource type="ArrayMesh" uid="uid://bncakrv6lj84e" path="res://Assets/Model/Ingots/ingot.obj" id="1_81j6y"]
-[ext_resource type="Texture2D" uid="uid://bjkeu8gkmr1us" path="res://Assets/damier.png" id="3_i4n6u"]
+[ext_resource type="ArrayMesh" uid="uid://ig43bg71aesi" path="res://Assets/Model/Ingots/ingot.obj" id="1_81j6y"]
+[ext_resource type="Texture2D" uid="uid://cod2pdaud3xip" path="res://Assets/damier.png" id="3_i4n6u"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taaqh"]
 albedo_color = Color(1, 0.07, 0.9535, 1)
@@ -12,7 +11,6 @@ texture_filter = 0
 [sub_resource type="BoxShape3D" id="BoxShape3D_mwbg0"]
 
 [node name="Node3D" type="StaticBody3D"]
-script = ExtResource("1_7ydgu")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)

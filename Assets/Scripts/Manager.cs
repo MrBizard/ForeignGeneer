@@ -38,9 +38,6 @@ public partial class Manager : Node
 					a.Position = new Vector3(0, 2, 0);
 
 				}
-				
-				StackItem script = a as StackItem;
-				script.instantiate(item);
 				ingot.AddChild(a);
 			}
 			GD.Print(a.Position);

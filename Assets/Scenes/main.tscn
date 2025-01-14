@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
-[ext_resource type="Texture2D" uid="uid://b15lkkjnjbf7x" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://cod2pdaud3xip" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player.cs" id="2_qehyv"]
 [ext_resource type="Shader" path="res://Assets/Texture/Biome_shader.gdshader" id="2_t6iwx"]

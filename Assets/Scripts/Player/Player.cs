@@ -5,7 +5,8 @@ public partial class Player : CharacterBody3D
 {
 	public const float Speed = 5.0f;
 	public const float LerpVal = 0.5f;
-	private bool b_IsSprinting = false; 
+	private bool b_IsSprinting = false;
+	public Inventory inv;
 	
 	private Node3D Armature;
 	private Node3D Pivot;
@@ -15,8 +16,8 @@ public partial class Player : CharacterBody3D
 
 	public override void _Ready()
 	{
-
-		Armature = GetNode<Node3D>("Armature");
+		inv = new Inventory(28);
+        Armature = GetNode<Node3D>("Armature");
 		Pivot = GetNode<Node3D>("Pivot");
 		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
 		AnimTree = GetNode<AnimationTree>("AnimationTree");
