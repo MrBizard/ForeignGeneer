@@ -17,7 +17,7 @@ public partial class Inventory
 		StackItem currItem = this.items[CurrentCase];
 		if (currItem == null) return;
 		if (currItem._resource != item._resource)return;
-        currItem.substract(currItem.Add(item.stack));
+        currItem.substract(currItem.add(item.stack));
 	}
 	
 	public StackItem split(int CurrentCase)
