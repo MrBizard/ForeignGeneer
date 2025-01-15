@@ -9,3 +9,5 @@
 *.mono/ 
 *.vpp.bak_*
 *.vpp.lck
+.vscode/
+.idea/
