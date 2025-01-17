@@ -11,23 +11,37 @@ public partial class Inventory
 	{
 		_nbCase = nbCase;
 		items = new StackItem[nbCase];
+		
 	}
 
-	public void addItem(StackItem item, int CurrentCase){
+	public StackItem Add_Item(StackItem item, int CurrentCase){
 		StackItem currItem = this.items[CurrentCase];
-		if (currItem == null) return;
-		if (currItem._resource != item._resource)return;
-        currItem.substract(currItem.Add(item.stack));
-	}
-	
-	public StackItem split(int CurrentCase)
-	{
-		StackItem currItem = this.items[CurrentCase];
-		if (currItem == null) return null;
-		int valueSub = currItem.stack / 2;
-		currItem.substract(valueSub);
-        return new StackItem(currItem._resource, valueSub);
-	}
-	
 
+		if (currItem == null){
+			this.items[CurrentCase] = item;
+			return null;
+		}
+		var tempStackcount = currItem.add(item.stack);
+		currItem.stack = tempStackcount;
+		if(item.isEmpty()){
+			return null;
+		};
+		return null; 
+	}
+
+	public StackItem Get_Item(int CurrentCase){
+		return this.items[CurrentCase];
+	}
+	public void Remove_Item(int CurrentCase){
+		this.items[CurrentCase] = null;	
+	}
+	public StackItem split_Item(int CurrentCase){	
+		var tempStackcount = this.items[CurrentCase];
+		StackItem tempStack = new StackItem(tempStackcount._resource, (int)Math.Ceiling(tempStackcount.stack/2.0));
+		tempStack.substract(tempStack.stack/2);
+		return tempStack;
+	}
+
+	
+	
 }
