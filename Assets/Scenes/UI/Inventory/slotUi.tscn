@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://ojau7ov2vb5r"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/SlotUI.cs" id="1_ug21o"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vxyo3"]
+font_size = 30
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[node name="SlotUI" type="Control"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ug21o")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 3
+
+[node name="CountLabel" type="Label" parent="."]
+layout_mode = 2
+offset_left = 37.0
+offset_top = 35.0
+offset_right = 71.0
+offset_bottom = 77.0
+scale = Vector2(0.7, 0.7)
+text = "99"
+label_settings = SubResource("LabelSettings_vxyo3")
+metadata/_edit_use_anchors_ = true

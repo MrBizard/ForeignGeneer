@@ -1,8 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://buyrurxe32h8w"]
-
-[ext_resource type="Script" path="res://Assets/Scripts/ItemStatic.cs" id="1_luwds"]
-
-[resource]
-script = ExtResource("1_luwds")
-p_name = "mineraisDeFer"
-p_nbMaxStack = null

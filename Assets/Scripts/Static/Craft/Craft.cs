@@ -2,5 +2,6 @@
 
 public class Craft
 {
+    private ItemCraft itemCraft;
     
 }

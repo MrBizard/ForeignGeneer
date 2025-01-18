@@ -8,5 +8,5 @@ public partial class ItemAuSol : StaticBody3D
 	public void instantiate(StackItem item)
 	{
 		stackItem = item;
-    }
+	}
 }

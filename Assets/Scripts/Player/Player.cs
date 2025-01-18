@@ -17,12 +17,10 @@ public partial class Player : CharacterBody3D
 	public override void _Ready()
 	{
 		inv = new Inventory(28);
-        Armature = GetNode<Node3D>("Armature");
+		Armature = GetNode<Node3D>("Armature");
 		Pivot = GetNode<Node3D>("Pivot");
 		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
 		AnimTree = GetNode<AnimationTree>("AnimationTree");
-		GD.Print(Pivot.Position);
-		GD.Print(SpringArm.Position);
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
@@ -45,8 +43,6 @@ public partial class Player : CharacterBody3D
 			Vector3 springArmRotation = SpringArm.Rotation;
 			springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 4, Mathf.Pi / 4);
 			SpringArm.Rotation = springArmRotation;
-			GD.Print(Pivot.Position);
-			GD.Print(SpringArm.Position);
 		}
 	}
 

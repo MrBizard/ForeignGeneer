@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://buyrurxe32h8w"]
+
+[ext_resource type="PackedScene" uid="uid://dg2htr0ad72da" path="res://Assets/Prefabs/Ingots/Plastic.tscn" id="1_5txu3"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="1_ym54k"]
+
+[resource]
+script = ExtResource("1_ym54k")
+_maxStack = 99
+_prefab = ExtResource("1_5txu3")

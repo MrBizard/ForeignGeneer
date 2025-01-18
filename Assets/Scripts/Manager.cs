@@ -1,46 +1,56 @@
 using Godot;
-using Godot.Collections;
-using System.Collections.Generic;
 
 public partial class Manager : Node
 {
-	//[Export]
-	//public Array<ItemStatic> items = new Array<ItemStatic>();
 	[Export] public ItemStatic item;
 	[Export] public Node ingot;
-	// Called when the node enters the scene tree for the first time.
+	private InventoryUI _inventoryUi;
+	[Export] public PackedScene inventoryUiPackedScene;
+
+	private StaticBody3D _newIngot;
 	public override void _Ready()
 	{
+		_newIngot = null;
+		//Crée l'inventaire
+		Inventory inv= new Inventory(28); 
 
+		//Instancie l'interface de l'inventaire
+		_inventoryUi = inventoryUiPackedScene.Instantiate<InventoryUI>();
+		AddChild(_inventoryUi);
+		_inventoryUi.initialize(inv);
+		inv.addItem(new StackItem(item, 77), 6);
+		inv.addItem(new StackItem(item, 50), 9);
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	
 	public override void _Process(double delta)
 	{
+		if (Input.IsActionJustPressed("inventory"))
+		{
+			_inventoryUi.toggleInventory();
+		}
 		if (item != null && Input.IsActionJustPressed("T"))
 		{
 			GD.Print("ca marche");
-			StaticBody3D a = null;
+			
 
-			if (item.prefabs.CanInstantiate())
+			if (item.getPrefab.CanInstantiate())
 			{
-				a = item.prefabs.Instantiate<StaticBody3D>();
-				a.Name = "ingotIron";
+				_newIngot = item.getPrefab.Instantiate<StaticBody3D>();
+				_newIngot.Name = "ingotIron";
 				Node3D last = null;
 				if (ingot.GetChildCount() > 0)
 					last = (Node3D)ingot.GetChild(-1);
 				if (last != null)
 				{
-					a.Position = last.Position + new Vector3(1, 0, 0);
+					_newIngot.Position = last.Position + new Vector3(1, 0, 0);
 				}
 				else
 				{
-					a.Position = new Vector3(0, 2, 0);
+					_newIngot.Position = new Vector3(0, 2, 0);
 
 				}
-				ingot.AddChild(a);
+				ingot.AddChild(_newIngot);
 			}
-			GD.Print(a.Position);
 		}
 	}
 }
