@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=20 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
 [ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_q455m"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
+[ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
+[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -115,9 +117,21 @@ script = ExtResource("2_qehyv")
 script = ExtResource("4_gc2hg")
 item = ExtResource("8_n27y6")
 ingot = NodePath("Ingot")
-inventoryUiPackedScene = ExtResource("9_5liml")
 
 [node name="Ingot" type="Node" parent="Manager"]
 
 [node name="Groundtest" type="MultiMeshInstance3D" parent="."]
 multimesh = SubResource("MultiMesh_20xaj")
+
+[node name="PlayerInventoryManager" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("10_pvxxy")
+inventoryUiPackedScene = ExtResource("9_5liml")
+cursorItemPackedScene = ExtResource("12_20xxc")
+testItem = ExtResource("8_n27y6")

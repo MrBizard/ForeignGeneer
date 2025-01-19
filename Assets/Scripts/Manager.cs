@@ -4,30 +4,17 @@ public partial class Manager : Node
 {
 	[Export] public ItemStatic item;
 	[Export] public Node ingot;
-	private InventoryUI _inventoryUi;
-	[Export] public PackedScene inventoryUiPackedScene;
+	
 
 	private StaticBody3D _newIngot;
 	public override void _Ready()
 	{
 		_newIngot = null;
-		//Crée l'inventaire
-		Inventory inv= new Inventory(28); 
-
-		//Instancie l'interface de l'inventaire
-		_inventoryUi = inventoryUiPackedScene.Instantiate<InventoryUI>();
-		AddChild(_inventoryUi);
-		_inventoryUi.initialize(inv);
-		inv.addItem(new StackItem(item, 77), 6);
-		inv.addItem(new StackItem(item, 50), 9);
 	}
 	
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("inventory"))
-		{
-			_inventoryUi.toggleInventory();
-		}
+		
 		if (item != null && Input.IsActionJustPressed("T"))
 		{
 			GD.Print("ca marche");

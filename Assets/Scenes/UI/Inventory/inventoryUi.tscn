@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://pvecjgib4vbr"]
+[gd_scene load_steps=3 format=3 uid="uid://pvecjgib4vbr"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/InventoryUI.cs" id="1_apyf5"]
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/InventoryUi.cs" id="1_apyf5"]
 [ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="2_r0wfy"]
-[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="3_l4bgv"]
 
 [node name="Inventory Manager" type="Panel"]
 anchors_preset = -1
@@ -11,14 +10,26 @@ anchor_top = 0.1
 anchor_right = 0.4
 anchor_bottom = 0.8
 script = ExtResource("1_apyf5")
-_slotUiPackedScene = ExtResource("2_r0wfy")
-_itemInHandPackedScene = ExtResource("3_l4bgv")
+slotUiPackedScene = ExtResource("2_r0wfy")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="MainInventory" type="GridContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.8
 grow_horizontal = 2
 grow_vertical = 2
 columns = 4
+
+[node name="Hotbar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
