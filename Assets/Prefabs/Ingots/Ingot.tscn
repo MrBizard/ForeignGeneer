@@ -13,7 +13,6 @@ size = Vector3(0.770264, 0.119995, 0.281982)
 [node name="Node3D" type="StaticBody3D"]
 transform = Transform3D(1.02181, 0, 0, 0, 1.02181, 0, 0, 0, 1.02181, 0, 0, 0)
 script = ExtResource("1_gvc5x")
-name = "Fer"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)

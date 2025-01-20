@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=23 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
 [ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_q455m"]
@@ -8,12 +8,11 @@
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
-[ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
-[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
-
 [ext_resource type="PackedScene" uid="uid://boeykrygcm5pg" path="res://Assets/Prefabs/Ingots/Qwartz.tscn" id="9_kmuow"]
 [ext_resource type="PackedScene" uid="uid://2afkyedmtxmx" path="res://Assets/Prefabs/Ingots/SteelBeam.tscn" id="10_83yg4"]
+[ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
 [ext_resource type="PackedScene" uid="uid://dg2htr0ad72da" path="res://Assets/Prefabs/Ingots/Plastic.tscn" id="11_uce2h"]
+[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 

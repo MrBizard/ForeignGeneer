@@ -12,7 +12,6 @@ size = Vector3(0.428467, 0.287811, 0.393616)
 
 [node name="Node3D" type="StaticBody3D"]
 script = ExtResource("2_ym27s")
-name = "Qwartz"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

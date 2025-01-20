@@ -12,7 +12,6 @@ size = Vector3(0.727417, 0.208885, 0.786484)
 
 [node name="Node3D" type="StaticBody3D"]
 script = ExtResource("1_0thdb")
-name = "Plastic"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.973228, 0, 0, 0, 0.973228, 0, 0, 0, 0.973228, 0, 0, 0)
