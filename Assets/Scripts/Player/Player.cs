@@ -16,6 +16,8 @@ public partial class Player : CharacterBody3D
 	//main et l'objet a attaché
 	[Export] private Node3D handNode;
     [Export] private PackedScene objectToAttach;
+
+	StackItem currentItemInHand=null;
     
 	
 

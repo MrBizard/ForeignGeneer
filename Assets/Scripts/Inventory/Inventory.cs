@@ -55,6 +55,7 @@ public class Inventory
 		return false;
 	}
 
+
 	/// <summary>
 	/// Retire une quantité d'item d'un slot spécifique.
 	/// Si le slot devient vide, il est réinitialisé à null.

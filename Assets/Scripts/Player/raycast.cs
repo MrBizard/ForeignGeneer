@@ -15,13 +15,13 @@ public partial class raycast : RayCast3D
 	public override void _PhysicsProcess(double delta)
 	{
 		if(IsColliding()){
-			Object collider = GetCollider();
-			GD.Print(collider);
-			if (collider is ItemAuSol item){
-				player.inv.addItem(item.stackItem,1);
-				GD.Print(player.inv.slots[1].getResource());
-				GD.Print(item.stackItem.getStack());
-				item.QueueFree();
+			// si il detecte un objet avec le script ItemAuSol
+			if (GetCollider() is ItemAuSol item){
+				if (Input.IsActionPressed("interragir")){
+
+					player.inv.addItem(item.stackItem,1);
+					item.QueueFree();
+				}
 			}
 		}
 	}
