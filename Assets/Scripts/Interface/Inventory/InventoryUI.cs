@@ -102,9 +102,10 @@ public partial class InventoryUI : Panel
 			{
 				Vector3 dropPosition = getDropPosition();
 
-				StaticBody3D instantiatedItem = prefab.Instantiate<StaticBody3D>();
+				ItemAuSol instantiatedItem = prefab.Instantiate<ItemAuSol>();
 				instantiatedItem.Position = dropPosition;
 
+				instantiatedItem.stackItem=_inventory.currentItemInMouse;
 				GetParent().AddChild(instantiatedItem);
 			}
 

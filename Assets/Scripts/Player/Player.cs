@@ -12,6 +12,11 @@ public partial class Player : CharacterBody3D
 	private Node3D Pivot;
 	private SpringArm3D SpringArm;
 	private AnimationTree AnimTree;
+
+	//main et l'objet a attaché
+	[Export] private Node3D handNode;
+    [Export] private PackedScene objectToAttach;
+    
 	
 
 	public override void _Ready()
@@ -23,6 +28,12 @@ public partial class Player : CharacterBody3D
 		AnimTree = GetNode<AnimationTree>("AnimationTree");
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+		
+
+		if (handNode == null)
+        {
+            GD.PrintErr("node de la main non assigné (script Player)");
+        }
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -41,7 +52,7 @@ public partial class Player : CharacterBody3D
 			Pivot.RotateY(-mouseMotionEvent.Relative.X* 0.005f);
 			SpringArm.RotateX(-mouseMotionEvent.Relative.Y * 0.005f);
 			Vector3 springArmRotation = SpringArm.Rotation;
-			springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 4, Mathf.Pi / 4);
+			springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 3, Mathf.Pi / 3);
 			SpringArm.Rotation = springArmRotation;
 		}
 	}
@@ -108,4 +119,25 @@ public partial class Player : CharacterBody3D
 		AnimTree.Set("parameters/BlendSpace1D/blend_position", Velocity.Length() / Speed);
 		MoveAndSlide();
 	}
+
+
+	// Permet d'attacher et de faire suivre l'objet actuellement selectionée dans la main 
+	//(necessite un personnage avec une main détaché du reste du corps
+	//	pour faire suivre l'objet avec l'animation)
+
+	/*public void AttachObjectToHand()
+    {
+        if (handNode == null || objectToAttach == null)
+        {
+            GD.PrintErr("Hand node or object to attach is not assigned!");
+            return;
+        }
+
+        var objectInstance = (Node3D)objectToAttach.Instantiate();
+        handNode.AddChild(objectInstance);
+
+        // Set object's transform (adjust as needed)
+        objectInstance.Translation = new Vector3(0, 0, 0); // Adjust for the hand position
+        objectInstance.RotationDegrees = new Vector3(0, 90, 0); // Adjust for orientation
+    }*/
 }

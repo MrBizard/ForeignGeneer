@@ -12,14 +12,15 @@ public partial class Manager : Node
 	{
 		_newIngot = null;
 		//Crée l'inventaire
-		Inventory inv= new Inventory(28); 
+		//Inventory inv= new Inventory(28); 
 
 		//Instancie l'interface de l'inventaire
 		_inventoryUi = inventoryUiPackedScene.Instantiate<InventoryUI>();
 		AddChild(_inventoryUi);
-		_inventoryUi.initialize(inv);
-		inv.addItem(new StackItem(item, 77), 6);
-		inv.addItem(new StackItem(item, 50), 9);
+		Player player = GetParent().GetNode<Player>("Player_Character");
+		_inventoryUi.initialize(player.inv);
+		player.inv.addItem(new StackItem(item, 77), 6);
+		player.inv.addItem(new StackItem(item, 50), 9);
 	}
 	
 	public override void _Process(double delta)

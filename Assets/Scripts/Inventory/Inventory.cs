@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Godot;
 
 /// <summary>
 /// Classe représentant l'inventaire d'un joueur.
@@ -33,6 +34,7 @@ public class Inventory
 	{
 		if (slots[slotIndex] == null)
 		{
+			GD.Print("test");
 			slots[slotIndex] = item;
 			return true;
 		}
