@@ -1,162 +1,92 @@
 using Godot;
-using System;
 
 /// <summary>
-/// Classe responsable de l'interface utilisateur de l'inventaire.
-/// Permet d'afficher, mettre à jour et gérer l'état de l'inventaire à l'écran.
+/// Manages the inventory user interface, including the hotbar and main inventory display.
 /// </summary>
-public partial class InventoryUI : Panel
+public partial class InventoryUi : Panel
 {
-	private Inventory _inventory;
-	private Control _mouseItemContainer;
-	private Sprite2D _mouseItemSprite;
-	private Label _mouseItemLabel;
+	[Export] public PackedScene slotUiPackedScene;
+	public PlayerInventoryManager playerInventoryManager;
+	private HBoxContainer hotbarContainer;
+	private GridContainer mainInventoryContainer;
+	private bool isInventoryOpen = false;
 
-	[Export] private PackedScene _slotUiPackedScene;
-	[Export] private PackedScene _itemInHandPackedScene;
-	private GridContainer _gridContainer;
-	
-	/// <summary>
-	/// Initialise l'interface de l'inventaire avec une instance de l'inventaire.
-	/// Crée et configure les éléments nécessaires pour l'affichage de l'item actuellement dans la main.
-	/// </summary>
-	/// <param name="inventory">L'inventaire à lier à l'interface.</param>
-	public void initialize(Inventory inventory)
+	public override void _Ready()
 	{
-		_inventory = inventory;
 		Visible = false;
-		_gridContainer = GetNode<GridContainer>("GridContainer");
-
-		_mouseItemContainer = _itemInHandPackedScene.Instantiate<Control>();
-		_mouseItemSprite = _mouseItemContainer.GetNode<Sprite2D>("Icon");
-		_mouseItemLabel = _mouseItemContainer.GetNode<Label>("CountLabel");
-
-		_mouseItemContainer.GlobalPosition = GetGlobalMousePosition();
-		_mouseItemContainer.Visible = false;
-		
-		// Ajoute un CanvasLayer pour gérer l'affichage de l'item dans la main de façon indépendante
-		CanvasLayer canvasLayer = new CanvasLayer();
-		canvasLayer.AddChild(_mouseItemContainer);
-		AddChild(canvasLayer);
+		hotbarContainer = GetNode<HBoxContainer>("Hotbar");
+		mainInventoryContainer = GetNode<GridContainer>("MainInventory");
+		playerInventoryManager = GetParent<PlayerInventoryManager>();
+		initializeInventoryUi();
+		updateUi();
 	}
 
 	/// <summary>
-	/// Mise à jour de l'affichage de l'item actuellement dans la main du joueur.
+	/// Initializes the inventory UI slots for both the hotbar and the main inventory.
 	/// </summary>
-	/// <param name="delta">Le deltaTime du frame, non utilisé dans cette méthode.</param>
-	public override void _Process(double delta)
+	private void initializeInventoryUi()
 	{
-		updateItemInHand();
-	}
-
-	/// <summary>
-	/// Met à jour la position et les informations de l'item dans la main (icône, quantité).
-	/// </summary>
-	private void updateItemInHand()
-	{
-		if (_inventory.currentItemInMouse != null)
+		for (int i = 0; i < playerInventoryManager.hotbarSize; i++)
 		{
-			_mouseItemContainer.SetGlobalPosition(GetGlobalMousePosition());
-
-			var texture = _inventory.currentItemInMouse.getResource().getInventoryIcon;
-			_mouseItemSprite.Texture = texture;
-
-			var stackCount = _inventory.currentItemInMouse.getStack();
-			_mouseItemLabel.Text = stackCount > 1 ? stackCount.ToString() : "";
-
-			_mouseItemContainer.Visible = true;
+			var slot = slotUiPackedScene.Instantiate<SlotUI>();
+			hotbarContainer.AddChild(slot);
+			slot.initialize(playerInventoryManager.hotbar.getItem(i), playerInventoryManager.hotbar, playerInventoryManager);
 		}
-		else
+
+		for (int i = 0; i < playerInventoryManager.mainInventorySize; i++)
 		{
-			_mouseItemContainer.Visible = false;
+			var slot = slotUiPackedScene.Instantiate<SlotUI>();
+			mainInventoryContainer.AddChild(slot);
+			slot.initialize(playerInventoryManager.mainInventory.getItem(i), playerInventoryManager.mainInventory, playerInventoryManager);
 		}
 	}
 
 	/// <summary>
-	/// Gère l'entrée utilisateur, en particulier les clics de souris.
-	/// Si un clic droit est détecté, appelle la méthode DropItem.
-	/// </summary>
-	/// <param name="inputEvent">L'événement d'entrée.</param>
-	public override void _Input(InputEvent inputEvent)
-	{
-		if (inputEvent is InputEventMouseButton mouseEvent)
-		{
-			if (mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed)
-			{
-				GD.Print("Clic droit détecté !");
-				dropItem();
-			}
-		}
-	}
-
-	/// <summary>
-	/// Permet de déposer l'item actuellement dans la main du joueur dans le monde à une position spécifiée.
-	/// L'item est instancié et ajouté à la scène.
-	/// </summary>
-	private void dropItem()
-	{
-		if (_inventory.currentItemInMouse != null)
-		{
-			PackedScene prefab = _inventory.currentItemInMouse.getResource().getPrefab;  
-			if (prefab != null)
-			{
-				Vector3 dropPosition = getDropPosition();
-
-				ItemAuSol instantiatedItem = prefab.Instantiate<ItemAuSol>();
-				instantiatedItem.Position = dropPosition;
-
-				instantiatedItem.stackItem=_inventory.currentItemInMouse;
-				GetParent().AddChild(instantiatedItem);
-			}
-
-			_inventory.currentItemInMouse = null;
-			_mouseItemContainer.Visible = false;
-			updateUi();
-		}
-	}
-
-	/// <summary>
-	/// Calcule et renvoie la position où l'item sera déposé dans le monde.
-	/// La position est relative au joueur.
-	/// </summary>
-	/// <returns>La position de dépôt dans le monde.</returns>
-	private Vector3 getDropPosition()
-	{
-		var player = GetParent().GetParent().GetNode<Player>("Player_Character");
-		return player.GlobalPosition + new Vector3(0, 0, 2);
-	}
-
-	/// <summary>
-	/// Met à jour l'affichage de l'inventaire en réinitialisant et redessinant les éléments de l'inventaire.
+	/// Updates the inventory UI to reflect the current state of the player's inventories.
 	/// </summary>
 	public void updateUi()
 	{
-		foreach (Node child in _gridContainer.GetChildren())
+		for (int i = 0; i < playerInventoryManager.hotbarSize; i++)
 		{
-			child.QueueFree();
-		}
-		
-		foreach (var stackItem in _inventory.slots)
-		{
-			var slotUiInstance = _slotUiPackedScene.Instantiate<SlotUI>();
-			slotUiInstance.initialize(stackItem, _inventory);
-			_gridContainer.AddChild(slotUiInstance);
+			var item = playerInventoryManager.hotbar.getItem(i);
+			if (item != null)
+			{
+				var slot = hotbarContainer.GetChild(i) as SlotUI;
+				slot?.initialize(item, playerInventoryManager.hotbar, playerInventoryManager);
+			}
 		}
 
-		_gridContainer.QueueRedraw();
+		for (int i = 0; i < playerInventoryManager.mainInventorySize; i++)
+		{
+			var item = playerInventoryManager.mainInventory.getItem(i);
+			if (item != null)
+			{
+				var slot = mainInventoryContainer.GetChild(i) as SlotUI;
+				slot?.initialize(item, playerInventoryManager.mainInventory, playerInventoryManager);
+			}
+		}
 	}
 
 	/// <summary>
-	/// Bascule la visibilité de l'inventaire et ajuste le mode de la souris.
+	/// Toggles the visibility of the inventory UI and updates its state.
 	/// </summary>
 	public void toggleInventory()
 	{
-		if (!Visible)
+		isInventoryOpen = !isInventoryOpen;
+		Visible = isInventoryOpen;
+
+		if (isInventoryOpen)
 		{
+			Input.SetMouseMode(Input.MouseModeEnum.Visible);
 			updateUi();
 		}
-
-		Visible = !Visible;
-		Input.MouseMode = Visible ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
+		else
+		{
+			if (playerInventoryManager.currentItemInMouse != null)
+			{
+				playerInventoryManager.dropItemOutsideInventory();
+			}
+			Input.SetMouseMode(Input.MouseModeEnum.Captured);
+		}
 	}
 }

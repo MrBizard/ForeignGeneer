@@ -11,18 +11,23 @@ public partial class SlotUI : Control
 
 	private StackItem _stackItem;
 	private Inventory _inventory;
-	private int _nbSlotCount {get; set;}
+	
+	// Référence au PlayerInventoryManager pour accéder au currentItemInMouse
+	private PlayerInventoryManager _playerInventoryManager;
+
 	/// <summary>
-	/// Initialise un slot d'inventaire avec un item et une instance d'inventaire.
+	/// Initialise un slot d'inventaire avec un item, une instance d'inventaire et une référence à PlayerInventoryManager.
 	/// </summary>
 	/// <param name="stackItem">L'item contenu dans le slot.</param>
 	/// <param name="inventory">Instance de l'inventaire associée.</param>
-	public void initialize(StackItem stackItem, Inventory inventory)
+	/// <param name="playerInventoryManager">Référence au gestionnaire d'inventaire du joueur.</param>
+	public void initialize(StackItem stackItem, Inventory inventory, PlayerInventoryManager playerInventoryManager)
 	{
 		_stackItem = stackItem;
 		_inventory = inventory;
-		_countLabel = GetNode<Label>("CountLabel");
 		_icon = GetNode<TextureRect>("Icon");
+		_countLabel = GetNode<Label>("CountLabel");
+		_playerInventoryManager = playerInventoryManager;
 		updateSlot();
 	}
 
@@ -33,6 +38,7 @@ public partial class SlotUI : Control
 	{
 		if (_stackItem != null && _stackItem.getStack() > 0)
 		{
+			GD.Print(_stackItem.getResource().ToString());
 			_icon.Texture = _stackItem.getResource().getInventoryIcon;
 			_countLabel.Text = _stackItem.getStack() > 1 ? _stackItem.getStack().ToString() : "";
 		}
@@ -41,6 +47,7 @@ public partial class SlotUI : Control
 			_icon.Texture = null;
 			_countLabel.Text = "";
 		}
+		_playerInventoryManager.startDraggingItem();
 	}
 
 	/// <summary>
@@ -52,11 +59,16 @@ public partial class SlotUI : Control
 		if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
 		{
 			if (mouseEvent.ButtonIndex == MouseButton.Left)
+			{
 				handleLeftClick();
+			}
 			else if (mouseEvent.ButtonIndex == MouseButton.Right)
+			{
 				handleRightClick();
+			}
 		}
 	}
+
 
 	/// <summary>
 	/// Gère un clic droit sur le slot (division de stack).
@@ -65,53 +77,48 @@ public partial class SlotUI : Control
 	{
 		if (_stackItem != null)
 		{
-			_inventory.currentItemInMouse = _stackItem.split();
+			_playerInventoryManager.currentItemInMouse = _stackItem.split();
 			updateSlot();
 		}
 	}
 
-	/// <summary>
-	/// Gère un clic gauche sur le slot (ramassage, placement ou échange d'items).
-	/// </summary>
-	private void handleLeftClick()
+	public void handleLeftClick()
 	{
 		// Aucun Item
-		if (_inventory.currentItemInMouse == null)
+		if (_playerInventoryManager.currentItemInMouse == null)
 		{
-			GD.Print(_stackItem.getStack().ToString());
-			_inventory.currentItemInMouse = _stackItem;
-
-			_inventory.deleteItem(GetIndex());
-			_stackItem = null;
+			if (_stackItem != null)
+			{
+				// Créer un item à la souris
+				_playerInventoryManager.currentItemInMouse = _stackItem;
+				_inventory.deleteItem(GetIndex());
+				_stackItem = null;
+			}
 		}
 		else
 		{
 			if (_stackItem == null)
 			{
-				_stackItem = _inventory.currentItemInMouse;
-				GD.Print(_inventory.currentItemInMouse.getStack());
+				_stackItem = _playerInventoryManager.currentItemInMouse;
 				_inventory.addItem(_stackItem, GetIndex());
-				_inventory.currentItemInMouse = null;
+				_playerInventoryManager.currentItemInMouse = null;
 			}
-			else if (_stackItem.getResource() == _inventory.currentItemInMouse.getResource())
+			else if (_stackItem.getResource() == _playerInventoryManager.currentItemInMouse.getResource())
 			{
-				_inventory.currentItemInMouse.setStack(_stackItem.add(_inventory.currentItemInMouse.getStack()));
-				if (_inventory.currentItemInMouse.getStack() <= 0)
+				_playerInventoryManager.currentItemInMouse.setStack(_stackItem.add(_playerInventoryManager.currentItemInMouse.getStack()));
+				if (_playerInventoryManager.currentItemInMouse.getStack() <= 0)
 				{
-					_inventory.currentItemInMouse = null;
+					_playerInventoryManager.currentItemInMouse = null;
 				}
-
 			}
 			else
 			{
-				// Différents items : échange
 				var temp = _stackItem;
-				_stackItem = _inventory.currentItemInMouse;
-				_inventory.currentItemInMouse = temp;
-				GD.Print("Items swapped between hand and slot.");
+				_stackItem = _playerInventoryManager.currentItemInMouse;
+				_playerInventoryManager.currentItemInMouse = temp;
 			}
 		}
-
 		updateSlot();
 	}
+
 }

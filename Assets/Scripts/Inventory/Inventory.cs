@@ -8,7 +8,6 @@ using Godot;
 public class Inventory
 {
 	public List<StackItem> slots { get; private set; }
-	public StackItem currentItemInMouse { get; set; }
 
 	/// <summary>
 	/// Constructeur de l'inventaire.
@@ -32,6 +31,8 @@ public class Inventory
 	/// <returns>True si l'ajout est réussi, sinon False.</returns>
 	public bool addItem(StackItem item, int slotIndex)
 	{
+		if (slotIndex >= slots.Count)
+			return false;
 		if (slots[slotIndex] == null)
 		{
 			GD.Print("test");
@@ -69,7 +70,7 @@ public class Inventory
 			slots[slotIndex].subtract(amount);
 			if (slots[slotIndex].isEmpty())
 			{
-				slots[slotIndex] = null;
+				deleteItem(slotIndex);
 			}
 		}
 	}
@@ -80,5 +81,10 @@ public class Inventory
 	public void deleteItem(int slotIndex)
 	{
 		slots[slotIndex] = null;
+	}
+
+	public StackItem getItem(int slotIndex)
+	{
+		return slots[slotIndex];
 	}
 }
