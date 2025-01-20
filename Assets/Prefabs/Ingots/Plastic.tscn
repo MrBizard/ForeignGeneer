@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dg2htr0ad72da"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Items/ItemAuSol.cs" id="1_0thdb"]
-[ext_resource type="ArrayMesh" uid="uid://vmbkhlvarkk0" path="res://Assets/Model/material/plastic.obj" id="2_dheay"]
+[ext_resource type="ArrayMesh" uid="uid://d4f32woy1fw02" path="res://Assets/Model/material/plastic.obj" id="2_dheay"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taaqh"]
 albedo_color = Color(0.119706, 0.350816, 0.605373, 1)

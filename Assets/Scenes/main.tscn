@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
-[ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player/Player.cs" id="2_qehyv"]
 [ext_resource type="Shader" path="res://Assets/Texture/Biome_shader.gdshader" id="2_t6iwx"]
@@ -135,3 +135,4 @@ script = ExtResource("10_pvxxy")
 inventoryUiPackedScene = ExtResource("9_5liml")
 cursorItemPackedScene = ExtResource("12_20xxc")
 testItem = ExtResource("8_n27y6")
+metadata/_edit_use_anchors_ = true
