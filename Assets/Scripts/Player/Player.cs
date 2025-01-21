@@ -3,7 +3,7 @@ using System;
 
 public partial class Player : CharacterBody3D
 {
-	public const float Speed = 5.0f;
+	public float Speed = 5.0f;
 	public const float LerpVal = 0.5f;
 	private bool b_IsSprinting = false;
 	public Inventory inv;
@@ -27,6 +27,14 @@ public partial class Player : CharacterBody3D
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
+		if (Input.IsKeyPressed(Key.Shift))
+		{
+			Speed = 50.0f;
+		}
+		else
+		{
+			Speed = 5.0f;
+		}
 		if (Input.IsActionJustPressed("quit"))
 		{
 			GetTree().Quit();

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Godot;
 
 /// <summary>
 /// Classe représentant l'inventaire d'un joueur.
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 public class Inventory
 {
 	public List<StackItem> slots { get; private set; }
+	public event Action onInventoryUpdated;
 
 	/// <summary>
 	/// Constructeur de l'inventaire.
@@ -32,26 +35,33 @@ public class Inventory
 	{
 		if (slotIndex >= slots.Count)
 			return false;
+
+		bool success = false;
+
 		if (slots[slotIndex] == null)
 		{
 			slots[slotIndex] = item;
-			return true;
+			success = true;
 		}
 		else if (slots[slotIndex].getResource() == item.getResource())
 		{
 			int remaining = slots[slotIndex].add(item.getStack());
 			if (remaining == 0)
 			{
-				return true;
+				success = true;
 			}
 			else
 			{
 				item.setStack(remaining);
-				return false;
 			}
 		}
 
-		return false;
+		if (success)
+		{
+			onInventoryUpdated?.Invoke(); // Déclenche l'événement
+		}
+
+		return success;
 	}
 
 	/// <summary>
@@ -69,19 +79,34 @@ public class Inventory
 			{
 				deleteItem(slotIndex);
 			}
+			onInventoryUpdated?.Invoke();
 		}
 	}
+
 	/// <summary>
-	// Supprime l'item dans le slot
+	/// Supprime l'item dans le slot.
 	/// </summary>
 	/// <param name="slotIndex">Index du slot cible.</param>
 	public void deleteItem(int slotIndex)
 	{
-		slots[slotIndex] = null;
+		if (slots[slotIndex] != null)
+		{
+			slots[slotIndex] = null;
+			onInventoryUpdated?.Invoke(); 
+		}
 	}
 
+	/// <summary>
+	/// Récupère l'item dans un slot spécifique.
+	/// </summary>
+	/// <param name="slotIndex">Index du slot cible.</param>
+	/// <returns>L'item dans le slot, ou null si le slot est vide.</returns>
 	public StackItem getItem(int slotIndex)
 	{
 		return slots[slotIndex];
+	}
+	public void notifyInventoryUpdated()
+	{
+		onInventoryUpdated?.Invoke();
 	}
 }

@@ -8,18 +8,18 @@ outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
 [node name="SlotUI" type="Control"]
+physics_interpolation_mode = 0
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+anchors_preset = 0
+offset_right = 64.0
+offset_bottom = 64.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
 script = ExtResource("1_ug21o")
 
 [node name="Background" type="Panel" parent="."]
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,15 +35,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 3
+stretch_mode = 5
 
 [node name="CountLabel" type="Label" parent="."]
-layout_mode = 2
-offset_left = 37.0
-offset_top = 35.0
-offset_right = 71.0
-offset_bottom = 77.0
-scale = Vector2(0.7, 0.7)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -34.0
+offset_top = -42.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.7, 0.540833)
 text = "99"
 label_settings = SubResource("LabelSettings_vxyo3")
-metadata/_edit_use_anchors_ = true

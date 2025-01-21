@@ -26,36 +26,46 @@ public partial class PlayerInventoryManager : Control
 		hotbar = new Inventory(hotbarSize);
 		currentItemInMouse = null;
 
+		// Ajout d'items de test
 		mainInventory.addItem(new StackItem(testItem, 50), 10);
 		mainInventory.addItem(new StackItem(testItem, 67), 7);
 		hotbar.addItem(new StackItem(testItem, 67), 1);
 
+		// Initialisation de l'UI de l'inventaire
 		if (inventoryUiPackedScene != null)
 		{
 			inventoryUi = inventoryUiPackedScene.Instantiate<InventoryUi>();
 			AddChild(inventoryUi);
 		}
 
-		cursorItemInstance = cursorItemPackedScene.Instantiate<Control>();
-		cursorItemInstance.Visible = false;
-		AddChild(cursorItemInstance);
+		// Initialisation de l'item suiveur (cursorItem)
+		if (cursorItemPackedScene != null)
+		{
+			cursorItemInstance = cursorItemPackedScene.Instantiate<Control>();
+			cursorItemInstance.Visible = false;
+			AddChild(cursorItemInstance);
+		}
 	}
 
 	public override void _Process(double delta)
 	{
+		// Basculer l'inventaire avec la touche dédiée
 		if (Input.IsActionJustPressed("inventory"))
 		{
 			inventoryUi.toggleInventory();
 		}
 
+		// Mettre à jour la position de l'item suiveur
 		if (cursorItemInstance != null)
 		{
 			cursorItemInstance.GlobalPosition = GetGlobalMousePosition();
 		}
+
 	}
 
 	public override void _Input(InputEvent @event)
 	{
+		// Gestion du clic droit pour jeter un item
 		if (@event is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed)
 		{
 			dropItemOutsideInventory();
@@ -69,7 +79,7 @@ public partial class PlayerInventoryManager : Control
 	{
 		if (cursorItemInstance == null)
 			return;
-		
+
 		if (currentItemInMouse == null)
 		{
 			cursorItemInstance.Visible = false;
@@ -77,8 +87,8 @@ public partial class PlayerInventoryManager : Control
 		}
 
 		cursorItemInstance.Visible = true;
-		cursorItemInstance.GlobalPosition = GetGlobalMousePosition();
 
+		// Mettre à jour l'apparence de l'item suiveur
 		var sprite = cursorItemInstance.GetNode<Sprite2D>("Icon");
 		var label = cursorItemInstance.GetNode<Label>("CountLabel");
 
@@ -106,8 +116,8 @@ public partial class PlayerInventoryManager : Control
 			itemDrop.GlobalPosition = getDropPosition();
 
 			currentItemInMouse = null;
-			
-			startDraggingItem();
+
+			startDraggingItem(); 
 		}
 	}
 

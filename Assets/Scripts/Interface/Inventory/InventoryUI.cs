@@ -1,19 +1,15 @@
 using Godot;
 
-/// <summary>
-/// Manages the inventory user interface, including the hotbar and main inventory display.
-/// </summary>
-public partial class InventoryUi : Panel
+public partial class InventoryUi : Control
 {
 	[Export] public PackedScene slotUiPackedScene;
 	public PlayerInventoryManager playerInventoryManager;
 	private HBoxContainer hotbarContainer;
 	private GridContainer mainInventoryContainer;
-	private bool isInventoryOpen = false;
 
 	public override void _Ready()
 	{
-		Visible = false;
+		Visible = false; // Masqué par défaut
 		hotbarContainer = GetNode<HBoxContainer>("Hotbar");
 		mainInventoryContainer = GetNode<GridContainer>("MainInventory");
 		playerInventoryManager = GetParent<PlayerInventoryManager>();
@@ -22,7 +18,7 @@ public partial class InventoryUi : Panel
 	}
 
 	/// <summary>
-	/// Initializes the inventory UI slots for both the hotbar and the main inventory.
+	/// Initialise l'UI de l'inventaire.
 	/// </summary>
 	private void initializeInventoryUi()
 	{
@@ -42,7 +38,7 @@ public partial class InventoryUi : Panel
 	}
 
 	/// <summary>
-	/// Updates the inventory UI to reflect the current state of the player's inventories.
+	/// Met à jour l'UI de l'inventaire.
 	/// </summary>
 	public void updateUi()
 	{
@@ -68,16 +64,17 @@ public partial class InventoryUi : Panel
 	}
 
 	/// <summary>
-	/// Toggles the visibility of the inventory UI and updates its state.
+	/// Bascule la visibilité de l'inventaire.
 	/// </summary>
 	public void toggleInventory()
 	{
-		isInventoryOpen = !isInventoryOpen;
-		Visible = isInventoryOpen;
+		Visible = !Visible;
+		GD.Print("Inventory visibility toggled to: " + Visible);
 
-		if (isInventoryOpen)
+		if (Visible)
 		{
-			Input.SetMouseMode(Input.MouseModeEnum.Visible);
+			Input.MouseMode = Input.MouseModeEnum.Visible;
+			playerInventoryManager.MouseFilter = MouseFilterEnum.Stop;
 			updateUi();
 		}
 		else
@@ -86,7 +83,8 @@ public partial class InventoryUi : Panel
 			{
 				playerInventoryManager.dropItemOutsideInventory();
 			}
-			Input.SetMouseMode(Input.MouseModeEnum.Captured);
+			playerInventoryManager.MouseFilter = MouseFilterEnum.Ignore;
+			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 	}
 }

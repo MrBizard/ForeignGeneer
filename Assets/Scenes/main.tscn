@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=23 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
 [ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_q455m"]
@@ -11,6 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
 [ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
 [ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
+[ext_resource type="PackedScene" uid="uid://b13eivmg2exdn" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
+[ext_resource type="Resource" uid="uid://cw7831j7x5fbc" path="res://Assets/Resource/recipe/Recipe1.tres" id="13_kmvb5"]
+[ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="14_m01p2"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -124,14 +127,20 @@ ingot = NodePath("Ingot")
 multimesh = SubResource("MultiMesh_20xaj")
 
 [node name="PlayerInventoryManager" type="Control" parent="."]
+process_priority = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource("10_pvxxy")
 inventoryUiPackedScene = ExtResource("9_5liml")
 cursorItemPackedScene = ExtResource("12_20xxc")
 testItem = ExtResource("8_n27y6")
+
+[node name="StaticBody3D" parent="." instance=ExtResource("12_b1lrc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.22957, 0, -2.71747)
+recipe = ExtResource("13_kmvb5")
+factoryUiPackedScene = ExtResource("14_m01p2")

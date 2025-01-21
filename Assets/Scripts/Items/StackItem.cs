@@ -5,7 +5,7 @@ using System;
 /// Représente un item dans une pile.
 /// Contient des informations sur l'item et son nombre dans une pile.
 /// </summary>
-public class StackItem
+public partial class StackItem
 {
     // Champs privés
     [Export] private ItemStatic _resource;
@@ -72,12 +72,10 @@ public class StackItem
             _stack += nb;
             return 0;
         }
-        else
-        {
             int overflow = _stack + nb - _resource.getMaxStack;
             _stack = _resource.getMaxStack;
             return overflow;
-        }
+        
     }
 
     /// <summary>
