@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://buyrurxe32h8w"]
 
-[ext_resource type="PackedScene" uid="uid://dg2htr0ad72da" path="res://Assets/Prefabs/Ingots/Plastic.tscn" id="1_5txu3"]
+[ext_resource type="PackedScene" uid="uid://dg2htr0ad72da" path="res://Assets/Ingots/Plastic.tscn" id="1_5txu3"]
 [ext_resource type="Texture2D" uid="uid://1pxv3srh0kfj" path="res://Assets/Texture/Ingots/ingot.png" id="1_oumpe"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="1_ym54k"]
 

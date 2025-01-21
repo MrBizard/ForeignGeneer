@@ -29,7 +29,7 @@ public class Inventory
 	/// <param name="item">Item à ajouter.</param>
 	/// <param name="slotIndex">Index du slot cible.</param>
 	/// <returns>True si l'ajout est réussi, sinon False.</returns>
-	public bool addItem(StackItem item, int slotIndex)
+	public bool addItemToSlot(StackItem item, int slotIndex)
 	{
 		if (slotIndex >= slots.Count)
 			return false;
@@ -86,5 +86,38 @@ public class Inventory
 	public StackItem getItem(int slotIndex)
 	{
 		return slots[slotIndex];
+	}
+
+	public int addItem(StackItem item)
+	{
+		// recherche si l'item existe n'existe pas encore dans l'inventaire
+		for (int i = 0; i < slots.Count; i++)
+		{
+			if (slots[i] != null && slots[i].getResource() == item.getResource())
+			{
+				int remaining = slots[i].add(item.getStack());
+				if (remaining == 0)
+				{
+					return 0; // All items were added successfully
+				}
+				else
+				{
+					item.setStack(remaining); // Update the remaining items to add
+				}
+			}
+		}
+
+		// si il n'y a pas encore de slot occupé par cette item
+		for (int i = 0; i < slots.Count; i++)
+		{
+			if (slots[i] == null)
+			{
+				slots[i] = item;
+				return 0; // All items were added successfully
+			}
+		}
+
+		// If no space is available, return the remaining items
+		return item.getStack();
 	}
 }

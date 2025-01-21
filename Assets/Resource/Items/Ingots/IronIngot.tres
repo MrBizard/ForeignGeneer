@@ -1,9 +1,9 @@
 [gd_resource type="Resource" load_steps=5 format=3 uid="uid://bh0wee65eoi72"]
 
 [ext_resource type="Material" uid="uid://daritwjagyq0t" path="res://Assets/Texture/Ingots/ironIngot.tres" id="1_0wnc8"]
-[ext_resource type="Texture2D" uid="uid://dfnuuo58tq1co" path="res://Assets/Texture/Ingots/ingot.png" id="1_28qne"]
+[ext_resource type="Texture2D" uid="uid://1pxv3srh0kfj" path="res://Assets/Texture/Ingots/ingot.png" id="1_28qne"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="3_d1byk"]
-[ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Prefabs/Ingots/Ingot.tscn" id="3_hnncx"]
+[ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Ingots/Ingot.tscn" id="3_hnncx"]
 
 [resource]
 script = ExtResource("3_d1byk")

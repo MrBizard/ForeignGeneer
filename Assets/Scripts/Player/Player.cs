@@ -78,10 +78,7 @@ public partial class Player : CharacterBody3D
 	// }
 	public override void _PhysicsProcess(double delta)
 	{	
-		if (Input.IsKeyPressed(Key.E))
-		{
 
-		}
 		// Add gravity if not on the floor.
 		if (!IsOnFloor())
 		{

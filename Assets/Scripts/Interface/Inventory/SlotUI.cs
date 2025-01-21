@@ -100,7 +100,7 @@ public partial class SlotUI : Control
 			if (_stackItem == null)
 			{
 				_stackItem = _playerInventoryManager.currentItemInMouse;
-				_inventory.addItem(_stackItem, GetIndex());
+				_inventory.addItemToSlot(_stackItem, GetIndex());
 				_playerInventoryManager.currentItemInMouse = null;
 			}
 			else if (_stackItem.getResource() == _playerInventoryManager.currentItemInMouse.getResource())
