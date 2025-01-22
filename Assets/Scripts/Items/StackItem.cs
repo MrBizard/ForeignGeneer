@@ -8,8 +8,8 @@ using System;
 public partial class StackItem
 {
     // Champs privés
-    [Export] private ItemStatic _resource;
-    [Export] private int _stack;
+    private ItemStatic _resource;
+    private int _stack=0;
 
     /// <summary>
     /// Obtient la ressource associée à cet item.

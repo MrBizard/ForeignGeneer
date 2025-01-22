@@ -63,13 +63,41 @@ public partial class ItemStatic : Resource
 		_inventoryIcon = inventoryIcon;
 	}
 
-	/// <summary>
-	/// Action par défaut déclenchée lors d'un clic gauche sur cet item.
-	/// </summary>
-	public virtual void LeftClick()
+	public T instantiate<T>(Vector3 pos) where T : StaticBody3D
 	{
-		GD.Print("Left clicked on ItemStatic");
+	    // Instantiate the object from the prefab
+	    T itemInstantiate = _prefab.Instantiate<T>();
+	    
+
+	    // Check if a material is assigned
+	    if (_material != null)
+	    {
+	        // Find the first MeshInstance3D child and apply the material
+	        MeshInstance3D meshInstance = itemInstantiate.GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
+	        if (meshInstance != null)
+	        {
+	            meshInstance.MaterialOverride = _material;
+	        }
+	        else
+	        {
+	            GD.Print("No MeshInstance3D found in the prefab to apply the material.");
+	        }
+	    }
+
+	    // Set the global position of the instantiated item
+	    itemInstantiate.GlobalPosition = pos;
+
+	    // Return the instantiated object
+	    return itemInstantiate;
 	}
+
+    /// <summary>
+    /// Action par défaut déclenchée lors d'un clic gauche sur cet item.
+    /// </summary>
+    public virtual void LeftClick()
+    {
+        GD.Print("Left clicked on ItemStatic");
+    }
 
 	/// <summary>
 	/// Action par défaut déclenchée lors d'un clic droit sur cet item.
@@ -79,3 +107,4 @@ public partial class ItemStatic : Resource
 		GD.Print("Right clicked on ItemStatic");
 	}
 }
+

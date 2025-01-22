@@ -98,19 +98,26 @@ public partial class PlayerInventoryManager : Control
 	/// Drops the item currently being carried by the mouse outside the inventory.
 	/// </summary>
 	public void dropItemOutsideInventory()
-	{
-		if (currentItemInMouse != null)
-		{
-			var itemDrop = currentItemInMouse.getResource().getPrefab.Instantiate<ItemAuSol>();
-			itemDrop.instantiate(currentItemInMouse);
-			GetParent().AddChild(itemDrop);
-			itemDrop.GlobalPosition = getDropPosition();
+{
+    if (currentItemInMouse != null)
+    {
+        // Get the ItemStatic resource from the current item in the mouse
+        ItemStatic itemResource = currentItemInMouse.getResource();
 
-			currentItemInMouse = null;
-			
-			startDraggingItem();
-		}
-	}
+        // Use the generic instantiate method to create the item at the drop position
+        ItemAuSol itemDrop = itemResource.instantiate<ItemAuSol>(getDropPosition());
+		itemDrop.stackItem=currentItemInMouse;
+
+        // Add the item to the scene
+        GetParent().AddChild(itemDrop);
+
+        // Clear the current item in the mouse
+        currentItemInMouse = null;
+
+        // Start dragging the next item (if applicable)
+        startDraggingItem();
+    }
+}
 
 	/// <summary>
 	/// Calculates the drop position for the item in the world relative to the player.
