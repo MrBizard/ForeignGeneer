@@ -110,7 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -36.4484, 0)
 environment = SubResource("Environment_wvy0c")
 
 [node name="Player_Character" parent="." node_paths=PackedStringArray("Map") instance=ExtResource("1_6t2fw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 58.3394, 0)
 script = ExtResource("2_qehyv")
 Map = NodePath("../TerraBrush")
 
@@ -154,6 +154,8 @@ DataPath = "res://Assets/Scenes/Main"
 CustomShader = SubResource("ShaderMaterial_lghg2")
 LODInitialCellWidth = 4.0
 TextureSets = ExtResource("8_u47is")
+TextureDetail = 16
+NearestTextureFilter = true
 Foliages = []
 Objects = []
 TerrainZones = SubResource("Resource_ilplf")

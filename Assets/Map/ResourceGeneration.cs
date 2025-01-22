@@ -9,10 +9,10 @@ public partial class ResourceGeneration : Node3D
 	[Export]
 	public Vector3 MapSize { get; set; }
 	[Export]
-	public int RedCubesCount { get; set; } = 1000; // Number of red cubes to spawn
+	public int RedCubesCount { get; set; } = 10; // Number of red cubes to spawn
 
 	[Export]
-	public int GreenCylindersCount { get; set; } =1000; // Number of green cylinders to spawn
+	public int GreenCylindersCount { get; set; } =10; // Number of green cylinders to spawn
 
 	public override void _Ready()
 	{
@@ -140,18 +140,21 @@ public partial class ResourceGeneration : Node3D
 	float z = (float)random.NextDouble() * MapSize.Z - MapSize.Z / 2;
 
 	// Sample the terrain height at the random X and Z coordinates
-	float y = 1;
+	float y = GetTerrainHeight(x, z);
 
 	return new Vector3(x, y, z);
 }
 
 private float GetTerrainHeight(float x, float z)
 {
+	var a = new RayCast3D();
 	var rayCast = new RayCast3D();
 	rayCast.Position = new Vector3(x, MapSize.Y + 100, z);
 	rayCast.TargetPosition = new Vector3(x, -100, z);
 	rayCast.Enabled = true;
 	rayCast.CollisionMask = 1; // Ensure this matches the terrain's collision layer
+	rayCast.DebugShapeThickness = 1;
+	
 
 	AddChild(rayCast);
 	rayCast.ForceRaycastUpdate();
@@ -164,6 +167,7 @@ private float GetTerrainHeight(float x, float z)
 	}
 	else
 	{
+		GD.PrintErr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+ rayCast.Position + " " + rayCast.CollisionMask + " " + rayCast.TargetPosition);
 		GD.PrintErr("RayCast3D did not detect terrain at (" + x + ", " + z + ")");
 	}
 
