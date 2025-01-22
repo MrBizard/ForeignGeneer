@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=25 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
 [ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_q455m"]
@@ -12,7 +12,8 @@
 [ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
 [ext_resource type="PackedScene" uid="uid://dg2htr0ad72da" path="res://Assets/Ingots/Plastic.tscn" id="11_uce2h"]
 [ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
-[ext_resource type="PackedScene" uid="uid://bx1gajc5wcsfj" path="res://Assets/Ingots/BreakableRessource.tscn" id="14_totob"]
+[ext_resource type="PackedScene" uid="uid://5w1ay5mgky0h" path="res://Assets/Ingots/BreakableIngot.tscn" id="13_l7mfa"]
+[ext_resource type="PackedScene" uid="uid://b128wbexawv5n" path="res://Assets/Ingots/BreakableGold.tscn" id="14_qbkp4"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -184,5 +185,10 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.63405, 0, -1.23287)
 [node name="Node3D4" parent="." instance=ExtResource("11_uce2h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.633701, 0, -2.39798)
 
-[node name="Node3D5" parent="." instance=ExtResource("14_totob")]
-transform = Transform3D(10.5592, 0, 0, 0, 10.5592, 0, 0, 0, 10.5592, 1.46229, 0.274356, -1.56111)
+[node name="Node3D5" parent="." instance=ExtResource("13_l7mfa")]
+transform = Transform3D(13.6791, 0, 0, 0, 13.6791, 0, 0, 0, 13.6791, 2.04554, 0.268876, -2.63841)
+
+[node name="Node3D6" parent="." instance=ExtResource("14_qbkp4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.73517, 0, -0.41766)
+timer = null
+timer = null

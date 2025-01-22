@@ -120,4 +120,50 @@ public class Inventory
 		// If no space is available, return the remaining items
 		return item.getStack();
 	}
+
+    /// <summary>
+    /// Ajoute un seul item à l'inventaire.
+    /// </summary>
+    public int addOneItem(StackItem item)
+{
+    GD.Print(item.getStack().ToString());
+
+    // Recherche si l'item existe déjà dans l'inventaire
+    for (int i = 0; i < slots.Count; i++)
+    {
+        if (slots[i] != null && slots[i].getResource() == item.getResource())
+        {
+            // Si le slot actuel a de la place, ajoute l'item
+            if (slots[i].getStack() < slots[i].getResource().getMaxStack)
+            {
+                int remaining = slots[i].add(1);
+                GD.Print("restant : " + remaining);
+                return 0;
+            }
+            else
+            {
+                GD.Print("limite atteint");
+            }
+        }
+    }
+
+    GD.Print("phase 2");
+    // Si l'item n'existe pas encore dans l'inventaire
+    for (int i = 0; i < slots.Count; i++)
+    {
+        if (slots[i] == null)
+        {
+            GD.Print("slot libre trouvé");
+
+            // Crée une nouvelle instance de StackItem pour éviter de modifier la référence originale
+            slots[i] = new StackItem(item.getResource());
+            slots[i].setStack(1); // Initialise le slot avec 1 item
+            return 0; // L'item a été ajouté avec succès
+        }
+    }
+
+    // Si aucun espace n'est disponible, retourne le nombre d'items restants
+    return item.getStack();
+}
+
 }
