@@ -31,6 +31,8 @@ public partial class raycast : RayCast3D
 					}
 				}
 
+
+
 				// si il detecte un objet avec le script BreakableRessource
 				if (GetCollider() is BreakableResource resource){
 						GD.Print(resource);

@@ -63,10 +63,11 @@ public partial class ItemStatic : Resource
         _inventoryIcon = inventoryIcon;
     }
 
-      public StaticBody3D instantiate(Vector3 pos)
+public T instantiate<T>(Vector3 pos) where T : StaticBody3D
 {
-    // Instantiate the StaticBody3D from the prefab
-    StaticBody3D itemInstantiate = _prefab.Instantiate<StaticBody3D>();
+    // Instantiate the object from the prefab
+    T itemInstantiate = _prefab.Instantiate<T>();
+    
 
     // Check if a material is assigned
     if (_material != null)
@@ -86,7 +87,7 @@ public partial class ItemStatic : Resource
     // Set the global position of the instantiated item
     itemInstantiate.GlobalPosition = pos;
 
-    // Return the instantiated StaticBody3D
+    // Return the instantiated object
     return itemInstantiate;
 }
 
