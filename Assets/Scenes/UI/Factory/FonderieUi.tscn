@@ -65,3 +65,11 @@ anchor_bottom = 0.2
 offset_bottom = 8.0
 grow_horizontal = 2
 editable = false
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+offset_right = 8.0
+offset_bottom = 8.0
+rotation = -0.00263166
+text = "< --"

@@ -1,11 +1,11 @@
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
+using ForeignGeneer.Assets.Scripts.Static.Craft;
 using Godot;
 using Godot.Collections;
 
 public partial class Fonderie : StaticBody3D, IFactory
 {
-    [Export] private Recipe recipe;
-    [Export]public Array<Recipe> recipeList { get; set; }
+    [Export] public RecipeList recipeList { get; set; }
     [Export] private PackedScene _recipeListUiPackedScene;
     public Craft craft { get; set; }
     public FactoryStatic factoryStatic { get; set; }
@@ -16,14 +16,11 @@ public partial class Fonderie : StaticBody3D, IFactory
     public Timer craftTimer;
     public bool isCrafting { get; private set; } = false;
 
-    [Export] private int inputSlotCount = 2;
-    [Export] private PackedScene factoryUiPackedScene;
+    [Export] private int _inputSlotCount = 2;
+    [Export] private PackedScene _factoryUiPackedScene;
 
-    private FonderieUi factoryUi;
-
-    public Fonderie()
-    {
-    }
+    private FonderieUi _factoryUi;
+    private RecetteList _recipeListUi;
 
     public override void _Process(double delta)
     {
@@ -31,17 +28,23 @@ public partial class Fonderie : StaticBody3D, IFactory
 
         if (Input.IsActionJustPressed("interragir"))
         {
-            openUi();
+            if (_factoryUi != null || _recipeListUi != null)
+            {
+                closeUi(); // Fermer l'UI si elle est déjà ouverte
+            }
+            else
+            {
+                openUi(); // Ouvrir l'UI si elle est fermée
+            }
         }
 
         if (isCrafting)
         {
             craftProgress = 1f - (float)(craftTimer.TimeLeft / craft.recipe.duration);
 
-            // Mettre à jour la ProgressBar
-            if (factoryUi != null)
+            if (_factoryUi != null)
             {
-                factoryUi.updateProgressBar(craftProgress);
+                _factoryUi.updateProgressBar(craftProgress);
             }
         }
     }
@@ -49,23 +52,11 @@ public partial class Fonderie : StaticBody3D, IFactory
     public override void _Ready()
     {
         base._Ready();
-        input = new Inventory(inputSlotCount);
-        output = new Inventory(1); // 1 slot pour l'output
-        
-        recipe.initRecipe();
-        GD.Print("recipe "+recipe.input.Count);
+        input = new Inventory(_inputSlotCount);
+        output = new Inventory(1);
+        recipeList.init();
         input.onInventoryUpdated += onInventoryUpdated;
         output.onInventoryUpdated += onInventoryUpdated;
-
-        // Vérifier que la recette et l'output sont valides
-        if (recipe == null || recipe.output == null)
-        {
-            GD.PrintErr("La recette ou l'output est invalide.");
-        }
-        else
-        {
-            GD.Print($"Recette initialisée avec output : {recipe.output.getResource().GetName()} (x{recipe.output.getStack()})");
-        }
     }
 
     private void onInventoryUpdated()
@@ -83,12 +74,20 @@ public partial class Fonderie : StaticBody3D, IFactory
             }
         }
 
-        // Mettre à jour l'UI de la fonderie
-        factoryUi?.updateUi();
+        _factoryUi?.updateUi();
+    }
+
+    public void setCraft(Recipe recipe)
+    {
+        craft = recipe == null ? null : new Craft(recipe);
+        if (craft != null)
+            craft.init(input, output);
+        openUi(); // Mettre à jour l'UI après avoir défini le craft
     }
 
     private void startCraft()
     {
+        GD.Print("craft");
         if (isCrafting)
         {
             return;
@@ -130,7 +129,7 @@ public partial class Fonderie : StaticBody3D, IFactory
             else
             {
                 GD.Print("Output ajouté avec succès.");
-                startCraft(); // Démarrer un nouveau craft si l'output a été ajouté
+                startCraft();
             }
         }
         else
@@ -138,13 +137,11 @@ public partial class Fonderie : StaticBody3D, IFactory
             GD.PrintErr("La recette n'a pas d'output défini.");
         }
 
-        // Réinitialiser la ProgressBar
-        if (factoryUi != null)
+        if (_factoryUi != null)
         {
-            factoryUi.updateProgressBar(0f);
+            _factoryUi.updateProgressBar(0f);
         }
 
-        // Vérifier si un nouveau craft est possible
         onInventoryUpdated();
     }
 
@@ -156,36 +153,33 @@ public partial class Fonderie : StaticBody3D, IFactory
     }
 
     public void openUi()
-{
-    var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
-
-    if (factoryUi == null)
     {
-        Input.MouseMode = Input.MouseModeEnum.Visible;
-        // Vérifie si le craft est null
+        var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
+
+        // Fermer les fenêtres existantes
+        closeUi();
+
+        // Afficher la fenêtre appropriée
         if (craft == null)
         {
-            // Instancie et affiche la liste des recettes
             if (_recipeListUiPackedScene != null)
             {
-                var recipeListUi = _recipeListUiPackedScene.Instantiate<RecetteList>(); // Assurez-vous que RecipeListUi est le bon type
-                GetTree().Root.AddChild(recipeListUi);
-
-                // Initialise la liste des recettes
-                recipeListUi.initialize(this); // Passez la fonderie comme paramètre si nécessaire
+                _recipeListUi = _recipeListUiPackedScene.Instantiate<RecetteList>();
+                GetTree().Root.AddChild(_recipeListUi);
+                _recipeListUi.Initialize(this);
+                inventoryUi.Visible = false;
             }
             else
             {
-                GD.PrintErr("_recipeListUiPackedScene n'est pas défini.");
+                GD.PrintErr("recipeListUiPackedScene n'est pas défini.");
             }
         }
         else
         {
-            // Instancie et affiche l'interface normale de la fonderie
-            if (factoryUiPackedScene != null)
+            if (_factoryUiPackedScene != null)
             {
-                factoryUi = factoryUiPackedScene.Instantiate<FonderieUi>();
-                GetTree().Root.AddChild(factoryUi);
+                _factoryUi = _factoryUiPackedScene.Instantiate<FonderieUi>();
+                GetTree().Root.AddChild(_factoryUi);
 
                 if (inventoryUi == null)
                 {
@@ -193,23 +187,21 @@ public partial class Fonderie : StaticBody3D, IFactory
                     return;
                 }
 
-                factoryUi.initialize(this, inventoryUi);
+                _factoryUi.initialize(this, inventoryUi);
 
-                // Afficher l'inventaire à côté de la fonderie
                 if (!inventoryUi.Visible)
                 {
                     inventoryUi.Visible = true;
-                    inventoryUi.Position = new Vector2(factoryUi.Position.X - inventoryUi.Size.X - 10, factoryUi.Position.Y);
+                    inventoryUi.Position = new Vector2(_factoryUi.Position.X - inventoryUi.Size.X - 10, _factoryUi.Position.Y);
                 }
 
-                // Mettre à jour la ProgressBar dès l'ouverture de l'interface
                 if (isCrafting)
                 {
-                    factoryUi.updateProgressBar(craftProgress);
+                    _factoryUi.updateProgressBar(craftProgress);
                 }
                 else
                 {
-                    factoryUi.updateProgressBar(0f);
+                    _factoryUi.updateProgressBar(0f);
                 }
             }
             else
@@ -217,18 +209,33 @@ public partial class Fonderie : StaticBody3D, IFactory
                 GD.PrintErr("factoryUiPackedScene n'est pas défini.");
             }
         }
-    }
-    else
-    {
-        // Ferme l'interface actuelle
-        factoryUi.closeUi();
-        factoryUi = null;
 
-        // Masquer l'inventaire si on ferme la fonderie
-        if (!Input.IsActionJustPressed("inventory"))
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+    }
+
+    public void closeUi()
+    {
+        // Fermer FonderieUi si elle est ouverte
+        if (_factoryUi != null)
+        {
+            _factoryUi.closeUi();
+            _factoryUi = null;
+        }
+
+        // Fermer RecetteListUi si elle est ouverte
+        if (_recipeListUi != null)
+        {
+            _recipeListUi.QueueFree();
+            _recipeListUi = null;
+        }
+
+        // Masquer l'inventaire
+        var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
+        if (inventoryUi != null)
         {
             inventoryUi.Visible = false;
         }
+
+        Input.MouseMode = Input.MouseModeEnum.Hidden;
     }
-}
 }

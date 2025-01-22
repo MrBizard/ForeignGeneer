@@ -5,73 +5,42 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 public partial class RecetteList : Control
 {
     [Export] private PackedScene recipeUiPacked;
-    private GridContainer gridContainer;
-    private ScrollContainer scrollContainer;
-
+    private GridContainer scrollContainer;
+    private IFactory factory;
     public override void _Ready()
     {
-        // Récupérer le ScrollContainer et le GridContainer
-        scrollContainer = GetNode<ScrollContainer>("VScroll");
-        gridContainer = GetNode<GridContainer>("VScroll/GridContainer");
-
-        // Vérifier que les nœuds sont correctement initialisés
-        if (scrollContainer == null)
-        {
-            GD.PrintErr("ScrollContainer n'est pas initialisé.");
-            return;
-        }
-
-        if (gridContainer == null)
-        {
-            GD.PrintErr("GridContainer n'est pas initialisé.");
-            return;
-        }
+        // Récupérer le GridContainer
+        scrollContainer = GetNode<GridContainer>("ScrollContainer/GridContainer");
     }
 
-    public void initialize(IFactory factory)
+    public void Initialize(IFactory factory)
     {
-        // Vérifier que gridContainer est correctement initialisé
-        if (gridContainer == null)
+        this.factory = factory;
+        // Vérifier que la liste de recettes n'est pas vide
+        if (factory.recipeList.recipeList == null || factory.recipeList.recipeList.Count == 0)
         {
-            GD.PrintErr("GridContainer n'est pas initialisé.");
+            GD.PrintErr("La liste de recettes est vide.");
             return;
         }
 
         // Parcourir chaque recette dans la liste
-        GD.Print(factory.recipeList.Count);
-        foreach (Recipe recipe in factory.recipeList)
+        foreach (Recipe recipe in factory.recipeList.recipeList)
         {
             // Instancier l'interface utilisateur de la recette
-            var recipeUi = recipeUiPacked.Instantiate();
+            RecipeChoiceUi recipeUi = recipeUiPacked.Instantiate<RecipeChoiceUi>();
+            recipeUi.init(recipe);
 
-            // Récupérer les nœuds enfants de recipeUi
-            Label nameItem = recipeUi.GetNode<Label>("NameItem");
-            TextureRect textureItem = recipeUi.GetNode<TextureRect>("TextureItem");
-
-            // Vérifier que les nœuds existent
-            if (nameItem == null)
-            {
-                GD.PrintErr("Le nœud 'NameItem' est introuvable dans recipeUi.");
-                continue; // Passer à la prochaine itération
-            }
-
-            if (textureItem == null)
-            {
-                GD.PrintErr("Le nœud 'TextureItem' est introuvable dans recipeUi.");
-                continue; // Passer à la prochaine itération
-            }
-
-            // Mettre à jour les propriétés des nœuds avec les données de la recette
-            nameItem.Text = recipe.GetName();
-            textureItem.Texture = recipe.output.getResource().getInventoryIcon;
+            // Connecter le signal RecipeClicked en utilisant Callable
+            recipeUi.Connect(nameof(RecipeChoiceUi.RecipeClicked), new Callable(this, nameof(OnRecipeClicked)));
 
             // Ajouter l'objet au GridContainer
-            gridContainer.AddChild(recipeUi);
-            GD.PrintT("pass");
+            scrollContainer.AddChild(recipeUi);
         }
     }
 
-    public override void _Process(double delta)
+    private void OnRecipeClicked(Recipe recipe)
     {
+        factory.setCraft(recipe);
+        GD.Print("clique ");
     }
 }

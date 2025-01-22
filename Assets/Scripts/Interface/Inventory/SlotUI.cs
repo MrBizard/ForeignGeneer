@@ -2,155 +2,140 @@ using Godot;
 
 public partial class SlotUI : Control
 {
-	private TextureRect icon;
-	private Label countLabel;
+    private TextureRect _icon;
+    private Label _countLabel;
+    private StackItem _stackItem;
+    private Inventory _inventory;
+    private PlayerInventoryManager _playerInventoryManager;
+    private TextureRect _backIcon;
+    private Panel _background;
+    private bool _isOutputSlot = false;
 
-	private StackItem stackItem;
-	private Inventory inventory;
-	private PlayerInventoryManager playerInventoryManager;
-	private TextureRect backIcon;
-	private Panel background;
-	private bool isOutputSlot = false; // Indique si ce slot est un slot de sortie
+    /// <summary>
+    /// Initialise le slot avec un item, un inventaire et un gestionnaire d'inventaire.
+    /// </summary>
+    public void initialize(StackItem stackItem, Inventory inventory, PlayerInventoryManager playerInventoryManager, bool isOutputSlot = false)
+    {
+        _stackItem = stackItem;
+        _inventory = inventory;
+        _playerInventoryManager = playerInventoryManager;
+        _isOutputSlot = isOutputSlot;
 
-	/// <summary>
-	/// Initialise un slot d'inventaire avec un item, une instance d'inventaire et une référence à PlayerInventoryManager.
-	/// </summary>
-	/// <param name="stackItem">L'item contenu dans le slot.</param>
-	/// <param name="inventory">Instance de l'inventaire associée.</param>
-	/// <param name="playerInventoryManager">Référence au gestionnaire d'inventaire du joueur.</param>
-	public void initialize(StackItem stackItem, Inventory inventory, PlayerInventoryManager playerInventoryManager, bool isOutputSlot = false)
-	{
-		this.stackItem = stackItem;
-		this.inventory = inventory;
-		this.playerInventoryManager = playerInventoryManager;
-		this.isOutputSlot = isOutputSlot; // Définit si ce slot est un slot de sortie
-		background = GetNode<Panel>("Background");
-		backIcon = GetNode<TextureRect>("Background/BackIcon");
+        _background = GetNode<Panel>("Background");
+        _backIcon = GetNode<TextureRect>("Background/BackIcon");
+        _icon = GetNode<TextureRect>("Icon");
+        _countLabel = GetNode<Label>("CountLabel");
 
-		icon = GetNode<TextureRect>("Icon");
-		countLabel = GetNode<Label>("CountLabel");
+        updateSlot();
+    }
 
-		updateSlot();
-	}
+    /// <summary>
+    /// Met à jour l'affichage du slot en fonction de son contenu.
+    /// </summary>
+    public void updateSlot()
+    {
+        if (_stackItem != null && _stackItem.getStack() > 0)
+        {
+            _icon.Texture = _stackItem.getResource().getInventoryIcon;
+            _countLabel.Text = _stackItem.getStack() > 1 ? _stackItem.getStack().ToString() : "";
+        }
+        else
+        {
+            _icon.Texture = null;
+            _countLabel.Text = "";
+        }
+        _playerInventoryManager.startDraggingItem();
+    }
 
-	/// <summary>
-	/// Met à jour l'affichage du slot en fonction de son contenu.
-	/// </summary>
-	public void updateSlot()
-	{
-		if (stackItem != null && stackItem.getStack() > 0)
-		{
-			icon.Texture = stackItem.getResource().getInventoryIcon;
-			countLabel.Text = stackItem.getStack() > 1 ? stackItem.getStack().ToString() : "";
-		}
-		else
-		{
-			icon.Texture = null;
-			countLabel.Text = "";
-		}
-		playerInventoryManager.startDraggingItem();
-	}
+    public override void _GuiInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
+        {
+            if (mouseEvent.ButtonIndex == MouseButton.Left)
+            {
+                handleLeftClick();
+            }
+            else if (mouseEvent.ButtonIndex == MouseButton.Right)
+            {
+                handleRightClick();
+            }
+        }
+    }
 
-	/// <summary>
-	/// Gère les interactions utilisateur avec le slot via des clics de souris.
-	/// </summary>
-	/// <param name="event">L'événement d'entrée utilisateur.</param>
-	public override void _GuiInput(InputEvent @event)
-	{
-		if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
-		{
-			if (mouseEvent.ButtonIndex == MouseButton.Left)
-			{
-				handleLeftClick();
-			}
-			else if (mouseEvent.ButtonIndex == MouseButton.Right)
-			{
-				handleRightClick();
-			}
-		}
-	}
+    private void handleLeftClick()
+    {
+        if (_playerInventoryManager.currentItemInMouse == null)
+        {
+            if (_stackItem != null)
+            {
+                _playerInventoryManager.currentItemInMouse = _stackItem;
+                _inventory.deleteItem(GetIndex());
+                _stackItem = null;
+            }
+        }
+        else
+        {
+            if (!_isOutputSlot)
+            {
+                if (_stackItem == null)
+                {
+                    _stackItem = _playerInventoryManager.currentItemInMouse;
+                    _inventory.addItem(_stackItem, GetIndex());
+                    _playerInventoryManager.currentItemInMouse = null;
+                }
+                else if (_stackItem.getResource() == _playerInventoryManager.currentItemInMouse.getResource())
+                {
+                    _playerInventoryManager.currentItemInMouse.setStack(_stackItem.add(_playerInventoryManager.currentItemInMouse.getStack()));
+                    if (_playerInventoryManager.currentItemInMouse.getStack() <= 0)
+                    {
+                        _playerInventoryManager.currentItemInMouse = null;
+                    }
+                }
+                else
+                {
+                    var temp = _stackItem;
+                    _stackItem = _playerInventoryManager.currentItemInMouse;
+                    _playerInventoryManager.currentItemInMouse = temp;
+                }
+            }
+            else
+            {
+                GD.Print("Impossible de poser des objets dans le slot de sortie.");
+            }
+        }
+        updateSlot();
+    }
 
-	/// <summary>
-	/// Gère un clic gauche sur le slot (déplacement ou échange d'items).
-	/// </summary>
-	private void handleLeftClick()
-	{
-		if (playerInventoryManager.currentItemInMouse == null)
-		{
-			if (stackItem != null)
-			{
-				// Prendre l'item du slot
-				playerInventoryManager.currentItemInMouse = stackItem;
-				inventory.deleteItem(GetIndex());
-				stackItem = null;
-			}
-		}
-		else
-		{
-			if (!isOutputSlot) // Empêche l'ajout d'items dans le slot de sortie
-			{
-				if (stackItem == null)
-				{
-					// Poser l'item dans le slot
-					stackItem = playerInventoryManager.currentItemInMouse;
-					inventory.addItem(stackItem, GetIndex());
-					playerInventoryManager.currentItemInMouse = null;
-				}
-				else if (stackItem.getResource() == playerInventoryManager.currentItemInMouse.getResource())
-				{
-					// Fusionner les stacks si les items sont identiques
-					playerInventoryManager.currentItemInMouse.setStack(stackItem.add(playerInventoryManager.currentItemInMouse.getStack()));
-					if (playerInventoryManager.currentItemInMouse.getStack() <= 0)
-					{
-						playerInventoryManager.currentItemInMouse = null;
-					}
-				}
-				else
-				{
-					// Échanger les items
-					var temp = stackItem;
-					stackItem = playerInventoryManager.currentItemInMouse;
-					playerInventoryManager.currentItemInMouse = temp;
-				}
-			}
-			else
-			{
-				GD.Print("Impossible de poser des objets dans le slot de sortie.");
-			}
-		}
-		updateSlot();
-	}
+    private void handleRightClick()
+    {
+        if (_stackItem != null)
+        {
+            _playerInventoryManager.currentItemInMouse = _stackItem.split();
+            _inventory.notifyInventoryUpdated();
+            updateSlot();
+        }
+    }
 
-	/// <summary>
-	/// Gère un clic droit sur le slot (division de stack).
-	/// </summary>
-	private void handleRightClick()
-	{
-		if (stackItem != null)
-		{
-			playerInventoryManager.currentItemInMouse = stackItem.split();
-			inventory.notifyInventoryUpdated();
-			updateSlot();
-		}
-	}
+    /// <summary>
+    /// Retourne l'item actuellement dans le slot.
+    /// </summary>
+    public StackItem getStackItem()
+    {
+        return _stackItem;
+    }
 
-	/// <summary>
-	/// Retourne l'item actuellement dans le slot.
-	/// </summary>
-	/// <returns>L'item du slot.</returns>
-	public StackItem getStackItem()
-	{
-		return stackItem;
-	}
-	public void setBackgroundTexture(Texture2D texture)
-	{
-		if (backIcon != null)
-		{
-			backIcon.Texture = texture; // Applique la texture fournie
-		}
-		else
-		{
-			GD.PrintErr("Background TextureRect is not assigned!");
-		}
-	}
+    /// <summary>
+    /// Définit la texture de fond du slot.
+    /// </summary>
+    public void setBackgroundTexture(Texture2D texture)
+    {
+        if (_backIcon != null)
+        {
+            _backIcon.Texture = texture;
+        }
+        else
+        {
+            GD.PrintErr("Background TextureRect is not assigned!");
+        }
+    }
 }
