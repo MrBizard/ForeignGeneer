@@ -26,9 +26,9 @@ public partial class PlayerInventoryManager : Control
 		hotbar = new Inventory(hotbarSize);
 		currentItemInMouse = null;
 
-		mainInventory.addItem(new StackItem(testItem, 50), 10);
-		mainInventory.addItem(new StackItem(testItem, 67), 7);
-		hotbar.addItem(new StackItem(testItem, 67), 1);
+		mainInventory.addItemToSlot(new StackItem(testItem, 50), 10);
+		mainInventory.addItemToSlot(new StackItem(testItem, 67), 7);
+		hotbar.addItemToSlot(new StackItem(testItem, 67), 1);
 
 		if (inventoryUiPackedScene != null)
 		{

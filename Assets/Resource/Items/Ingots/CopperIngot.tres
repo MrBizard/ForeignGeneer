@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dfnuuo58tq1co" path="res://Assets/Texture/Ingots/ingot.png" id="1_wqevx"]
 [ext_resource type="Material" uid="uid://daritwjagyq0t" path="res://Assets/Texture/Ingots/ironIngot.tres" id="2_6itel"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="3_4fl21"]
-[ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Prefabs/Ingots/Ingot.tscn" id="3_nrhj0"]
+[ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Ingots/Ingot.tscn" id="3_nrhj0"]
 
 [resource]
 resource_name = "Copper Ingot"

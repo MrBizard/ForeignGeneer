@@ -121,7 +121,7 @@ public class Craft
 
         if (outputSlotItem == null)
         {
-            output.addItem(new StackItem(recipeItem.getResource(), recipeItem.getStack()), 0);
+            output.addItemToSlot(new StackItem(recipeItem.getResource(), recipeItem.getStack()), 0);
             return true;
         }
         else if (outputSlotItem.getResource() == recipeItem.getResource())

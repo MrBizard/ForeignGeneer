@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using ForeignGeneer.Assets.Scripts.block.playerStructure;
 
 public partial class raycast : RayCast3D
 {
@@ -21,28 +22,24 @@ public partial class raycast : RayCast3D
 	}
 
 		private void getObjectInGround(){
-			
-			if(IsColliding()){
-				
-				// si il detecte un objet avec le script ItemAuSol
-				if (GetCollider() is ItemAuSol item){
+
+			if (IsColliding())
+			{
+				switch (GetCollider())
+				{
+					case ItemAuSol item:
 						player.mainInventory.addItem(item.stackItem);
 						item.QueueFree();
-					}
-				}
-
-
-
-				// si il detecte un objet avec le script BreakableRessource
-				if (GetCollider() is BreakableResource resource){
-						GD.Print(resource);
-						resource.IsActive=true;
+						break;
+					case BreakableResource resource:
+						resource.IsActive = true;
 						player.mainInventory.addOneItem(resource.item);
 						resource.item.getResource().LeftClick();
-						
-						//GD.Print(resource.resourceType.ResourceType.ToString());
-						//player.mainInventory.addItem(resource);
-						
+						break;
+					case PlayerStructure structure:
+						structure.openUi();
+						break;
+				}
 			}
 		}
 		

@@ -7,6 +7,8 @@ public partial class Fonderie : StaticBody3D, IFactory
 {
     [Export] public RecipeList recipeList { get; set; }
     [Export] private PackedScene _recipeListUiPackedScene;
+    [Export] private int _inputSlotCount = 2;
+    [Export] private PackedScene _factoryUiPackedScene;
     public Craft craft { get; set; }
     public FactoryStatic factoryStatic { get; set; }
     public Inventory input { get; set; }
@@ -15,9 +17,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     public float craftProgress { get; private set; }
     public Timer craftTimer;
     public bool isCrafting { get; private set; } = false;
-
-    [Export] private int _inputSlotCount = 2;
-    [Export] private PackedScene _factoryUiPackedScene;
+    
 
     private FonderieUi _factoryUi;
     private RecetteList _recipeListUi;
@@ -25,18 +25,6 @@ public partial class Fonderie : StaticBody3D, IFactory
     public override void _Process(double delta)
     {
         base._Process(delta);
-
-        if (Input.IsActionJustPressed("interragir"))
-        {
-            if (_factoryUi != null || _recipeListUi != null)
-            {
-                closeUi(); // Fermer l'UI si elle est déjà ouverte
-            }
-            else
-            {
-                openUi(); // Ouvrir l'UI si elle est fermée
-            }
-        }
 
         if (isCrafting)
         {
