@@ -84,7 +84,7 @@ public class Inventory
 	}
 
 	/// <summary>
-	/// Supprime l'item dans le slot.
+	// Supprime l'item dans le slot
 	/// </summary>
 	/// <param name="slotIndex">Index du slot cible.</param>
 	public void deleteItem(int slotIndex)
@@ -104,6 +104,39 @@ public class Inventory
 	public StackItem getItem(int slotIndex)
 	{
 		return slots[slotIndex];
+	}
+
+	public int addItem(StackItem item)
+	{
+		// recherche si l'item existe n'existe pas encore dans l'inventaire
+		for (int i = 0; i < slots.Count; i++)
+		{
+			if (slots[i] != null && slots[i].getResource() == item.getResource())
+			{
+				int remaining = slots[i].add(item.getStack());
+				if (remaining == 0)
+				{
+					return 0; // All items were added successfully
+				}
+				else
+				{
+					item.setStack(remaining); // Update the remaining items to add
+				}
+			}
+		}
+
+		// si il n'y a pas encore de slot occupé par cette item
+		for (int i = 0; i < slots.Count; i++)
+		{
+			if (slots[i] == null)
+			{
+				slots[i] = item;
+				return 0; // All items were added successfully
+			}
+		}
+
+		// If no space is available, return the remaining items
+		return item.getStack();
 	}
 	public void notifyInventoryUpdated()
 	{

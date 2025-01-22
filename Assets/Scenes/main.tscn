@@ -1,20 +1,22 @@
 [gd_scene load_steps=24 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
-[ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
-[ext_resource type="Script" path="res://Assets/Scripts/Player/Player.cs" id="2_qehyv"]
-[ext_resource type="Shader" path="res://Assets/Texture/Biome_shader.gdshader" id="2_t6iwx"]
 [ext_resource type="Script" path="res://Assets/Scripts/World/MapTextureChanger3D.cs" id="2_uv61q"]
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
+[ext_resource type="PackedScene" uid="uid://boeykrygcm5pg" path="res://Assets/Ingots/Qwartz.tscn" id="9_kmuow"]
+[ext_resource type="PackedScene" uid="uid://2afkyedmtxmx" path="res://Assets/Ingots/SteelBeam.tscn" id="10_83yg4"]
 [ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
+[ext_resource type="PackedScene" uid="uid://dg2htr0ad72da" path="res://Assets/Ingots/Plastic.tscn" id="11_uce2h"]
 [ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
 [ext_resource type="PackedScene" uid="uid://b13eivmg2exdn" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
 [ext_resource type="Resource" uid="uid://domk1djuxoy74" path="res://Assets/Resource/recipe/RecipeList1.tres" id="13_efp6d"]
 [ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="14_4tmkx"]
 [ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="14_m01p2"]
+[ext_resource type="PackedScene" uid="uid://bx1gajc5wcsfj" path="res://Assets/Ingots/BreakableRessource.tscn" id="14_totob"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -78,6 +80,32 @@ shader_parameter/texture_albedo = ExtResource("1_q455m")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_64wmt"]
 
+[sub_resource type="Shader" id="Shader_1stix"]
+code = "// Ground Shader for overlay effect around the player
+shader_type spatial;
+
+// Uniforms for player position and overlay effect
+uniform vec3 player_position;
+uniform float radius = 25.0;
+uniform vec4 overlay_color : hint_color;
+uniform float overlay_strength = 0.0; // Ranges from 0.0 (no overlay) to 1.0 (full overlay)
+
+void fragment() {
+    // Compute the distance from the fragment to the player position
+    float distance_to_player = distance(VERTEX, player_position);   
+
+    // Determine the overlay factor based on distance and radius
+    float overlay_factor = smoothstep(radius, radius * 0.9, distance_to_player);
+
+    // Mix the overlay color with the existing material color
+    vec4 base_color = texture(TEXTURE, UV);
+    vec4 final_color = mix(overlay_color, base_color, overlay_factor);
+
+    // Apply the overlay strength
+    ALBEDO = mix(base_color.rgb, final_color.rgb, overlay_strength);
+}
+"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cxlq4"]
 render_priority = 0
 shader = ExtResource("2_t6iwx")
@@ -90,6 +118,8 @@ size = Vector3(2, 0, 2)
 [sub_resource type="MultiMesh" id="MultiMesh_20xaj"]
 use_colors = true
 mesh = SubResource("TextMesh_ek6no")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ksdu6"]
 
 [node name="Main" type="Node3D"]
 
@@ -128,7 +158,6 @@ ingot = NodePath("Ingot")
 multimesh = SubResource("MultiMesh_20xaj")
 
 [node name="PlayerInventoryManager" type="Control" parent="."]
-process_priority = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -140,6 +169,27 @@ script = ExtResource("10_pvxxy")
 inventoryUiPackedScene = ExtResource("9_5liml")
 cursorItemPackedScene = ExtResource("12_20xxc")
 testItem = ExtResource("8_n27y6")
+metadata/_edit_use_anchors_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.998561, 0, 0, 0, 0.998561, 0, 0, 0, 0.998561, -6.35277, 0, 0)
+mesh = SubResource("BoxMesh_ksdu6")
+skeleton = NodePath("../Player_Character")
+
+[node name="Node3D" parent="." instance=ExtResource("9_kmuow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.267573, 0, -1.50858)
+
+[node name="Node3D2" parent="." instance=ExtResource("10_83yg4")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.64088, 0.68169, -2.12639)
+
+[node name="Node3D3" parent="." instance=ExtResource("10_83yg4")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.63405, 0, -1.23287)
+
+[node name="Node3D4" parent="." instance=ExtResource("11_uce2h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.633701, 0, -2.39798)
+
+[node name="Node3D5" parent="." instance=ExtResource("14_totob")]
+transform = Transform3D(10.5592, 0, 0, 0, 10.5592, 0, 0, 0, 10.5592, 1.46229, 0.274356, -1.56111)
 
 [node name="StaticBody3D" parent="." instance=ExtResource("12_b1lrc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.22957, 0, -2.71747)

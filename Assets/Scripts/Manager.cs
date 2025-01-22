@@ -4,17 +4,23 @@ public partial class Manager : Node
 {
 	[Export] public ItemStatic item;
 	[Export] public Node ingot;
-	
+
+	[Export] public PackedScene inventoryUiPackedScene;
 
 	private StaticBody3D _newIngot;
 	public override void _Ready()
 	{
 		_newIngot = null;
+		//Crée l'inventaire
+		//Inventory inv= new Inventory(28); 
+
+		//Instancie l'interface de l'inventaire
+
 	}
 	
 	public override void _Process(double delta)
 	{
-		
+
 		if (item != null && Input.IsActionJustPressed("T"))
 		{
 			GD.Print("ca marche");

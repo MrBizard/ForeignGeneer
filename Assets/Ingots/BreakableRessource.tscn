@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx1gajc5wcsfj"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Items/BreakableResource.cs" id="1_6i0hs"]
+[ext_resource type="ArrayMesh" uid="uid://b3wap73fqdjmx" path="res://Assets/Model/Ingots/ingot.obj" id="1_x3y80"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d1dgw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0aode"]
+size = Vector3(0.23584, 0.043457, 0.111816)
+
+[node name="Node3D" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0339832, 0.000768512, -0.0477445)
+script = ExtResource("1_6i0hs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_x3y80")
+surface_material_override/0 = SubResource("StandardMaterial3D_d1dgw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00170898, 0.00366211, -0.00219727)
+shape = SubResource("BoxShape3D_0aode")

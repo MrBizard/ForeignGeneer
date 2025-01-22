@@ -3,9 +3,10 @@ using System;
 
 public partial class ItemAuSol : StaticBody3D
 {
-	StackItem stackItem;
-	
-	public void instantiate(StackItem item)
+
+	public StackItem stackItem {get;set;}
+    public void instantiate(StackItem item)
+
 	{
 		stackItem = item;
 	}
