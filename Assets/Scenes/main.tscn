@@ -169,7 +169,7 @@ testItem = ExtResource("8_n27y6")
 metadata/_edit_use_anchors_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.998561, 0, 0, 0, 0.998561, 0, 0, 0, 0.998561, -6.35277, 0, 0)
+transform = Transform3D(1.00015, 0, 0, 0, 0.983677, 0, 0, 0, 1.00352, -6.35277, 0, 0)
 mesh = SubResource("BoxMesh_ksdu6")
 skeleton = NodePath("../Player_Character")
 
@@ -186,9 +186,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.63405, 0, -1.23287)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.633701, 0, -2.39798)
 
 [node name="Node3D5" parent="." instance=ExtResource("13_l7mfa")]
-transform = Transform3D(13.6791, 0, 0, 0, 13.6791, 0, 0, 0, 13.6791, 2.04554, 0.268876, -2.63841)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04554, -0.00177994, -2.63841)
 
 [node name="Node3D6" parent="." instance=ExtResource("14_qbkp4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.73517, 0, -0.41766)
-timer = null
-timer = null
+transform = Transform3D(1.00214, 0, 0, 0, 1.00214, 0, 0, 0, 1.00214, 2.73517, 0, -0.41766)

@@ -107,6 +107,7 @@ public partial class PlayerInventoryManager : Control
 
 			currentItemInMouse = null;
 			
+			
 			startDraggingItem();
 		}
 	}

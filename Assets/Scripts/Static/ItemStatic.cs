@@ -63,6 +63,33 @@ public partial class ItemStatic : Resource
         _inventoryIcon = inventoryIcon;
     }
 
+      public StaticBody3D instantiate(Vector3 pos)
+{
+    // Instantiate the StaticBody3D from the prefab
+    StaticBody3D itemInstantiate = _prefab.Instantiate<StaticBody3D>();
+
+    // Check if a material is assigned
+    if (_material != null)
+    {
+        // Find the first MeshInstance3D child and apply the material
+        MeshInstance3D meshInstance = itemInstantiate.GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
+        if (meshInstance != null)
+        {
+            meshInstance.MaterialOverride = _material;
+        }
+        else
+        {
+            GD.Print("No MeshInstance3D found in the prefab to apply the material.");
+        }
+    }
+
+    // Set the global position of the instantiated item
+    itemInstantiate.GlobalPosition = pos;
+
+    // Return the instantiated StaticBody3D
+    return itemInstantiate;
+}
+
     /// <summary>
     /// Action par défaut déclenchée lors d'un clic gauche sur cet item.
     /// </summary>

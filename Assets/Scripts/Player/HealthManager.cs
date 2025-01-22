@@ -36,7 +36,7 @@ public partial class HealthManager : Node
                 healthManager.healthBar.Value+=10;
             }
             if(healthManager.get_hunger()<=1){
-                healthManager.healthBar.Value-=100;
+                healthManager.healthBar.Value-=5;
             }
 
             healthManager.remove_hunger();

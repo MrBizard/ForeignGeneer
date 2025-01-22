@@ -36,6 +36,7 @@ public partial class raycast : RayCast3D
 						GD.Print(resource);
 						resource.IsActive=true;
 						player.mainInventory.addOneItem(resource.item);
+						resource.item.getResource().LeftClick();
 						
 						//GD.Print(resource.resourceType.ResourceType.ToString());
 						//player.mainInventory.addItem(resource);
