@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://drdbe044glxg6"]
+
+[ext_resource type="Texture2D" uid="uid://dqfs6jdme5pb2" path="res://Assets/Texture/log/icon_log.png" id="1_axo5x"]
+[ext_resource type="PackedScene" uid="uid://dk63c2nk5mcg5" path="res://Assets/Prefabs/material/log.tscn" id="2_u18xe"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="3_vktn8"]
+
+[resource]
+resource_name = "Plastic"
+script = ExtResource("3_vktn8")
+_maxStack = 99
+_prefab = ExtResource("2_u18xe")
+_inventoryIcon = ExtResource("1_axo5x")

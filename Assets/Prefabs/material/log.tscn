@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=3 uid="uid://dk63c2nk5mcg5"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Items/ItemAuSol.cs" id="1_f5qah"]
+[ext_resource type="ArrayMesh" uid="uid://c76potschunfl" path="res://Assets/Texture/log/log.obj" id="2_6ph84"]
+[ext_resource type="Texture2D" uid="uid://c4dtkyc5ffycj" path="res://Assets/Texture/log/bark.png" id="3_lns7h"]
+[ext_resource type="Texture2D" uid="uid://cav2snjnuxic6" path="res://Assets/Texture/log/inside.png" id="4_dgg55"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8lqan"]
+albedo_color = Color(0.162066, 0.162066, 0.162066, 1)
+metallic = 0.34
+metallic_specular = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_34pfe"]
+albedo_texture = ExtResource("3_lns7h")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pi550"]
+albedo_texture = ExtResource("4_dgg55")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mwbg0"]
+size = Vector3(0.236624, 0.604614, 0.251181)
+
+[node name="Node3D" type="StaticBody3D"]
+transform = Transform3D(0.993625, 0, 0, 0, 0.993625, 0, 0, 0, 0.993625, 0, 0, 0)
+script = ExtResource("1_f5qah")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_8lqan")
+mesh = ExtResource("2_6ph84")
+surface_material_override/0 = SubResource("StandardMaterial3D_34pfe")
+surface_material_override/1 = SubResource("StandardMaterial3D_pi550")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00459479, 0.140289, 0.000832221)
+shape = SubResource("BoxShape3D_mwbg0")
+disabled = true

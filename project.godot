@@ -27,7 +27,7 @@ project/assembly_name="ForeignGeneer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/inventory-system/plugin.cfg")
+enabled=PackedStringArray()
 
 [input]
 

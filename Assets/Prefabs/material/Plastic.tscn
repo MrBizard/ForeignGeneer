@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5msdni1uwrnm"]
+[gd_scene load_steps=4 format=3 uid="uid://c5msdni1uwrnm"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/StackItem.cs" id="1_s87gq"]
-[ext_resource type="ArrayMesh" uid="uid://vmbkhlvarkk0" path="res://Assets/Model/material/plastic.obj" id="2_15o3h"]
+[ext_resource type="ArrayMesh" uid="uid://dr145bdexm3q4" path="res://Assets/Model/material/plastic.obj" id="2_15o3h"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taaqh"]
 albedo_color = Color(0.159874, 0.278038, 0.792466, 1)
@@ -11,7 +10,6 @@ texture_filter = 0
 size = Vector3(0.788696, 0.2155, 0.849074)
 
 [node name="Node3D" type="StaticBody3D"]
-script = ExtResource("1_s87gq")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = ExtResource("2_15o3h")

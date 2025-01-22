@@ -1,7 +1,7 @@
-[gd_scene load_steps=29 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=30 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
-[ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://cevx16ivh4qvi" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/World/MapTextureChanger3D.cs" id="2_uv61q"]
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
@@ -14,10 +14,11 @@
 [ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
 [ext_resource type="PackedScene" uid="uid://b13eivmg2exdn" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
 [ext_resource type="Resource" uid="uid://domk1djuxoy74" path="res://Assets/Resource/recipe/RecipeList1.tres" id="13_efp6d"]
-[ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableIngot.tscn" id="13_l7mfa"]
+[ext_resource type="PackedScene" uid="uid://5w1ay5mgky0h" path="res://Assets/Ingots/BreakableIngot.tscn" id="13_l7mfa"]
 [ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="14_4tmkx"]
 [ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="14_m01p2"]
-[ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableGold.tscn" id="14_qbkp4"]
+[ext_resource type="PackedScene" uid="uid://b128wbexawv5n" path="res://Assets/Ingots/BreakableGold.tscn" id="14_qbkp4"]
+[ext_resource type="PackedScene" uid="uid://dk63c2nk5mcg5" path="res://Assets/Prefabs/material/log.tscn" id="19_c76f2"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -200,3 +201,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.67031, 0, -6.5904)
 recipeList = ExtResource("13_efp6d")
 _recipeListUiPackedScene = ExtResource("14_4tmkx")
 _factoryUiPackedScene = ExtResource("14_m01p2")
+
+[node name="Node3D7" parent="." instance=ExtResource("19_c76f2")]
+transform = Transform3D(0.993625, 0, 0, 0, 0.993625, 0, 0, 0, 0.993625, -3.60814, 0, -1.00478)

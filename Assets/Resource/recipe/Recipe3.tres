@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=5 format=3 uid="uid://cqasgdw8ibwcs"]
+
+[ext_resource type="Resource" uid="uid://drdbe044glxg6" path="res://Assets/Resource/Items/Log.tres" id="1_btndx"]
+[ext_resource type="Resource" uid="uid://bo6dg83rdtx2s" path="res://Assets/Resource/Items/Ingots/GoldIngot.tres" id="2_a3u5t"]
+[ext_resource type="Resource" uid="uid://cwvogd2381okq" path="res://Assets/Resource/Items/SteelBeam.tres" id="2_ujug4"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/Craft/Recipe.cs" id="3_tat3n"]
+
+[resource]
+script = ExtResource("3_tat3n")
+_input = [[1, ExtResource("1_btndx")], [1, ExtResource("2_ujug4")]]
+_output = [[20, ExtResource("2_a3u5t")]]
+duration = 2.0

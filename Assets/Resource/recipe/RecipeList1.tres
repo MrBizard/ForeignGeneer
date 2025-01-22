@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=4 format=3 uid="uid://domk1djuxoy74"]
+[gd_resource type="Resource" load_steps=5 format=3 uid="uid://domk1djuxoy74"]
 
 [ext_resource type="Resource" uid="uid://cw7831j7x5fbc" path="res://Assets/Resource/recipe/Recipe1.tres" id="1_7jesk"]
 [ext_resource type="Resource" uid="uid://bhcafa4h1q1x6" path="res://Assets/Resource/recipe/Recipe2.tres" id="2_lu7sp"]
+[ext_resource type="Resource" uid="uid://cqasgdw8ibwcs" path="res://Assets/Resource/recipe/Recipe3.tres" id="3_h6ejm"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/Craft/RecipeList.cs" id="3_sfmd0"]
 
 [resource]
 script = ExtResource("3_sfmd0")
-recipeList = Array[Resource]([ExtResource("1_7jesk"), ExtResource("2_lu7sp"), ExtResource("1_7jesk"), ExtResource("1_7jesk"), ExtResource("1_7jesk"), ExtResource("1_7jesk"), ExtResource("2_lu7sp"), ExtResource("2_lu7sp"), ExtResource("1_7jesk"), ExtResource("1_7jesk")])
+recipeList = Array[Resource]([ExtResource("1_7jesk"), ExtResource("2_lu7sp"), ExtResource("3_h6ejm")])
