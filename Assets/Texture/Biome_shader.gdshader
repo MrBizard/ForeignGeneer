@@ -4,7 +4,7 @@ shader_type spatial;
 // Uniforms for player position and overlay effect
 uniform vec3 player_position;
 uniform float radius = 25.0;
-uniform vec4 overlay_color : hint_color;
+uniform vec4 overlay_color : source_color;
 uniform float overlay_strength = 0.0; // Ranges from 0.0 (no overlay) to 1.0 (full overlay)
 
 void fragment() {

@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bxoifwv1a0rpb"]
+
+[ext_resource type="Shader" path="res://VoronoiBiome/ blackholer.gdshader" id="1_i8fta"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_i8fta")
+shader_parameter/scale = null

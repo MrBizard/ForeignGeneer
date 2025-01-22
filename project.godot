@@ -32,7 +32,7 @@ project/assembly_name="ForeignGeneer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/MonoCustomResourceRegistry/plugin.cfg")
+enabled=PackedStringArray("res://addons/MonoCustomResourceRegistry/plugin.cfg", "res://addons/terrabrush/plugin.cfg")
 
 [input]
 
