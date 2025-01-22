@@ -19,6 +19,15 @@ size_flags_vertical = 6
 script = ExtResource("1_ug21o")
 
 [node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackIcon" type="TextureRect" parent="Background"]
+modulate = Color(1, 1, 1, 0.176471)
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = 15

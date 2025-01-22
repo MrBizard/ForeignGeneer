@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b13eivmg2exdn"]
 
-[ext_resource type="PackedScene" uid="uid://36kxh5eb645j" path="res://Assets/Model/block/factory/Fonderie.glb" id="1_4ou4k"]
+[ext_resource type="PackedScene" uid="uid://3hd4ryoaeymv" path="res://Assets/Model/block/factory/Fonderie.glb" id="1_4ou4k"]
 [ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/Fonderie.cs" id="1_ayi3h"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_raln6"]
@@ -11,7 +11,6 @@ size = Vector3(1.48145, 1.41461, 1.44214)
 [node name="Fonderie" type="StaticBody3D"]
 physics_material_override = SubResource("PhysicsMaterial_raln6")
 script = ExtResource("1_ayi3h")
-tier = 1
 
 [node name="Fonderie" parent="." instance=ExtResource("1_4ou4k")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.084, 0.8)

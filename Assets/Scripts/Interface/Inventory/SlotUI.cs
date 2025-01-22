@@ -8,7 +8,8 @@ public partial class SlotUI : Control
 	private StackItem stackItem;
 	private Inventory inventory;
 	private PlayerInventoryManager playerInventoryManager;
-
+	private TextureRect backIcon;
+	private Panel background;
 	private bool isOutputSlot = false; // Indique si ce slot est un slot de sortie
 
 	/// <summary>
@@ -23,6 +24,8 @@ public partial class SlotUI : Control
 		this.inventory = inventory;
 		this.playerInventoryManager = playerInventoryManager;
 		this.isOutputSlot = isOutputSlot; // Définit si ce slot est un slot de sortie
+		background = GetNode<Panel>("Background");
+		backIcon = GetNode<TextureRect>("Background/BackIcon");
 
 		icon = GetNode<TextureRect>("Icon");
 		countLabel = GetNode<Label>("CountLabel");
@@ -138,5 +141,16 @@ public partial class SlotUI : Control
 	public StackItem getStackItem()
 	{
 		return stackItem;
+	}
+	public void setBackgroundTexture(Texture2D texture)
+	{
+		if (backIcon != null)
+		{
+			backIcon.Texture = texture; // Applique la texture fournie
+		}
+		else
+		{
+			GD.PrintErr("Background TextureRect is not assigned!");
+		}
 	}
 }

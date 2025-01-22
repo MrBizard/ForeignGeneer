@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=5 format=3 uid="uid://bhcafa4h1q1x6"]
+
+[ext_resource type="Resource" uid="uid://buyrurxe32h8w" path="res://Assets/Resource/Items/Plastic.tres" id="1_h5bsi"]
+[ext_resource type="Resource" uid="uid://bp5ep2ssoix8n" path="res://Assets/Resource/Items/Ingots/CopperIngot.tres" id="2_j38j1"]
+[ext_resource type="Resource" uid="uid://cwvogd2381okq" path="res://Assets/Resource/Items/SteelBeam.tres" id="2_w36ue"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/Craft/Recipe.cs" id="4_4k466"]
+
+[resource]
+script = ExtResource("4_4k466")
+_input = [[2, ExtResource("1_h5bsi")], [5, ExtResource("2_w36ue")]]
+_output = [[20, ExtResource("2_j38j1")]]
+duration = 2.0

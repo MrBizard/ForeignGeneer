@@ -1,13 +1,14 @@
 [gd_resource type="Resource" load_steps=5 format=3 uid="uid://bo6dg83rdtx2s"]
 
 [ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Prefabs/Ingots/Ingot.tscn" id="1_5hyt4"]
-[ext_resource type="Texture2D" uid="uid://dfnuuo58tq1co" path="res://Assets/Texture/Ingots/ingot.png" id="1_hof60"]
+[ext_resource type="Texture2D" uid="uid://buji373m5xcis" path="res://Assets/Texture/Ingots/lingot_gold.png" id="1_u8aw4"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="2_u6pu8"]
 [ext_resource type="Material" uid="uid://ciyjaua6jtpmh" path="res://Assets/Texture/Ingots/GoldIngot.tres" id="3_c6oy5"]
 
 [resource]
+resource_name = "Gold Ingot"
 script = ExtResource("2_u6pu8")
 _maxStack = 99
 _prefab = ExtResource("1_5hyt4")
 _material = ExtResource("3_c6oy5")
-_inventoryIcon = ExtResource("1_hof60")
+_inventoryIcon = ExtResource("1_u8aw4")

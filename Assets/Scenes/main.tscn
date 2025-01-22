@@ -1,7 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=24 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
-[ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://c3rwlqpjwta0i" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player/Player.cs" id="2_qehyv"]
 [ext_resource type="Shader" path="res://Assets/Texture/Biome_shader.gdshader" id="2_t6iwx"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://b13eivmg2exdn" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
 [ext_resource type="Resource" uid="uid://cw7831j7x5fbc" path="res://Assets/Resource/recipe/Recipe1.tres" id="13_kmvb5"]
 [ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="14_m01p2"]
+[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="15_1jja5"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -116,10 +117,8 @@ shape = SubResource("BoxShape3D_w527i")
 [node name="Player_Character" parent="." instance=ExtResource("1_6t2fw")]
 script = ExtResource("2_qehyv")
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("ingot")]
+[node name="Manager" type="Node" parent="."]
 script = ExtResource("4_gc2hg")
-item = ExtResource("8_n27y6")
-ingot = NodePath("Ingot")
 
 [node name="Ingot" type="Node" parent="Manager"]
 
@@ -143,4 +142,6 @@ testItem = ExtResource("8_n27y6")
 [node name="StaticBody3D" parent="." instance=ExtResource("12_b1lrc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.22957, 0, -2.71747)
 recipe = ExtResource("13_kmvb5")
+recipeList = Array[Resource]([ExtResource("13_kmvb5"), ExtResource("13_kmvb5"), ExtResource("13_kmvb5")])
+_recipeListUiPackedScene = ExtResource("15_1jja5")
 factoryUiPackedScene = ExtResource("14_m01p2")

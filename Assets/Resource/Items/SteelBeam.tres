@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="2_eg24f"]
 
 [resource]
+resource_name = "SteelBeam"
 script = ExtResource("2_eg24f")
 _maxStack = 99
 _prefab = ExtResource("1_47f7p")

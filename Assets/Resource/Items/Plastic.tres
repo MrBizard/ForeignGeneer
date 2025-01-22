@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="1_ym54k"]
 
 [resource]
+resource_name = "Plastic"
 script = ExtResource("1_ym54k")
 _maxStack = 99
 _prefab = ExtResource("1_5txu3")

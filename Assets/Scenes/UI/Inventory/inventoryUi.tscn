@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://pvecjgib4vbr"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/InventoryUi.cs" id="1_apyf5"]
-[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="2_r0wfy"]
+[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="2_p7rih"]
 
 [node name="InventoryUi" type="Control"]
 layout_mode = 3
@@ -14,7 +14,7 @@ offset_bottom = -18.4
 grow_vertical = 2
 scale = Vector2(0.992981, 0.996342)
 script = ExtResource("1_apyf5")
-slotUiPackedScene = ExtResource("2_r0wfy")
+slotUiPackedScene = ExtResource("2_p7rih")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

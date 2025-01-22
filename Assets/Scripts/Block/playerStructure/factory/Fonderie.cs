@@ -1,9 +1,12 @@
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using Godot;
+using Godot.Collections;
 
 public partial class Fonderie : StaticBody3D, IFactory
 {
     [Export] private Recipe recipe;
+    [Export]public Array<Recipe> recipeList { get; set; }
+    [Export] private PackedScene _recipeListUiPackedScene;
     public Craft craft { get; set; }
     public FactoryStatic factoryStatic { get; set; }
     public Inventory input { get; set; }
@@ -48,12 +51,9 @@ public partial class Fonderie : StaticBody3D, IFactory
         base._Ready();
         input = new Inventory(inputSlotCount);
         output = new Inventory(1); // 1 slot pour l'output
-        craft = new Craft();
         
         recipe.initRecipe();
         GD.Print("recipe "+recipe.input.Count);
-        craft.recipe = recipe;
-        craft.init(input, output);
         input.onInventoryUpdated += onInventoryUpdated;
         output.onInventoryUpdated += onInventoryUpdated;
 
@@ -156,11 +156,32 @@ public partial class Fonderie : StaticBody3D, IFactory
     }
 
     public void openUi()
-    {
-        var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
+{
+    var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
 
-        if (factoryUi == null)
+    if (factoryUi == null)
+    {
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+        // Vérifie si le craft est null
+        if (craft == null)
         {
+            // Instancie et affiche la liste des recettes
+            if (_recipeListUiPackedScene != null)
+            {
+                var recipeListUi = _recipeListUiPackedScene.Instantiate<RecetteList>(); // Assurez-vous que RecipeListUi est le bon type
+                GetTree().Root.AddChild(recipeListUi);
+
+                // Initialise la liste des recettes
+                recipeListUi.initialize(this); // Passez la fonderie comme paramètre si nécessaire
+            }
+            else
+            {
+                GD.PrintErr("_recipeListUiPackedScene n'est pas défini.");
+            }
+        }
+        else
+        {
+            // Instancie et affiche l'interface normale de la fonderie
             if (factoryUiPackedScene != null)
             {
                 factoryUi = factoryUiPackedScene.Instantiate<FonderieUi>();
@@ -191,17 +212,23 @@ public partial class Fonderie : StaticBody3D, IFactory
                     factoryUi.updateProgressBar(0f);
                 }
             }
-        }
-        else
-        {
-            factoryUi.closeUi();
-            factoryUi = null;
-
-            // Masquer l'inventaire si on ferme la fonderie
-            if (!Input.IsActionJustPressed("inventory"))
+            else
             {
-                inventoryUi.Visible = false;
+                GD.PrintErr("factoryUiPackedScene n'est pas défini.");
             }
         }
     }
+    else
+    {
+        // Ferme l'interface actuelle
+        factoryUi.closeUi();
+        factoryUi = null;
+
+        // Masquer l'inventaire si on ferme la fonderie
+        if (!Input.IsActionJustPressed("inventory"))
+        {
+            inventoryUi.Visible = false;
+        }
+    }
+}
 }
