@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://b2y0l5pql3pqs"]
 
 [ext_resource type="ArrayMesh" uid="uid://b3wap73fqdjmx" path="res://Assets/Model/Ingots/ingot.obj" id="1_81j6y"]
-[ext_resource type="Script" path="res://Assets/Scripts/Items/ItemAuSol.cs" id="1_gvc5x"]
+[ext_resource type="Script" path="res://Assets/Scripts/Items/ItemAuSol.cs" id="1_uusj8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_taaqh"]
 albedo_color = Color(0.135353, 0.117493, 0.117291, 1)
@@ -12,7 +12,7 @@ size = Vector3(0.770264, 0.119995, 0.281982)
 
 [node name="Node3D" type="StaticBody3D"]
 transform = Transform3D(1.02181, 0, 0, 0, 1.02181, 0, 0, 0, 1.02181, 0, 0, 0)
-script = ExtResource("1_gvc5x")
+script = ExtResource("1_uusj8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)

@@ -14,7 +14,7 @@ public partial class HealthManager : Node
     {
         if (player == null)
         {
-            GD.PrintErr("Player node is not assigned!");
+            GD.PrintErr("Player node n'est pas assigné (HealthBar manager)");
         }
         
 

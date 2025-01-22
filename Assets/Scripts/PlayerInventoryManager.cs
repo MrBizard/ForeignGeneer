@@ -124,7 +124,7 @@ public partial class PlayerInventoryManager : Control
 	/// <returns>World position where the item will be dropped.</returns>
 	private Vector3 getDropPosition()
 	{
-		var player = GetParent().GetNode<Player>("Player_Character");
+		var player = GetParent().GetNode<Player>("Personnage");
 		return player.GlobalPosition + new Vector3(0, 0, 2);
 	}
 }

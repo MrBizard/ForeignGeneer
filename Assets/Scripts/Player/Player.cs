@@ -24,7 +24,7 @@ public partial class Player : CharacterBody3D
 	public override void _Ready()
 	{
 		inv = new Inventory(28);
-		Armature = GetNode<Node3D>("Armature");
+		Armature = GetNode<Node3D>("Armature_001");
 		Pivot = GetNode<Node3D>("Pivot");
 		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
 		AnimTree = GetNode<AnimationTree>("AnimationTree");

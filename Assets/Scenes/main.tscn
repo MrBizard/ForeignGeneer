@@ -1,6 +1,5 @@
 [gd_scene load_steps=25 format=3 uid="uid://dvxxm2v6se3nl"]
 
-[ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
 [ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/World/MapTextureChanger3D.cs" id="2_uv61q"]
@@ -14,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
 [ext_resource type="PackedScene" uid="uid://5w1ay5mgky0h" path="res://Assets/Ingots/BreakableIngot.tscn" id="13_l7mfa"]
 [ext_resource type="PackedScene" uid="uid://b128wbexawv5n" path="res://Assets/Ingots/BreakableGold.tscn" id="14_qbkp4"]
+[ext_resource type="PackedScene" uid="uid://cbqdocjdf345x" path="res://Assets/Prefabs/personnage.tscn" id="14_vtcps"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -127,22 +127,18 @@ environment = SubResource("Environment_chybd")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Ground" type="MeshInstance3D" parent="." node_paths=PackedStringArray("Player")]
+[node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_nvyjx")
 material_overlay = ExtResource("2_dqp1b")
 mesh = SubResource("PlaneMesh_64wmt")
 surface_material_override/0 = SubResource("ShaderMaterial_cxlq4")
 script = ExtResource("2_uv61q")
-Player = NodePath("../Player_Character")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
 shape = SubResource("BoxShape3D_w527i")
-
-[node name="Player_Character" parent="." instance=ExtResource("1_6t2fw")]
-unique_name_in_owner = true
 
 [node name="Manager" type="Node" parent="." node_paths=PackedStringArray("ingot")]
 script = ExtResource("4_gc2hg")
@@ -171,7 +167,7 @@ metadata/_edit_use_anchors_ = true
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.00015, 0, 0, 0, 0.983677, 0, 0, 0, 1.00352, -6.35277, 0, 0)
 mesh = SubResource("BoxMesh_ksdu6")
-skeleton = NodePath("../Player_Character")
+skeleton = NodePath("")
 
 [node name="Node3D" parent="." instance=ExtResource("9_kmuow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.267573, 0, -1.50858)
@@ -190,3 +186,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04554, -0.00177994, -2.6384
 
 [node name="Node3D6" parent="." instance=ExtResource("14_qbkp4")]
 transform = Transform3D(1.00214, 0, 0, 0, 1.00214, 0, 0, 0, 1.00214, 2.73517, 0, -0.41766)
+
+[node name="Personnage" parent="." instance=ExtResource("14_vtcps")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128953, 0, -0.531207)

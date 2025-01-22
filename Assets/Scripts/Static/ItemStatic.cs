@@ -67,7 +67,7 @@ public T instantiate<T>(Vector3 pos) where T : StaticBody3D
 {
     // Instantiate the object from the prefab
     T itemInstantiate = _prefab.Instantiate<T>();
-    
+
 
     // Check if a material is assigned
     if (_material != null)
@@ -86,6 +86,7 @@ public T instantiate<T>(Vector3 pos) where T : StaticBody3D
 
     // Set the global position of the instantiated item
     itemInstantiate.GlobalPosition = pos;
+    //itemInstantiate.SetScript(T);
 
     // Return the instantiated object
     return itemInstantiate;
