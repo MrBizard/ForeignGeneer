@@ -110,6 +110,7 @@ public partial class PlayerInventoryManager : Control
 	{
 		if (currentItemInMouse != null)
 		{
+			GD.Print("drop");
 			var itemDrop = currentItemInMouse.getResource().getPrefab.Instantiate<ItemAuSol>();
 			itemDrop.instantiate(currentItemInMouse);
 			GetParent().AddChild(itemDrop);
@@ -128,6 +129,6 @@ public partial class PlayerInventoryManager : Control
 	private Vector3 getDropPosition()
 	{
 		var player = GetParent().GetNode<Player>("Player_Character");
-		return player.GlobalPosition + new Vector3(0, 0, 2);
+		return player.GlobalPosition + new Vector3(0, 1, 2);
 	}
 }
