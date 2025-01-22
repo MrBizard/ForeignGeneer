@@ -11,9 +11,8 @@ anchor_right = 0.8
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 script = ExtResource("1_ndrvu")
-recipeUiPacked = ExtResource("2_oo5pi")
+_recipeUiPacked = ExtResource("2_oo5pi")
 
 [node name="Panel" type="ColorRect" parent="."]
 z_index = 2
@@ -27,7 +26,6 @@ offset_right = 1.59998
 offset_bottom = 0.200012
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 color = Color(0.270222, 0.270222, 0.270222, 1)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]

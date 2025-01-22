@@ -17,6 +17,7 @@ public partial class RecipeChoiceUi : Node
     /// <summary>
     /// Initialise l'interface avec une recette.
     /// </summary>
+    /// <param name="recipe">La recette à afficher.</param>
     public void init(Recipe recipe)
     {
         this.recipe = recipe;

@@ -105,7 +105,7 @@ public partial class PlayerInventoryManager : Control
         ItemStatic itemResource = currentItemInMouse.getResource();
 
         // Use the generic instantiate method to create the item at the drop position
-        ItemAuSol itemDrop = itemResource.instantiate<ItemAuSol>(getDropPosition());
+        ItemAuSol itemDrop = itemResource.instantiate(getDropPosition());
 		itemDrop.stackItem=currentItemInMouse;
 
         // Add the item to the scene

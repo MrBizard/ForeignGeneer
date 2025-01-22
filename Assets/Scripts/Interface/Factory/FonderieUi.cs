@@ -14,7 +14,7 @@ public partial class FonderieUi : Control
     private HBoxContainer _mainContainer;
     private PlayerInventoryManager _playerInventoryManager;
     private TextEdit _craftText;
-    private Button _resetCraftButton; // Bouton pour réinitialiser le craft
+    private Button _resetCraftButton;
 
     /// <summary>
     /// Initialise l'interface utilisateur de la fonderie.
@@ -25,7 +25,6 @@ public partial class FonderieUi : Control
     {
         _fonderie = fonderie;
 
-        // Initialiser les slots d'entrée
         for (int i = 0; i < _fonderie.input.slots.Count; i++)
         {
             var slot = _slotUi.Instantiate<SlotUI>();
@@ -35,23 +34,19 @@ public partial class FonderieUi : Control
             _inputList.AddChild(slot);
         }
 
-        // Initialiser le slot de sortie
         _outputSlot = _slotUi.Instantiate<SlotUI>();
         _outputSlot.initialize(_fonderie.output.slots[0], _fonderie.output, _playerInventoryManager, true);
-        updateOutputSlotBackground(); // Mettre à jour l'icône de sortie
+        updateOutputSlotBackground();
         _outputContainer.AddChild(_outputSlot);
 
-        // Afficher l'inventaire à gauche de la fonderie
         if (inventoryUi != null)
         {
             inventoryUi.Visible = true;
             inventoryUi.Position = new Vector2(Position.X - inventoryUi.Size.X - 10, Position.Y);
         }
 
-        // Activer le curseur
         Input.MouseMode = Input.MouseModeEnum.Visible;
 
-        // Afficher les détails de la recette dans le TextEdit
         _craftText.Text = "Resultat : " + _fonderie.craft.recipe.output.getResource().GetName();
         foreach (StackItem stack in _fonderie.craft.recipe.input)
         {
@@ -64,7 +59,6 @@ public partial class FonderieUi : Control
     /// </summary>
     public void updateUi()
     {
-        // Mettre à jour les slots d'entrée
         for (int i = 0; i < _inputSlots.Count; i++)
         {
             var slot = _inputSlots[i];
@@ -73,24 +67,12 @@ public partial class FonderieUi : Control
             slot.updateSlot();
         }
 
-        // Mettre à jour le slot de sortie
         var outputStackItem = _fonderie.output.getItem(0);
-        if (outputStackItem != null)
-        {
-            GD.Print($"Mise à jour du slot de sortie avec : {outputStackItem.getResource().GetName()} (x{outputStackItem.getStack()})");
-        }
-        else
-        {
-            GD.Print("Le slot de sortie est vide.");
-        }
         _outputSlot.initialize(outputStackItem, _fonderie.output, _playerInventoryManager, true);
-        updateOutputSlotBackground(); // Mettre à jour l'icône de sortie
+        updateOutputSlotBackground();
         _outputSlot.updateSlot();
     }
 
-    /// <summary>
-    /// Appelé lorsque le nœud est prêt. Initialise les références aux composants de l'interface.
-    /// </summary>
     public override void _Ready()
     {
         base._Ready();
@@ -101,7 +83,6 @@ public partial class FonderieUi : Control
         _playerInventoryManager = GetNode<PlayerInventoryManager>("/root/Main/PlayerInventoryManager");
         _craftText = GetNode<TextEdit>("CraftText");
 
-        // Récupérer le bouton de réinitialisation du craft
         _resetCraftButton = GetNode<Button>("Button");
         _resetCraftButton.Connect("pressed", new Callable(this, nameof(onResetCraftButtonPressed)));
     }
@@ -114,12 +95,12 @@ public partial class FonderieUi : Control
     {
         if (_craftProgressBar != null)
         {
-            _craftProgressBar.Value = progress * 100; // Convertit la progression en pourcentage
+            _craftProgressBar.Value = progress * 100;
         }
     }
 
     /// <summary>
-    /// Ferme l'interface utilisateur de la fonderie et libère les ressources.
+    /// Ferme l'interface utilisateur de la fonderie.
     /// </summary>
     public void closeUi()
     {
@@ -128,35 +109,20 @@ public partial class FonderieUi : Control
         QueueFree();
     }
 
-    /// <summary>
-    /// Appelé lorsque le bouton de réinitialisation du craft est cliqué.
-    /// </summary>
     private void onResetCraftButtonPressed()
     {
-        // Réinitialiser le craft
         _fonderie.setCraft(null);
-
-        // Ouvrir l'interface RecetteListUi
-        var recipeListUi = GetNode<RecetteList>("/root/Main/RecetteListUi"); // Assurez-vous que le chemin est correct
-        if (recipeListUi != null)
-        {
-            recipeListUi.Visible = true;
-        }
+        _fonderie.openUi();
     }
 
-    /// <summary>
-    /// Met à jour l'icône de fond du slot de sortie en fonction de l'état du craft.
-    /// </summary>
     private void updateOutputSlotBackground()
     {
         if (_fonderie.craft != null && _fonderie.craft.recipe != null)
         {
-            // Mettre à jour l'icône de sortie en fonction de la recette
             _outputSlot.setBackgroundTexture(_fonderie.craft.recipe.output.getResource().getInventoryIcon);
         }
         else
         {
-            // Si le craft est null, effacer l'icône de sortie
             _outputSlot.setBackgroundTexture(null);
         }
     }
