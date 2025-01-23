@@ -1,5 +1,7 @@
 using Godot;
 using MonoCustomResourceRegistry;
+[RegisteredType(nameof(CentraleStatic), "", nameof(ItemStatic))]
+
 public partial class CentraleStatic : ItemStatic
 {
 	[Export] public int electricalCost { get; set; }
@@ -12,8 +14,25 @@ public partial class CentraleStatic : ItemStatic
 		GD.Print("Central leftclick");
 	}
 
+	public CoalCentral instantiateFactory(Vector3 pos)
+	{
+		CoalCentral itemInstantiate = _prefab.Instantiate<CoalCentral>();
+
+
+		itemInstantiate.GlobalPosition = pos;
+
+		itemInstantiate.central = this;
+
+		GD.Print($"Données du prefab : ElectricalCost = {electricalCost}, PollutionIndex = {pollutionIndex}");
+
+		return itemInstantiate;
+	}
+
 	public override void RightClick(Player player)
 	{
-		GD.Print("Central rightclick");
+		player.GetParent().AddChild(instantiateFactory(player.Position + new Vector3(1, 0.1f, 1)));
+
+		player._invManager.hotbar.removeItem(player.currentItemInHand, 1);
+		player._invManager.hotbar.notifyInventoryUpdated();
 	}
 }

@@ -27,8 +27,13 @@ public partial class Fonderie : StaticBody3D, IFactory
 	public override void _Ready()
 	{
 		base._Ready();
+		if(_recipeListUiPackedScene != null)
+			init();
 
-		// Initialiser les propriétés
+	}
+
+	public void init()
+	{
 		input = new Inventory(_inputSlotCount);
 		output = new Inventory(1);
 		recipeList?.init();
@@ -36,7 +41,6 @@ public partial class Fonderie : StaticBody3D, IFactory
 		output.onInventoryUpdated += onInventoryUpdated;
 		_manager = GetNode<Manager>("/root/Main/Manager");
 	}
-
 	public override void _Process(double delta)
 	{
 		base._Process(delta);

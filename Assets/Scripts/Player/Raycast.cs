@@ -36,7 +36,7 @@ public partial class Raycast : RayCast3D
                     _player.mainInventory.addOneItem(resource.item);
                     resource.item.getResource().LeftClick();
                     break;
-                case PlayerStructure structure:
+                case IPlayerStructure structure:
                     structure.openUi();
                     break;
             }

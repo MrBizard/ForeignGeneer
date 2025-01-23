@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://coa6wb5mspunx"]
+[gd_scene load_steps=12 format=3 uid="uid://buaekevq6x28v"]
 
-[ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_3puoc"]
+[ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_3puoc"]
+[ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="3_6fncv"]
 [ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="3_isres"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="4_gc2hg"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="4_jirmv"]
@@ -31,6 +32,7 @@ environment = SubResource("Environment_wvy0c")
 
 [node name="Manager" type="Node" parent="."]
 script = ExtResource("4_gc2hg")
+option = ExtResource("3_6fncv")
 
 [node name="Ingot" type="Node" parent="Manager"]
 
