@@ -28,7 +28,6 @@ public partial class PlayerInventory : Inventory
 
 		this.tabletteButton = tabletteButton;
 		tabletteButton.Connect("pressed",new Callable(sceneRoot, nameof(openMiniGameInterface)));
-
 	}
 
 	

@@ -7,6 +7,7 @@ public partial class Player : CharacterBody3D
 	public const float LerpVal = 0.5f;
 	private bool b_IsSprinting = false;
 	public Inventory inv;
+	[Export] private Node3D Map;
 	
 	private Node3D Armature;
 	private Node3D Pivot;
@@ -40,12 +41,14 @@ public partial class Player : CharacterBody3D
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
+
 		if (Input.IsKeyPressed(Key.Shift))
 		{
 			Speed = 50.0f;
 		}
 		else
 		{
+
 			Speed = 5.0f;
 		}
 		if (Input.IsActionJustPressed("quit"))
