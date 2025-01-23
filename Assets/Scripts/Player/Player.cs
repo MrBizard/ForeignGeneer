@@ -23,7 +23,7 @@ public partial class Player : CharacterBody3D
 	{
 		_invManager = GetNode<PlayerInventoryManager>("/root/Main/PlayerInventoryManager");
 		inv = _invManager.mainInventory;
-		Armature = GetNode<Node3D>("Armature");
+		Armature = GetNode<Node3D>("Armature_001");
 		Pivot = GetNode<Node3D>("Pivot");
 		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
 		AnimTree = GetNode<AnimationTree>("AnimationTree");

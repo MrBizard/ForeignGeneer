@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=5 format=3 uid="uid://bp5ep2ssoix8n"]
 
-[ext_resource type="Texture2D" uid="uid://bx1satcr7uo5p" path="res://Assets/Texture/Ingots/lingot_iron.png" id="1_luu40"]
+[ext_resource type="Texture2D" uid="uid://bck66noysmkef" path="res://Assets/Texture/Ingots/lingot_copper.png" id="1_l3cbu"]
 [ext_resource type="Material" uid="uid://daritwjagyq0t" path="res://Assets/Texture/Ingots/ironIngot.tres" id="2_6itel"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="3_4fl21"]
 [ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Ingots/Ingot.tscn" id="3_nrhj0"]
@@ -11,4 +11,4 @@ script = ExtResource("3_4fl21")
 _maxStack = 99
 _prefab = ExtResource("3_nrhj0")
 _material = ExtResource("2_6itel")
-_inventoryIcon = ExtResource("1_luu40")
+_inventoryIcon = ExtResource("1_l3cbu")

@@ -1,9 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=31 format=3 uid="uid://dvxxm2v6se3nl"]
 
-[ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
-[ext_resource type="Texture2D" uid="uid://c3rwlqpjwta0i" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_q455m"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/World/MapTextureChanger3D.cs" id="2_uv61q"]
+[ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="4_xqtcq"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="5_6hg80"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="6_bx4pk"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
@@ -16,7 +16,10 @@
 [ext_resource type="Resource" uid="uid://domk1djuxoy74" path="res://Assets/Resource/recipe/RecipeList1.tres" id="13_efp6d"]
 [ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="14_4tmkx"]
 [ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="14_m01p2"]
+[ext_resource type="PackedScene" uid="uid://ktfq1ucdt8rt" path="res://Assets/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
 [ext_resource type="Resource" uid="uid://cgwe0r2wf87kp" path="res://Assets/Resource/Block/Fonderie.tres" id="19_e5pkf"]
+[ext_resource type="PackedScene" uid="uid://cn0y2hdd0ln3x" path="res://Assets/Ingots/BreakableGold.tscn" id="19_lp64r"]
+[ext_resource type="PackedScene" uid="uid://5w1ay5mgky0h" path="res://Assets/Ingots/BreakableIngot.tscn" id="20_2qc85"]
 
 [sub_resource type="Environment" id="Environment_chybd"]
 
@@ -130,22 +133,20 @@ environment = SubResource("Environment_chybd")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Ground" type="MeshInstance3D" parent="." node_paths=PackedStringArray("Player")]
-transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -0.0592568, -0.181495, 0.133327)
 material_override = SubResource("ShaderMaterial_nvyjx")
 material_overlay = ExtResource("2_dqp1b")
 mesh = SubResource("PlaneMesh_64wmt")
 surface_material_override/0 = SubResource("ShaderMaterial_cxlq4")
 script = ExtResource("2_uv61q")
-Player = NodePath("../Player_Character")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
 shape = SubResource("BoxShape3D_w527i")
 
-[node name="Player_Character" parent="." instance=ExtResource("1_6t2fw")]
-unique_name_in_owner = true
+[node name="Personnage" parent="." instance=ExtResource("4_xqtcq")]
 
 [node name="Manager" type="Node" parent="."]
 script = ExtResource("5_6hg80")
@@ -175,7 +176,7 @@ metadata/_edit_use_anchors_ = true
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.00015, 0, 0, 0, 0.983677, 0, 0, 0, 1.00352, -6.35277, 0, 0)
 mesh = SubResource("BoxMesh_ksdu6")
-skeleton = NodePath("../Player_Character")
+skeleton = NodePath("")
 
 [node name="Fonderie" parent="." instance=ExtResource("11_ueu8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179714, 0, -3.56134)
@@ -187,3 +188,12 @@ recipeList = ExtResource("13_efp6d")
 _recipeListUiPackedScene = ExtResource("14_4tmkx")
 _factoryUiPackedScene = ExtResource("14_m01p2")
 factoryStatic = ExtResource("19_e5pkf")
+
+[node name="Node3D" parent="." instance=ExtResource("19_lp64r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2422, -0.181495, 2.2958)
+
+[node name="Node3D2" parent="." instance=ExtResource("20_2qc85")]
+transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, 0.18498, -0.181495, 2.71123)
+
+[node name="Node3D4" parent="." instance=ExtResource("18_jsjwk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36416, -0.18536, 1.20138)
