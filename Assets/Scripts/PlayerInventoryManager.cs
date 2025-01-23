@@ -19,6 +19,8 @@ public partial class PlayerInventoryManager : Control
 	[Export] public PackedScene inventoryUiPackedScene;
 	[Export] public PackedScene cursorItemPackedScene;
 	[Export] public ItemStatic testItem;
+	[Export] public ItemStatic testItem2;
+	[Export] public ItemStatic testItem3;
 
 	public override void _Ready()
 	{
@@ -28,6 +30,8 @@ public partial class PlayerInventoryManager : Control
 
 		mainInventory.addItemToSlot(new StackItem(testItem, 50), 10);
 		mainInventory.addItemToSlot(new StackItem(testItem, 67), 7);
+		mainInventory.addItemToSlot(new StackItem(testItem2, 1), 1);
+		mainInventory.addItemToSlot(new StackItem(testItem3, 1), 2);
 		hotbar.addItemToSlot(new StackItem(testItem, 67), 1);
 
 		if (inventoryUiPackedScene != null)
@@ -50,7 +54,6 @@ public partial class PlayerInventoryManager : Control
 		{
 			inventoryUi.toggleInventory();
 		}
-
 		if (cursorItemInstance != null)
 		{
 			cursorItemInstance.GlobalPosition = GetGlobalMousePosition();

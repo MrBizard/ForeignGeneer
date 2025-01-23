@@ -65,16 +65,6 @@ public class Craft
     /// <returns>True si les ressources ont été consommées avec succès, sinon False.</returns>
     public bool consumeResources()
     {
-        if (output.getItem(0) != null)
-        {
-            int outputStack = output.getItem(0).getStack();
-            int itemMaxStack = output.getItem(0).getResource().getMaxStack;
-            if (outputStack + recipe.output.getStack() > itemMaxStack)
-            {
-                return false;
-            }
-        }
-
         if (!compareRecipe())
         {
             return false;
@@ -112,8 +102,8 @@ public class Craft
     {
         if (recipe == null || recipe.output == null || output == null)
         {
-            GD.PrintErr("Recette ou inventaire de sortie invalide.");
-            return false;
+            GD.Print("Aucun output à ajouter (output est null).");
+            return true; // Retourne true car il n'y a pas d'output à gérer
         }
 
         var recipeItem = recipe.output;

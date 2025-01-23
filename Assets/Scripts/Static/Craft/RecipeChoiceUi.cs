@@ -1,36 +1,74 @@
 using Godot;
-using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
+using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class RecipeChoiceUi : Node
+public partial class RecipeChoiceUi : Control
 {
     [Signal]
     public delegate void RecipeClickedEventHandler(Recipe recipe);
+    [Export] private TextureRect _itemIcon;
+    [Export] private Label _itemNameLabel;
 
-    public Recipe recipe { get; set; }
+    private Recipe _recipe;
 
     public override void _Ready()
     {
         Button button = GetNode<Button>("Button");
         button.Connect("pressed", new Callable(this, nameof(onButtonPressed)));
     }
-
+    
     /// <summary>
-    /// Initialise l'interface avec une recette.
+    /// Initialise l'UI avec les détails de la recette.
     /// </summary>
     /// <param name="recipe">La recette à afficher.</param>
     public void init(Recipe recipe)
     {
-        this.recipe = recipe;
+        _recipe = recipe;
 
-        Label nameItem = GetNode<Label>("Background/NameItem");
-        TextureRect textureItem = GetNode<TextureRect>("Background/TextureItem");
+        // Vérifier si la recette est valide
+        if (_recipe == null)
+        {
+            GD.PrintErr("La recette est null.");
+            SetDefaultDisplay();
+            return;
+        }
 
-        nameItem.Text = recipe.output.getResource().GetName();
-        textureItem.Texture = recipe.output.getResource().getInventoryIcon;
+        // Afficher l'item de sortie (output) s'il existe
+        if (_recipe.output != null && _recipe.output.getResource() != null)
+        {
+            _itemIcon.Texture = _recipe.output.getResource().getInventoryIcon;
+            _itemNameLabel.Text = _recipe.output.getResource().GetName();
+        }
+        // Sinon, afficher le premier item d'entrée (input) s'il existe
+        else if (_recipe.input != null && _recipe.input.Count > 0 && _recipe.input[0] != null && _recipe.input[0].getResource() != null)
+        {
+            var inputItem = _recipe.input[0];
+            _itemIcon.Texture = inputItem.getResource().getInventoryIcon;
+            _itemNameLabel.Text = inputItem.getResource().GetName();
+        }
+        // Si ni output ni input ne sont valides, afficher une icône et un texte par défaut
+        else
+        {
+            GD.PrintErr("La recette n'a ni sortie (output) ni entrée (input) valide.");
+            SetDefaultDisplay();
+        }
     }
 
-    private void onButtonPressed()
+    /// <summary>
+    /// Affiche une icône et un texte par défaut.
+    /// </summary>
+    private void SetDefaultDisplay()
     {
-        EmitSignal(nameof(RecipeClicked), recipe);
+        _itemIcon.Texture = null; // Ou une texture par défaut
+        _itemNameLabel.Text = "Recette invalide";
     }
+
+    /// <summary>
+    /// Événement déclenché lorsque l'utilisateur clique sur cette recette.
+    /// </summary>
+    public void onButtonPressed()
+    {
+        // Émettre un signal pour indiquer que cette recette a été sélectionnée
+        EmitSignal(nameof(RecipeClicked), _recipe);
+    }
+
 }

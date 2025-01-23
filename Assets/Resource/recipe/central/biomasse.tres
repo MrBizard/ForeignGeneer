@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://b8a6trlekdnr7"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Static/Craft/Recipe.cs" id="1_r2sk7"]
+[ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="1_x0oqg"]
+
+[resource]
+script = ExtResource("1_r2sk7")
+_input = [[1, ExtResource("1_x0oqg")]]
+_output = []
+duration = 2.0

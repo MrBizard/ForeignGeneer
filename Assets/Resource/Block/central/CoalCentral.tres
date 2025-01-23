@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://cygoqqhi7v22u"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/CentraleStatic.cs" id="1_84hgg"]
+[ext_resource type="Texture2D" uid="uid://cnrj6aqfhhttc" path="res://Assets/Texture/factory/icon_fonderie.png" id="1_ehqiv"]
+[ext_resource type="PackedScene" uid="uid://c6p8bch2lp6v2" path="res://Assets/Prefabs/central/CentralBiomasse.tscn" id="2_bjw7x"]
+
+[resource]
+script = ExtResource("1_84hgg")
+electricalCost = 20
+pollutionIndex = 10
+durability = 1
+_maxStack = 1
+_prefab = ExtResource("2_bjw7x")
+_inventoryIcon = ExtResource("1_ehqiv")

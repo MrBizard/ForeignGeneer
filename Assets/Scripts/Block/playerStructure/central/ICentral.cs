@@ -1,6 +1,16 @@
-﻿namespace ForeignGeneer.Assets.Scripts.block.playerStructure.central;
+﻿using Godot;
 
-public interface ICentral
+namespace ForeignGeneer.Assets.Scripts.block.playerStructure.central;
+
+public interface ICentral : PlayerStructure, IRecipeUser
 {
-    ItemStatic input { get; set; }
+    Inventory input { get; set; }
+    Craft craft { get; set; }
+    CentraleStatic central { get; set; }
+    short tier { get; set; }
+    public float craftProgress { get; }
+    public Timer craftTimer { get; set;}
+    public bool isCrafting { get;}
+    public void closeUi();
+    public void openUi();
 }

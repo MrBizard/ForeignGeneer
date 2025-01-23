@@ -1,216 +1,222 @@
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 using Godot;
-using Godot.Collections;
 
 public partial class Fonderie : StaticBody3D, IFactory
 {
-    [Export] public RecipeList recipeList { get; set; }
-    [Export] private PackedScene _recipeListUiPackedScene;
-    [Export] private int _inputSlotCount = 2;
-    [Export] private PackedScene _factoryUiPackedScene;
-    [Export]public FactoryStatic factoryStatic { get; set; }
-    public Craft craft { get; set; }
-    public Inventory input { get; set; }
-    public short tier { get; set; }
-    public Inventory output { get; set; }
-    public float craftProgress { get; private set; }
-    public Timer craftTimer;
-    public bool isCrafting { get; private set; } = false;
+	// Propriétés exportées pour la configuration dans l'éditeur
+	[Export] public RecipeList recipeList { get; set; }
+	[Export] public PackedScene _recipeListUiPackedScene { get; set; }
+	[Export] public int _inputSlotCount { get; set; } = 2;
+	[Export] public PackedScene _factoryUiPackedScene { get; set; }
+	[Export] public FactoryStatic factoryStatic { get; set; }
 
-    private FonderieUi _factoryUi;
-    private RecetteList _recipeListUi;
+	// Autres propriétés
+	public Craft craft { get; set; }
+	public Inventory input { get; set; }
+	public short tier { get; set; }
+	public Inventory output { get; set; }
+	public float craftProgress { get; private set; }
+	public Timer craftTimer;
+	public bool isCrafting { get; private set; } = false;
 
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
+	private FonderieUi _factoryUi;
+	private RecetteList _recipeListUi;
+	private Manager _manager;
 
-        if (isCrafting)
-        {
-            craftProgress = 1f - (float)(craftTimer.TimeLeft / craft.recipe.duration);
+	public override void _Ready()
+	{
+		base._Ready();
 
-            if (_factoryUi != null)
-            {
-                _factoryUi.updateProgressBar(craftProgress);
-            }
-        }
-    }
+		// Initialiser les propriétés
+		input = new Inventory(_inputSlotCount);
+		output = new Inventory(1);
+		recipeList?.init();
+		input.onInventoryUpdated += onInventoryUpdated;
+		output.onInventoryUpdated += onInventoryUpdated;
+		_manager = GetNode<Manager>("/root/Main/Manager");
+	}
 
-    public override void _Input(InputEvent @event)
-    {
-        base._Input(@event);
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
 
-        if (@event.IsActionPressed("inventory"))
-        {
-            if (_factoryUi != null || _recipeListUi != null)
-            {
-                closeUi();
-            }
-        }
-    }
+		if (isCrafting)
+		{
+			craftProgress = 1f - (float)(craftTimer.TimeLeft / craft.recipe.duration);
 
-    public override void _Ready()
-    {
-        base._Ready();
-        input = new Inventory(_inputSlotCount);
-        output = new Inventory(1);
-        recipeList.init();
-        input.onInventoryUpdated += onInventoryUpdated;
-        output.onInventoryUpdated += onInventoryUpdated;
-    }
+			if (_factoryUi != null)
+			{
+				_factoryUi.updateProgressBar(craftProgress);
+			}
+		}
+	}
 
-    private void onInventoryUpdated()
-    {
-        if (!isCrafting && craft.compareRecipe())
-        {
-            var outputSlotItem = output.getItem(0);
-            if (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack)
-            {
-                startCraft();
-            }
-        }
+	public override void _Input(InputEvent @event)
+	{
+		base._Input(@event);
 
-        _factoryUi?.updateUi();
-    }
+		if (@event.IsActionPressed("inventory"))
+		{
+			if (_factoryUi != null || _recipeListUi != null)
+			{
+				closeUi();
+			}
+		}
+	}
 
-    public void setCraft(Recipe recipe)
-    {
-        craft = recipe == null ? null : new Craft(recipe);
-        if (craft != null)
-            craft.init(input, output);
-        openUi();
-    }
+	private void onInventoryUpdated()
+	{
+		if (!isCrafting && craft.compareRecipe())
+		{
+			var outputSlotItem = output.getItem(0);
+			if (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack)
+			{
+				startCraft();
+			}
+		}
 
-    private void startCraft()
-    {
-        if (isCrafting)
-        {
-            return;
-        }
+		_factoryUi?.updateUi();
+	}
 
-        if (!craft.consumeResources())
-        {
-            return;
-        }
+	public void setCraft(Recipe recipe)
+	{
+		craft = recipe == null ? null : new Craft(recipe);
+		if (craft != null)
+			craft.init(input, output);
+		openUi();
+	}
 
-        if (craft.recipe.duration <= 0)
-        {
-            return;
-        }
+	private void startCraft()
+	{
+		if (isCrafting || !_manager.hasEnergy(factoryStatic.electricalCost))
+		{
+			return;
+		}
 
-        isCrafting = true;
-        craftProgress = 0f;
-        craftTimer = new Timer();
-        craftTimer.WaitTime = craft.recipe.duration;
-        craftTimer.Timeout += onCraftFinished;
-        AddChild(craftTimer);
-        craftTimer.Start();
-    }
+		if (!craft.consumeResources())
+		{
+			return;
+		}
 
-    private void onCraftFinished()
-    {
-        isCrafting = false;
-        craftTimer.QueueFree();
+		if (craft.recipe.duration <= 0)
+		{
+			return;
+		}
 
-        if (craft.recipe.output != null)
-        {
-            bool outputAdded = craft.addOutput();
+		isCrafting = true;
+		craftProgress = 0f;
+		craftTimer = new Timer();
+		craftTimer.WaitTime = craft.recipe.duration;
+		craftTimer.Timeout += onCraftFinished;
+		AddChild(craftTimer);
+		craftTimer.Start();
+	}
 
-            if (!outputAdded)
-            {
-                return;
-            }
-            else
-            {
-                startCraft();
-            }
-        }
+	private void onCraftFinished()
+	{
+		isCrafting = false;
+		craftTimer.QueueFree();
 
-        if (_factoryUi != null)
-        {
-            _factoryUi.updateProgressBar(0f);
-        }
+		if (craft.recipe.output != null)
+		{
+			bool outputAdded = craft.addOutput();
 
-        onInventoryUpdated();
-    }
+			if (!outputAdded)
+			{
+				return;
+			}
+			else
+			{
+				startCraft();
+			}
+		}
 
-    public float pollutionInd { get; set; }
+		if (_factoryUi != null)
+		{
+			_factoryUi.updateProgressBar(0f);
+		}
 
-    public void dismantle()
-    {
-        throw new System.NotImplementedException();
-    }
+		onInventoryUpdated();
+	}
 
-    public void openUi()
-    {
-        var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
+	public float pollutionInd { get; set; }
 
-        closeUi();
+	public void dismantle()
+	{
+		throw new System.NotImplementedException();
+	}
 
-        if (craft == null)
-        {
-            if (_recipeListUiPackedScene != null)
-            {
-                _recipeListUi = _recipeListUiPackedScene.Instantiate<RecetteList>();
-                GetTree().Root.AddChild(_recipeListUi);
-                _recipeListUi.initialize(this);
-                inventoryUi.Visible = false;
-            }
-        }
-        else
-        {
-            if (_factoryUiPackedScene != null)
-            {
-                _factoryUi = _factoryUiPackedScene.Instantiate<FonderieUi>();
-                GetTree().Root.AddChild(_factoryUi);
+	public void openUi()
+	{
+		var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
 
-                if (inventoryUi == null)
-                {
-                    return;
-                }
+		closeUi();
 
-                _factoryUi.initialize(this, inventoryUi);
+		if (craft == null)
+		{
+			if (_recipeListUiPackedScene != null)
+			{
+				_recipeListUi = _recipeListUiPackedScene.Instantiate<RecetteList>();
+				GetTree().Root.AddChild(_recipeListUi);
+				_recipeListUi.initialize(this);
+				inventoryUi.setInventoryVisible(false); // Masquer l'inventaire si nécessaire
+			}
+		}
+		else
+		{
+			if (_factoryUiPackedScene != null)
+			{
+				_factoryUi = _factoryUiPackedScene.Instantiate<FonderieUi>();
+				GetTree().Root.AddChild(_factoryUi);
 
-                if (!inventoryUi.Visible)
-                {
-                    inventoryUi.Visible = true;
-                    inventoryUi.Position = new Vector2(_factoryUi.Position.X - inventoryUi.Size.X - 10, _factoryUi.Position.Y);
-                }
+				if (inventoryUi == null)
+				{
+					return;
+				}
 
-                if (isCrafting)
-                {
-                    _factoryUi.updateProgressBar(craftProgress);
-                }
-                else
-                {
-                    _factoryUi.updateProgressBar(0f);
-                }
-            }
-        }
+				_factoryUi.initialize(this, inventoryUi);
 
-        Input.MouseMode = Input.MouseModeEnum.Visible;
-    }
+				if (!inventoryUi.Visible)
+				{
+					inventoryUi.setInventoryVisible(true); // Afficher l'inventaire
+					inventoryUi.Position = new Vector2(_factoryUi.Position.X - inventoryUi.Size.X - 10, _factoryUi.Position.Y);
+				}
 
-    public void closeUi()
-    {
-        if (_factoryUi != null)
-        {
-            _factoryUi.closeUi();
-            _factoryUi = null;
-        }
+				if (isCrafting)
+				{
+					_factoryUi.updateProgressBar(craftProgress);
+				}
+				else
+				{
+					_factoryUi.updateProgressBar(0f);
+				}
+			}
+		}
 
-        if (_recipeListUi != null)
-        {
-            _recipeListUi.QueueFree();
-            _recipeListUi = null;
-        }
+		Input.MouseMode = Input.MouseModeEnum.Visible;
+	}
 
-        var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
-        if (inventoryUi != null)
-        {
-            inventoryUi.Visible = false;
-        }
+	public void closeUi()
+	{
+		if (_factoryUi != null)
+		{
+			_factoryUi.closeUi();
+			_factoryUi = null;
+		}
 
-        Input.MouseMode = Input.MouseModeEnum.Hidden;
-    }
+		if (_recipeListUi != null)
+		{
+			_recipeListUi.QueueFree();
+			_recipeListUi = null;
+		}
+
+		var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
+		if (inventoryUi != null)
+		{
+			inventoryUi.setInventoryVisible(false); // Masquer l'inventaire
+		}
+
+		Input.MouseMode = Input.MouseModeEnum.Hidden;
+	}
 }

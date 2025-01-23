@@ -39,7 +39,7 @@ public partial class Recipe : Resource
 
     private void initOutput()
     {
-        output = new StackItem();
+        output = null;
         if (_output.Count == 1)
         {
             int quantity = (int)_output[0][0];

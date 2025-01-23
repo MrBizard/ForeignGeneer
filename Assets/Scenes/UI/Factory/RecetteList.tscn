@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://btmrk0ejdndf2"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Interface/Factory/RecetteList.cs" id="1_ndrvu"]
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/Recipe/RecetteList.cs" id="1_ndrvu"]
 [ext_resource type="PackedScene" uid="uid://bmdblhyw736ph" path="res://Assets/Scenes/UI/Factory/recipe.tscn" id="2_oo5pi"]
 
 [node name="RecetteList" type="Control"]

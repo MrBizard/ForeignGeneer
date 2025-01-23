@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://4vnmveuqnmq3"]
+
+[ext_resource type="Resource" uid="uid://b8a6trlekdnr7" path="res://Assets/Resource/recipe/central/biomasse.tres" id="1_7lmro"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/Craft/RecipeList.cs" id="2_vex2a"]
+
+[resource]
+script = ExtResource("2_vex2a")
+recipeList = Array[Resource]([ExtResource("1_7lmro")])

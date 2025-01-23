@@ -17,20 +17,18 @@ public partial class Player : CharacterBody3D
 	[Export] private Node3D handNode;
     [Export] private PackedScene objectToAttach;
 
-	StackItem currentItemInHand=null;
-    
-	
-
+	public int currentItemInHand = 0;
+	public PlayerInventoryManager _invManager;
 	public override void _Ready()
 	{
-		inv = new Inventory(28);
+		_invManager = GetNode<PlayerInventoryManager>("/root/Main/PlayerInventoryManager");
+		inv = _invManager.mainInventory;
 		Armature = GetNode<Node3D>("Armature");
 		Pivot = GetNode<Node3D>("Pivot");
 		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
 		AnimTree = GetNode<AnimationTree>("AnimationTree");
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
-		
 
 		if (handNode == null)
         {
@@ -62,6 +60,24 @@ public partial class Player : CharacterBody3D
 			SpringArm.Rotation = springArmRotation;
 		}
 	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+		if (Input.IsActionJustPressed("leftClick"))
+		{
+			
+		}
+		if (Input.IsActionJustPressed("rightClick"))
+		{
+			StackItem curentItem = _invManager.hotbar.getItem(currentItemInHand);
+			if (curentItem != null)
+			{
+				curentItem.getResource().RightClick(this);
+			}
+		}
+	}
+
 	public override void _PhysicsProcess(double delta)
 	{	
 

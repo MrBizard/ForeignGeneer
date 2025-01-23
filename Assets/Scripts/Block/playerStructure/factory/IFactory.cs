@@ -6,13 +6,12 @@ using Godot.Collections;
 
 namespace ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 
-public interface IFactory : PlayerStructure
+public interface IFactory : PlayerStructure, IRecipeUser
 {
-    public RecipeList recipeList { get; set; }
     Craft craft { get; set; }
     FactoryStatic factoryStatic { get; set; }
     Inventory input { get; set; }
     short tier { get; set; }
-    public void setCraft(Recipe recipe);
-
+    public void closeUi();
+    public void openUi();
 }

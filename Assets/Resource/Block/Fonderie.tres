@@ -7,8 +7,8 @@
 [resource]
 resource_name = "Fonderie"
 script = ExtResource("1_s5emq")
-ElectricalCost = 10
-PollutionIndex = 5
+electricalCost = 5
+pollutionIndex = 5
 _maxStack = 1
 _prefab = ExtResource("2_725jf")
 _inventoryIcon = ExtResource("1_o2mx7")

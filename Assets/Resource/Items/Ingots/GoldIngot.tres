@@ -8,7 +8,7 @@
 [resource]
 resource_name = "Gold Ingot"
 script = ExtResource("2_u6pu8")
-_maxStack = 0
+_maxStack = 99
 _prefab = ExtResource("1_5hyt4")
 _material = ExtResource("3_c6oy5")
 _inventoryIcon = ExtResource("1_sve27")

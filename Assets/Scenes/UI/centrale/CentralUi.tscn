@@ -1,0 +1,85 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddp7q1ns3jgci"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/Central/CentralUi.cs" id="1_cojqr"]
+[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="2_724ab"]
+
+[node name="CentralUi" type="Control"]
+layout_mode = 3
+anchor_left = 0.4
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.987463)
+size_flags_horizontal = 8
+script = ExtResource("1_cojqr")
+_slotUi = ExtResource("2_724ab")
+
+[node name="Background" type="ColorRect" parent="."]
+modulate = Color(0.29219, 0.29219, 0.29219, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.996279)
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.3
+anchor_right = 0.6
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="InputList" type="HBoxContainer" parent="Container"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="CraftText" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.2
+offset_bottom = 8.0
+grow_horizontal = 2
+editable = false
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+offset_right = 8.0
+offset_bottom = 8.0
+rotation = -0.00263166
+text = "< --"
+
+[node name="Quantity" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.25
+anchor_right = 0.7
+anchor_bottom = 0.25
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Puissance : 0 kW/s|| Électricité totale : 0 kW/s"
+horizontal_alignment = 1
