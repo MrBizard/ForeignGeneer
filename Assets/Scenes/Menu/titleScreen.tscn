@@ -1,0 +1,96 @@
+[gd_scene load_steps=6 format=3 uid="uid://nukq4775resy"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/manager/MenuManager.cs" id="1_48b88"]
+[ext_resource type="PackedScene" uid="uid://jptukljyrgsw" path="res://Assets/Scenes/Menu/OptionsTabs.tscn" id="2_ptgkx"]
+[ext_resource type="Script" path="res://Assets/Scripts/manager/AudioManager.cs" id="3_whhdt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ipb6g"]
+font_size = 32
+
+[sub_resource type="CSharpScript" id="CSharpScript_yejw6"]
+script/source = "using Godot;
+using System;
+
+public partial class Start : Control
+{
+	private void _on_button_down(){
+		get_tree().change_scene_to_file(\"res://Assets/Scenes/main.tscn\")
+	}
+}
+"
+
+[node name="TitleScreen" type="Node2D"]
+
+[node name="root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_48b88")
+
+[node name="title" type="Label" parent="root"]
+layout_mode = 0
+offset_left = 451.0
+offset_top = 25.0
+offset_right = 680.0
+offset_bottom = 70.0
+text = "ForeignGineer"
+label_settings = SubResource("LabelSettings_ipb6g")
+
+[node name="start" type="Button" parent="root"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 111.0
+offset_right = 610.0
+offset_bottom = 142.0
+action_mode = 0
+text = "Start"
+script = SubResource("CSharpScript_yejw6")
+
+[node name="newGame" type="Button" parent="root"]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 169.0
+offset_right = 611.0
+offset_bottom = 200.0
+text = "New"
+
+[node name="option" type="Button" parent="root"]
+layout_mode = 0
+offset_left = 553.0
+offset_top = 232.0
+offset_right = 613.0
+offset_bottom = 263.0
+text = "Param"
+
+[node name="credit" type="Button" parent="root"]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 295.0
+offset_right = 615.0
+offset_bottom = 326.0
+text = "Crédits
+"
+
+[node name="quit" type="Button" parent="root"]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 363.0
+offset_right = 615.0
+offset_bottom = 394.0
+action_mode = 0
+text = "Quitter
+"
+
+[node name="OptionsTabs" parent="root" instance=ExtResource("2_ptgkx")]
+visible = false
+layout_mode = 0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="root"]
+script = ExtResource("3_whhdt")
+
+[connection signal="button_down" from="root/start" to="root" method="_onButtonStartDown"]
+[connection signal="button_down" from="root/newGame" to="root" method="_onNewGameButtonDown"]
+[connection signal="button_down" from="root/option" to="root" method="_onOptionButtonDown"]
+[connection signal="button_down" from="root/credit" to="root" method="_onCreditButtonDown"]
+[connection signal="button_down" from="root/quit" to="root" method="_onQuitButtonDown"]

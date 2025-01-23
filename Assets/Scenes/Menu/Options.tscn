@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://csfqa8ppcx5m0"]
+
+[ext_resource type="PackedScene" uid="uid://jptukljyrgsw" path="res://Assets/Scenes/Menu/OptionsTabs.tscn" id="1_px3ya"]
+
+[node name="Options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OptionsTabs" parent="." instance=ExtResource("1_px3ya")]
+layout_mode = 0

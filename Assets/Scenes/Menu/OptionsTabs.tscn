@@ -1,0 +1,294 @@
+[gd_scene load_steps=7 format=3 uid="uid://jptukljyrgsw"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/menu/Options.cs" id="1_a4112"]
+[ext_resource type="ButtonGroup" uid="uid://cen2rm73igjm7" path="res://Assets/Scripts/menu/optionButtonGroup.tres" id="2_qde5c"]
+[ext_resource type="Script" path="res://Assets/Scripts/menu/Audio.cs" id="3_dwchj"]
+[ext_resource type="Script" path="res://Assets/Scripts/menu/Video.cs" id="4_nqkou"]
+[ext_resource type="Script" path="res://Assets/Scripts/menu/Controls.cs" id="5_f3alg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mvvqi"]
+
+[node name="OptionsTabs" type="GridContainer"]
+custom_minimum_size = Vector2(200, 200)
+offset_right = 1154.0
+offset_bottom = 646.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 5
+script = ExtResource("1_a4112")
+
+[node name="soundTab" type="Button" parent="."]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("2_qde5c")
+text = "Son
+"
+
+[node name="optionVolume" type="VBoxContainer" parent="soundTab"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 51.0
+offset_right = 1016.0
+offset_bottom = 486.0
+script = ExtResource("3_dwchj")
+
+[node name="masterVolume" type="Label" parent="soundTab/optionVolume"]
+layout_mode = 2
+text = "Volume :"
+
+[node name="Master" type="HSlider" parent="soundTab/optionVolume/masterVolume"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 5.0
+offset_right = 441.0
+offset_bottom = 21.0
+max_value = 1.0
+step = 0.001
+value = 1.0
+scrollable = false
+
+[node name="playerVolume" type="Label" parent="soundTab/optionVolume"]
+layout_mode = 2
+text = "Player :"
+
+[node name="SFX" type="HSlider" parent="soundTab/optionVolume/playerVolume"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 6.0
+offset_right = 440.0
+offset_bottom = 22.0
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="ambiantVolume" type="Label" parent="soundTab/optionVolume"]
+layout_mode = 2
+text = "Ambiance :"
+
+[node name="BGM" type="HSlider" parent="soundTab/optionVolume/ambiantVolume"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 6.0
+offset_right = 441.0
+offset_bottom = 22.0
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="ressourceVolume" type="Label" parent="soundTab/optionVolume"]
+layout_mode = 2
+text = "ressource :"
+
+[node name="RM" type="HSlider" parent="soundTab/optionVolume/ressourceVolume"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 6.0
+offset_right = 444.0
+offset_bottom = 22.0
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="videoTab" type="Button" parent="."]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_qde5c")
+text = "Vidéo"
+
+[node name="optionVideo" type="VBoxContainer" parent="videoTab"]
+visible = false
+layout_mode = 0
+offset_left = 1.0
+offset_top = 50.0
+offset_right = 972.0
+offset_bottom = 485.0
+script = ExtResource("4_nqkou")
+
+[node name="Label" type="Label" parent="videoTab/optionVideo"]
+layout_mode = 2
+text = "brightness :"
+
+[node name="brightness" type="HSlider" parent="videoTab/optionVideo/Label"]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 5.0
+offset_right = 402.0
+offset_bottom = 21.0
+scrollable = false
+
+[node name="Label2" type="Label" parent="videoTab/optionVideo"]
+layout_mode = 2
+text = "full screen :"
+
+[node name="fullscreenButton" type="Button" parent="videoTab/optionVideo/Label2"]
+layout_mode = 0
+offset_left = 106.0
+offset_right = 177.0
+offset_bottom = 31.0
+text = "On"
+
+[node name="controlTab" type="Button" parent="."]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("2_qde5c")
+text = "Control"
+
+[node name="optionControl" type="VBoxContainer" parent="controlTab"]
+visible = false
+layout_mode = 0
+offset_left = -80.0
+offset_top = 53.0
+offset_right = 980.0
+offset_bottom = 520.0
+theme_override_constants/separation = 10
+script = ExtResource("5_f3alg")
+
+[node name="forward" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "avancer :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/forward"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+action_mode = 0
+text = "Z"
+
+[node name="backward" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "reculer :"
+label_settings = SubResource("LabelSettings_mvvqi")
+
+[node name="Button" type="Button" parent="controlTab/optionControl/backward"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "S"
+
+[node name="left" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "gauche :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/left"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "Q"
+
+[node name="right" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "droite :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/right"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "D"
+
+[node name="sprint" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "courir :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/sprint"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "Shift"
+
+[node name="jump" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "sauter :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/jump"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "Spacebar"
+
+[node name="crouch" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "s'accroupir :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/crouch"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "Ctrl"
+
+[node name="interact" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "intéragir :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/interact"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "E"
+
+[node name="inventory" type="Label" parent="controlTab/optionControl"]
+layout_mode = 2
+text = "Inventaire :"
+
+[node name="Button" type="Button" parent="controlTab/optionControl/inventory"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 2.0
+offset_right = 231.0
+offset_bottom = 22.0
+toggle_mode = true
+text = "Tab"
+
+[node name="close" type="Button" parent="."]
+layout_mode = 2
+text = "Done"
+
+[node name="titlescreen" type="Button" parent="."]
+layout_mode = 2
+text = "Title Screen
+"
+
+[connection signal="toggled" from="soundTab" to="." method="_volumeTabToggled"]
+[connection signal="value_changed" from="soundTab/optionVolume/masterVolume/Master" to="soundTab/optionVolume" method="_onMasterVolumeUpdate"]
+[connection signal="value_changed" from="soundTab/optionVolume/playerVolume/SFX" to="soundTab/optionVolume" method="_onSFXUpdate"]
+[connection signal="value_changed" from="soundTab/optionVolume/ambiantVolume/BGM" to="soundTab/optionVolume" method="_onBGMUpdate"]
+[connection signal="value_changed" from="soundTab/optionVolume/ressourceVolume/RM" to="soundTab/optionVolume" method="_onRMUpdate"]
+[connection signal="toggled" from="videoTab" to="." method="_videoTabToggled"]
+[connection signal="value_changed" from="videoTab/optionVideo/Label/brightness" to="videoTab/optionVideo" method="_brightnessUpdate"]
+[connection signal="button_down" from="videoTab/optionVideo/Label2/fullscreenButton" to="videoTab/optionVideo" method="_FullscreenToggled"]
+[connection signal="toggled" from="controlTab" to="." method="_controlTabToggled"]
+[connection signal="button_down" from="controlTab/optionControl/forward/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["forward"]]
+[connection signal="button_down" from="controlTab/optionControl/backward/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["backward"]]
+[connection signal="button_down" from="controlTab/optionControl/left/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["left"]]
+[connection signal="button_down" from="controlTab/optionControl/right/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["right"]]
+[connection signal="button_down" from="controlTab/optionControl/sprint/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["sprint"]]
+[connection signal="button_down" from="controlTab/optionControl/jump/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["jump"]]
+[connection signal="button_down" from="controlTab/optionControl/crouch/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["crouch"]]
+[connection signal="button_down" from="controlTab/optionControl/interact/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["interact"]]
+[connection signal="button_down" from="controlTab/optionControl/inventory/Button" to="controlTab/optionControl" method="_onControlChange" binds= ["inventory"]]
+[connection signal="button_down" from="close" to="." method="_closeOption"]
+[connection signal="button_down" from="titlescreen" to="." method="_titlescreenOption"]

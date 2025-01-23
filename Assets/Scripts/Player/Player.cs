@@ -48,10 +48,6 @@ public partial class Player : CharacterBody3D
 		{
 			Speed = 5.0f;
 		}
-		if (Input.IsActionJustPressed("quit"))
-		{
-			GetTree().Quit();
-		}
 		if (IsOnFloor() && Input.IsActionJustPressed("Jump"))
 		{
 			//saut
@@ -66,24 +62,6 @@ public partial class Player : CharacterBody3D
 			SpringArm.Rotation = springArmRotation;
 		}
 	}
-
-
-	// public void ShowInventory(){
-	// 	var TypeTempInv = GetNode("../Inventory Manager");
-	// 		GD.Print(TypeTempInv);
-	// 	var TempInv = GetNode<Control>("../Inventory Manager");
-		
-
-	// 	if (TempInv != null && TempInv.Visible){
-	// 		TempInv.Show();
-	// 	}
-	// 	else
-	// 	{
-	// 		TempInv.Hide();
-	// 	}
-		
-
-	// }
 	public override void _PhysicsProcess(double delta)
 	{	
 
