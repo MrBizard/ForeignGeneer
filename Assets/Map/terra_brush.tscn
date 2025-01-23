@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=3 uid="uid://3ctfh5ewhkqf"]
+
+[ext_resource type="Script" path="res://addons/terrabrush/TerraBrush.cs" id="1_sq0ig"]
+[ext_resource type="Resource" uid="uid://dxtuwtcawv84i" path="res://Assets/Map/Grass.tres" id="2_oufhm"]
+[ext_resource type="Texture2D" path="res://Assets/Map/Scene/Heightmap_0_0.res" id="3_mgyxe"]
+[ext_resource type="Texture2D" path="res://Assets/Map/Scene/Splatmap_0_0_0.res" id="4_wvqej"]
+[ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZoneResource.cs" id="5_f1s1x"]
+[ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZonesResource.cs" id="6_dnp0m"]
+[ext_resource type="PackedScene" path="res://Assets/Map/Scene/Ocean.tscn" id="8_58lrx"]
+
+[sub_resource type="Shader" id="Shader_muhn0"]
+code = "shader_type spatial;
+render_mode cull_back, blend_mix, depth_draw_opaque, diffuse_burley, specular_schlick_ggx;
+
+#include \"res://addons/terrabrush/Resources/Shaders/heightmap_clipmap_shader_include.gdshaderinc\"
+
+varying vec3 _worldVertex;
+
+void vertex() {
+	_worldVertex = vec3(0);
+	calculateHeightmapVertex(MODEL_MATRIX, COLOR, VERTEX, NORMAL, _worldVertex);
+}
+
+void fragment() {
+    // Calculate the base terrain properties using the TerraBrush function
+    vec3 albedo_color = vec3(0.0); // Use vec3 for ALBEDO
+    vec3 normal_map = vec3(0.0);
+    float roughness = 0.0;
+    float alpha = 1.0;
+    float alpha_scissor_threshold = 0.0;
+
+    calculateHeightmapFragment(
+        _worldVertex,
+        albedo_color, // Passed as vec3
+        normal_map,
+        roughness,
+        alpha,
+        alpha_scissor_threshold
+    );
+
+    // Output the final values
+    ALBEDO = albedo_color; // ALBEDO is a vec3
+    NORMAL_MAP = normal_map;
+    ROUGHNESS = roughness;
+    ALPHA = alpha; // Alpha is handled separately
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lghg2"]
+render_priority = 0
+shader = SubResource("Shader_muhn0")
+shader_parameter/InitialCellWidth = 1.0
+shader_parameter/OffsetPosition = null
+shader_parameter/ZonesSize = null
+shader_parameter/Resolution = null
+shader_parameter/NumberOfZones = null
+shader_parameter/ApplyLockTextures = false
+shader_parameter/WaterFactor = 1.0
+shader_parameter/TexturesDetail = null
+shader_parameter/NumberOfTextures = null
+shader_parameter/HasNormalTextures = null
+shader_parameter/HasRoughnessTextures = null
+shader_parameter/HasHeightTextures = null
+shader_parameter/UseAntitile = true
+shader_parameter/BlendFactor = null
+shader_parameter/NearestFilter = false
+shader_parameter/AlbedoAlphaChannelUsage = 0
+shader_parameter/NormalAlphaChannelUsage = 0
+
+[sub_resource type="Resource" id="Resource_scupb"]
+script = ExtResource("5_f1s1x")
+ZonePosition = Vector2i(0, 0)
+HeightMapTexture = ExtResource("3_mgyxe")
+SplatmapsTexture = [ExtResource("4_wvqej")]
+FoliagesTexture = []
+ObjectsTexture = []
+
+[sub_resource type="Resource" id="Resource_ilplf"]
+script = ExtResource("6_dnp0m")
+Zones = [SubResource("Resource_scupb")]
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_rd4th"]
+
+[node name="TerraBrush" type="Node3D"]
+script = ExtResource("1_sq0ig")
+ZonesSize = 2049
+Resolution = 4
+DataPath = "res://Assets/Scenes/Main"
+CustomShader = SubResource("ShaderMaterial_lghg2")
+LODInitialCellWidth = 4.0
+TextureSets = ExtResource("2_oufhm")
+TextureDetail = 16
+NearestTextureFilter = true
+Foliages = []
+Objects = []
+TerrainZones = SubResource("Resource_ilplf")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("HeightMapShape3D_rd4th")
+
+[node name="MeshInstance3D" parent="." instance=ExtResource("8_58lrx")]
+transform = Transform3D(9000, 0, 0, 0, 0.5, 0, 0, 0, 9000, 0, -10, 0)
+skeleton = NodePath("")

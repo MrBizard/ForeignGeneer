@@ -143,6 +143,7 @@ public class Inventory
 		onInventoryUpdated?.Invoke();
 	}
 
+
     /// <summary>
     /// Ajoute un seul item à l'inventaire.
     /// </summary>
@@ -187,5 +188,6 @@ public class Inventory
 	    // Si aucun espace n'est disponible, retourne le nombre d'items restants
 	    return item.getStack();
 	}
+
 
 }

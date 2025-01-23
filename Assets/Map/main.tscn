@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://dvxxm2v6se3nl"]
+
+[ext_resource type="Texture2D" uid="uid://b3av57ugvyn1k" path="res://Assets/Map/Scene/light-blue-polygon-abstract-backdrop-vector.png" id="1_3puoc"]
+[ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
+[ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
+[ext_resource type="PackedScene" uid="uid://3ctfh5ewhkqf" path="res://Assets/Map/terra_brush.tscn" id="6_6npa2"]
+[ext_resource type="Script" path="res://Assets/Map/ResourceGeneration.cs" id="6_mtmf7"]
+[ext_resource type="Script" path="res://Assets/Scripts/Player/PlayerInventory.cs" id="8_k76vs"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wmmy8"]
+sky_top_color = Color(0.310569, 0.430626, 0.74474, 1)
+sky_horizon_color = Color(0.532021, 0.667144, 0.832527, 1)
+sky_curve = 0.243676
+sky_cover = ExtResource("1_3puoc")
+sun_angle_max = 42.27
+sun_curve = 0.191184
+
+[sub_resource type="Sky" id="Sky_xs082"]
+sky_material = SubResource("ProceduralSkyMaterial_wmmy8")
+
+[sub_resource type="Environment" id="Environment_wvy0c"]
+background_mode = 2
+sky = SubResource("Sky_xs082")
+
+[node name="Main" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -36.4484, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wvy0c")
+
+[node name="Player_Character" parent="." instance=ExtResource("1_6t2fw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 58.3394, 0)
+
+[node name="Manager" type="Node" parent="."]
+script = ExtResource("4_gc2hg")
+
+[node name="Ingot" type="Node" parent="Manager"]
+
+[node name="Inventory Manager" type="Control" parent="Manager"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Container" type="Container" parent="Manager/Inventory Manager"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.036
+anchor_bottom = 0.063
+offset_right = -0.472004
+offset_bottom = 0.175999
+script = ExtResource("8_k76vs")
+
+[node name="ColorRect" type="ColorRect" parent="Manager/Inventory Manager/Container"]
+layout_mode = 2
+color = Color(0.884703, 0.260816, 0.716615, 1)
+
+[node name="BiomeManager" type="Node3D" parent="Manager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -36.4484, 0)
+
+[node name="ObjectSpawner" type="Node3D" parent="Manager"]
+script = ExtResource("6_mtmf7")
+
+[node name="DroppedItem3D" type="Node3D" parent="."]
+
+[node name="TerraBrush" parent="." instance=ExtResource("6_6npa2")]

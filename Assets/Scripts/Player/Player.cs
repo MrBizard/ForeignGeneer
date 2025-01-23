@@ -16,16 +16,16 @@ public partial class Player : CharacterBody3D
 
 	//main et l'objet a attaché
 	[Export] private Node3D handNode;
-    [Export] private PackedScene objectToAttach;
+	[Export] private PackedScene objectToAttach;
 
 	StackItem currentItemInHand=null;
-    
+	
 	
 
 	public override void _Ready()
 	{
 		inv = new Inventory(28);
-		Armature = GetNode<Node3D>("Armature");
+		Armature = GetNode<Node3D>("Armature_001");
 		Pivot = GetNode<Node3D>("Pivot");
 		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
 		AnimTree = GetNode<AnimationTree>("AnimationTree");
@@ -34,9 +34,9 @@ public partial class Player : CharacterBody3D
 		
 
 		if (handNode == null)
-        {
-            GD.PrintErr("node de la main non assigné (script Player)");
-        }
+		{
+			GD.PrintErr("node de la main non assigné (script Player)");
+		}
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -136,18 +136,18 @@ public partial class Player : CharacterBody3D
 	//	pour faire suivre l'objet avec l'animation)
 
 	/*public void AttachObjectToHand()
-    {
-        if (handNode == null || objectToAttach == null)
-        {
-            GD.PrintErr("Hand node or object to attach is not assigned!");
-            return;
-        }
+	{
+		if (handNode == null || objectToAttach == null)
+		{
+			GD.PrintErr("Hand node or object to attach is not assigned!");
+			return;
+		}
 
-        var objectInstance = (Node3D)objectToAttach.Instantiate();
-        handNode.AddChild(objectInstance);
+		var objectInstance = (Node3D)objectToAttach.Instantiate();
+		handNode.AddChild(objectInstance);
 
-        // Set object's transform (adjust as needed)
-        objectInstance.Translation = new Vector3(0, 0, 0); // Adjust for the hand position
-        objectInstance.RotationDegrees = new Vector3(0, 90, 0); // Adjust for orientation
-    }*/
+		// Set object's transform (adjust as needed)
+		objectInstance.Translation = new Vector3(0, 0, 0); // Adjust for the hand position
+		objectInstance.RotationDegrees = new Vector3(0, 90, 0); // Adjust for orientation
+	}*/
 }

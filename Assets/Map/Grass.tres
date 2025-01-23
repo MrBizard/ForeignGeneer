@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="TextureSetsResource" load_steps=5 format=3 uid="uid://cu2pp2dngusxl"]
 
-[ext_resource type="Texture2D" uid="uid://bblgw41c2qxhn" path="res://Assets/Map/nail-polish-texture-macro.jpg" id="1_cw3dv"]
+[gd_resource type="Resource" script_class="TextureSetsResource" load_steps=5 format=3 uid="uid://dxtuwtcawv84i"]
+
+[ext_resource type="Texture2D" uid="uid://byiehiyj60df1" path="res://Assets/Map/nail-polish-texture-macro.jpg" id="1_cw3dv"]
+
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/TextureSetsResource.cs" id="1_l7pxi"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/TextureSetResource.cs" id="2_xjoon"]
 

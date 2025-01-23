@@ -1,24 +1,22 @@
 using Godot;
 using System;
-using TerraBrush;
 
 public partial class ResourceGeneration : Node3D
 {
-	
 	[Export] public TerraBrush.TerraBrush Map;
-	[Export]
-	public Vector3 MapSize { get; set; }
-	[Export]
-	public int RedCubesCount { get; set; } = 10; // Number of red cubes to spawn
+	[Export] public Vector3 MapSize { get; set; }
+	[Export] public int CopperResourcesCount { get; set; } = 1000;
+	[Export] public int IronResourcesCount { get; set; } = 1000;
+	[Export] public int GoldResourcesCount { get; set; } = 500;
 
-	[Export]
-	public int GreenCylindersCount { get; set; } =10; // Number of green cylinders to spawn
+	[Export] public PackedScene CopperResourceScene { get; set; }
+	[Export] public PackedScene IronResourceScene { get; set; }
+	[Export] public PackedScene GoldResourceScene { get; set; }
 
 	public override void _Ready()
 	{
-		 if (Map != null)
+		if (Map != null)
 		{
-			// Calculate the map size based on the heightmap resolution and terrain scale
 			MapSize = CalculateMapSize(Map);
 			GD.Print("Map Size: " + MapSize);
 		}
@@ -29,150 +27,94 @@ public partial class ResourceGeneration : Node3D
 
 		SpawnObjects();
 	}
-	  private Vector3 CalculateMapSize(TerraBrush.TerraBrush map)
-{
-	// Get the heightmap resolution (assuming it's square)
-	int heightmapResolution = map.ZonesSize - 500;
-	GD.Print("Heightmap Resolution: " + heightmapResolution);
 
-	// Get the terrain scale
-	Vector3 terrainScale = map.Scale;
-	GD.Print("Terrain Scale: " + terrainScale);
-
-	// Calculate the map size
-	float mapWidth = heightmapResolution * terrainScale.X;
-	float mapDepth = heightmapResolution * terrainScale.Z;
-
-	Vector3 mapSize = new Vector3(mapWidth, 0, mapDepth);
-	GD.Print("Calculated Map Size: " + mapSize);
-
-	return mapSize;
-}
+	private Vector3 CalculateMapSize(TerraBrush.TerraBrush map)
+	{
+		int heightmapResolution = map.ZonesSize - 500;
+		Vector3 terrainScale = map.Scale;
+		float mapWidth = heightmapResolution * terrainScale.X;
+		float mapDepth = heightmapResolution * terrainScale.Z;
+		GD.Print($"Calculated map size: Width={mapWidth}, Depth={mapDepth}");
+		return new Vector3(mapWidth, 0, mapDepth);
+	}
 
 	private void SpawnObjects()
 	{
-		// Spawn red cubes
-		for (int i = 0; i < RedCubesCount; i++)
+		for (int i = 0; i < CopperResourcesCount; i++)
 		{
-			SpawnCube(Colors.Red);
+			SpawnResource(CopperResourceScene);
 		}
 
-		// Spawn green cylinders
-		for (int i = 0; i < GreenCylindersCount; i++)
+		for (int i = 0; i < IronResourcesCount; i++)
 		{
-			SpawnCylinder(Colors.Green);
+			SpawnResource(IronResourceScene);
+		}
+
+		for (int i = 0; i < GoldResourcesCount; i++)
+		{
+			SpawnResource(GoldResourceScene);
 		}
 	}
 
-	private void SpawnCube(Color color)
+	private void SpawnResource(PackedScene resourceScene)
+{
+	if (resourceScene == null)
 	{
-		// Create a new MeshInstance3D for the cube
-		var cubeMesh = new BoxMesh();
-		var cubeInstance = new MeshInstance3D
-		{
-			Mesh = cubeMesh
-		};
-
-		// Create a material for the cube
-		var material = new StandardMaterial3D
-		{
-			AlbedoColor = color
-		};
-		cubeMesh.Material = material;
-
-		// Add a collision shape to the cube
-		var collisionShape = new CollisionShape3D
-		{
-			Shape = new BoxShape3D()
-		};
-
-		// Create a StaticBody3D for the cube
-		var staticBody = new StaticBody3D();
-		staticBody.AddChild(collisionShape);
-		cubeInstance.AddChild(staticBody);
-
-		// Set a random position for the cube
-		cubeInstance.Position = GetRandomPosition();
-
-		// Add the cube to the scene
-		AddChild(cubeInstance);
+		GD.PrintErr("Resource scene is null!");
+		return;
 	}
 
-	private void SpawnCylinder(Color color)
+	// Instantiate the resource as a Node3D
+	var resourceInstance = resourceScene.Instantiate<Node3D>();
+
+	// Try to get the BreakableResource script from the root node
+	var breakableResource = resourceInstance as BreakableResource;
+	if (breakableResource == null)
 	{
-		// Create a new MeshInstance3D for the cylinder
-		var cylinderMesh = new CylinderMesh();
-		var cylinderInstance = new MeshInstance3D
-		{
-			Mesh = cylinderMesh
-		};
-
-		// Create a material for the cylinder
-		var material = new StandardMaterial3D
-		{
-			AlbedoColor = color
-		};
-		cylinderMesh.Material = material;
-
-		// Add a collision shape to the cylinder
-		var collisionShape = new CollisionShape3D
-		{
-			Shape = new CylinderShape3D()
-		};
-
-		// Create a StaticBody3D for the cylinder
-		var staticBody = new StaticBody3D();
-		staticBody.AddChild(collisionShape);
-		cylinderInstance.AddChild(staticBody);
-
-		// Set a random position for the cylinder
-		cylinderInstance.Position = GetRandomPosition();
-
-		// Add the cylinder to the scene
-		AddChild(cylinderInstance);
+		GD.PrintErr("BreakableResource script not found on the root node!");
+		return;
 	}
+
+	// Set a random position for the resource
+	resourceInstance.Position = GetRandomPosition();
+
+	// Add the resource to the scene
+	AddChild(resourceInstance);
+	GD.Print("Resource added to the scene.");
+}
 
 	private Vector3 GetRandomPosition()
-{
-	// Generate a random position within the map bounds
-	var random = new Random();
-	float x = (float)random.NextDouble() * MapSize.X - MapSize.X / 2;
-	float z = (float)random.NextDouble() * MapSize.Z - MapSize.Z / 2;
-
-	// Sample the terrain height at the random X and Z coordinates
-	float y = GetTerrainHeight(x, z);
-
-	return new Vector3(x, y, z);
-}
-
-private float GetTerrainHeight(float x, float z)
-{
-	var a = new RayCast3D();
-	var rayCast = new RayCast3D();
-	rayCast.Position = new Vector3(x, MapSize.Y + 100, z);
-	rayCast.TargetPosition = new Vector3(x, -100, z);
-	rayCast.Enabled = true;
-	rayCast.CollisionMask = 1; // Ensure this matches the terrain's collision layer
-	rayCast.DebugShapeThickness = 1;
-	
-
-	AddChild(rayCast);
-	rayCast.ForceRaycastUpdate();
-
-	float height = 0;
-	if (rayCast.IsColliding())
 	{
-		height = rayCast.GetCollisionPoint().Y;
-		GD.Print("Terrain Height at (" + x + ", " + z + "): " + height);
-	}
-	else
-	{
-		GD.PrintErr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+ rayCast.Position + " " + rayCast.CollisionMask + " " + rayCast.TargetPosition);
-		GD.PrintErr("RayCast3D did not detect terrain at (" + x + ", " + z + ")");
+		var random = new Random();
+		float x = (float)random.NextDouble() * MapSize.X - MapSize.X / 2;
+		float z = (float)random.NextDouble() * MapSize.Z - MapSize.Z / 2;
+		float y = GetTerrainHeight(x, z);
+		GD.Print($"Random position generated: X={x}, Y={y}, Z={z}");
+		return new Vector3(x, y, z);
 	}
 
-	rayCast.QueueFree();
+	private float GetTerrainHeight(float x, float z)
+	{
+		var rayCast = new RayCast3D();
+		rayCast.Position = new Vector3(x, MapSize.Y + 100, z);
+		rayCast.TargetPosition = new Vector3(x, -100, z);
+		rayCast.Enabled = true;
+		rayCast.CollisionMask = 1;
+		AddChild(rayCast);
+		rayCast.ForceRaycastUpdate();
 
-	return height;
-}
+		float height = 0;
+		if (rayCast.IsColliding())
+		{
+			height = rayCast.GetCollisionPoint().Y;
+			GD.Print($"Terrain height at ({x}, {z}): {height}");
+		}
+		else
+		{
+			GD.PrintErr($"RayCast3D did not detect terrain at ({x}, {z})");
+		}
+
+		rayCast.QueueFree();
+		return height;
+	}
 }

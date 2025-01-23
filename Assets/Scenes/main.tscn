@@ -1,165 +1,155 @@
+[gd_scene load_steps=30 format=3 uid="uid://dvxxm2v6se3nl"]
 
-[gd_scene load_steps=24 format=3 uid="uid://dvxxm2v6se3nl"]
-
-[ext_resource type="Texture2D" uid="uid://c52qj3y33m53b" path="res://Assets/Map/Scene/light-blue-polygon-abstract-backdrop-vector.png" id="1_3puoc"]
-[ext_resource type="PackedScene" uid="uid://cbre4uav8lugb" path="res://Assets/Prefabs/Characters_rigging.tscn" id="1_6t2fw"]
-
-[ext_resource type="Texture2D" uid="uid://cevx16ivh4qvi" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://b15lkkjnjbf7x" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://b3av57ugvyn1k" path="res://Assets/Map/Scene/light-blue-polygon-abstract-backdrop-vector.png" id="1_uaivp"]
+[ext_resource type="Script" path="res://Assets/Map/Sky.cs" id="2_dpbjy"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/World/MapTextureChanger3D.cs" id="2_uv61q"]
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
+[ext_resource type="Script" path="res://Assets/Map/ResourceGeneration.cs" id="8_3mxrg"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
+[ext_resource type="PackedScene" uid="uid://dr0wx8gw0fr57" path="res://Assets/Ingots/BreakableCopper.tscn" id="9_e7lci"]
 [ext_resource type="PackedScene" uid="uid://boeykrygcm5pg" path="res://Assets/Ingots/Qwartz.tscn" id="9_kmuow"]
 [ext_resource type="PackedScene" uid="uid://2afkyedmtxmx" path="res://Assets/Ingots/SteelBeam.tscn" id="10_83yg4"]
 [ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
 [ext_resource type="PackedScene" uid="uid://dg2htr0ad72da" path="res://Assets/Ingots/Plastic.tscn" id="11_uce2h"]
 [ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
-[ext_resource type="PackedScene" uid="uid://b13eivmg2exdn" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
-[ext_resource type="Resource" uid="uid://domk1djuxoy74" path="res://Assets/Resource/recipe/RecipeList1.tres" id="13_efp6d"]
 [ext_resource type="PackedScene" uid="uid://5w1ay5mgky0h" path="res://Assets/Ingots/BreakableIngot.tscn" id="13_l7mfa"]
-[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="14_4tmkx"]
-[ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="14_m01p2"]
 [ext_resource type="PackedScene" uid="uid://b128wbexawv5n" path="res://Assets/Ingots/BreakableGold.tscn" id="14_qbkp4"]
-[ext_resource type="PackedScene" uid="uid://dk63c2nk5mcg5" path="res://Assets/Prefabs/material/log.tscn" id="19_c76f2"]
+[ext_resource type="PackedScene" uid="uid://cbqdocjdf345x" path="res://Assets/Prefabs/personnage.tscn" id="14_vtcps"]
+[ext_resource type="PackedScene" uid="uid://bm46vhmsrkfgg" path="res://Assets/Prefabs/laboratoire.tscn" id="15_2vg7g"]
+[ext_resource type="PackedScene" uid="uid://3ctfh5ewhkqf" path="res://Assets/Map/terra_brush.tscn" id="18_1on6b"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Player/Player.cs" id="2_qehyv"]
-[ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
-[ext_resource type="Script" path="res://Assets/Map/ResourceGeneration.cs" id="6_mtmf7"]
-[ext_resource type="Script" path="res://VoronoiBiome/BiomeManager.cs" id="6_pufo3"]
-[ext_resource type="Script" path="res://addons/terrabrush/TerraBrush.cs" id="7_2pj54"]
-[ext_resource type="Texture2D" uid="uid://bgvw6g3owr58x" path="res://Assets/Scenes/Main/Heightmap_0_0.res" id="8_egevk"]
-[ext_resource type="Script" path="res://Assets/Scripts/Player/PlayerInventory.cs" id="8_k76vs"]
-[ext_resource type="Resource" uid="uid://cu2pp2dngusxl" path="res://Assets/Map/Grass.tres" id="8_u47is"]
-[ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZoneResource.cs" id="9_3onbg"]
-[ext_resource type="Texture2D" path="res://Assets/Scenes/Main/Splatmap_0_0_0.res" id="10_laou3"]
-[ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZonesResource.cs" id="10_o0cp4"]
-[ext_resource type="PackedScene" uid="uid://c0bt6tipueu6w" path="res://Assets/Map/Scene/Ocean.tscn" id="13_uj2kw"]
-[ext_resource type="Script" path="res://Assets/Scenes/CollisionFit.cs" id="14_8gcg8"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8cqe5"]
+sky_top_color = Color(0.339744, 0.418946, 0.755714, 1)
+sky_horizon_color = Color(0.0670527, 0.546076, 0.675175, 1)
+sky_curve = 0.227357
+sky_cover = ExtResource("1_uaivp")
 
+[sub_resource type="Sky" id="Sky_dt77i"]
+sky_material = SubResource("ProceduralSkyMaterial_8cqe5")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wmmy8"]
-sky_top_color = Color(0.310569, 0.430626, 0.74474, 1)
-sky_horizon_color = Color(0.532021, 0.667144, 0.832527, 1)
-sky_curve = 0.243676
-sky_cover = ExtResource("1_3puoc")
-sun_angle_max = 42.27
-sun_curve = 0.191184
-
-[sub_resource type="Sky" id="Sky_xs082"]
-sky_material = SubResource("ProceduralSkyMaterial_wmmy8")
-
-[sub_resource type="Environment" id="Environment_wvy0c"]
+[sub_resource type="Environment" id="Environment_chybd"]
 background_mode = 2
-sky = SubResource("Sky_xs082")
+sky = SubResource("Sky_dt77i")
 
-[sub_resource type="Shader" id="Shader_muhn0"]
-code = "shader_type spatial;
-render_mode cull_back, blend_mix, depth_draw_opaque, diffuse_burley, specular_schlick_ggx;
+[sub_resource type="Shader" id="Shader_1mb4a"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable.mono's StandardMaterial3D.
 
-#include \"res://addons/terrabrush/Resources/Shaders/heightmap_clipmap_shader_include.gdshaderinc\"
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
 
-varying vec3 _worldVertex;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
 
 void vertex() {
-	_worldVertex = vec3(0);
-	calculateHeightmapVertex(MODEL_MATRIX, COLOR, VERTEX, NORMAL, _worldVertex);
+	UV = UV * uv1_scale.xy + uv1_offset.xy;
 }
 
 void fragment() {
-    // Calculate the base terrain properties using the TerraBrush function
-    vec3 albedo_color = vec3(0.0); // Use vec3 for ALBEDO
-    vec3 normal_map = vec3(0.0);
-    float roughness = 0.0;
-    float alpha = 1.0;
-    float alpha_scissor_threshold = 0.0;
+	vec2 base_uv = UV;
 
-    calculateHeightmapFragment(
-        _worldVertex,
-        albedo_color, // Passed as vec3
-        normal_map,
-        roughness,
-        alpha,
-        alpha_scissor_threshold
-    );
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
 
-    // Output the final values
-    ALBEDO = albedo_color; // ALBEDO is a vec3
-    NORMAL_MAP = normal_map;
-    ROUGHNESS = roughness;
-    ALPHA = alpha; // Alpha is handled separately
-}"
+	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lghg2"]
+	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nvyjx"]
 render_priority = 0
-shader = SubResource("Shader_muhn0")
-shader_parameter/InitialCellWidth = 1.0
-shader_parameter/OffsetPosition = null
-shader_parameter/ZonesSize = null
-shader_parameter/Resolution = null
-shader_parameter/NumberOfZones = null
-shader_parameter/ApplyLockTextures = false
-shader_parameter/WaterFactor = 1.0
-shader_parameter/TexturesDetail = null
-shader_parameter/NumberOfTextures = null
-shader_parameter/HasNormalTextures = null
-shader_parameter/HasRoughnessTextures = null
-shader_parameter/HasHeightTextures = null
-shader_parameter/UseAntitile = true
-shader_parameter/BlendFactor = null
-shader_parameter/NearestFilter = false
-shader_parameter/AlbedoAlphaChannelUsage = 0
-shader_parameter/NormalAlphaChannelUsage = 0
+shader = SubResource("Shader_1mb4a")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("1_q455m")
 
-[sub_resource type="Resource" id="Resource_scupb"]
-script = ExtResource("9_3onbg")
-ZonePosition = Vector2i(0, 0)
-HeightMapTexture = ExtResource("8_egevk")
-SplatmapsTexture = [ExtResource("10_laou3")]
-FoliagesTexture = []
-ObjectsTexture = []
+[sub_resource type="PlaneMesh" id="PlaneMesh_64wmt"]
 
+[sub_resource type="Shader" id="Shader_1stix"]
+code = "// Ground Shader for overlay effect around the player
+shader_type spatial;
 
-[sub_resource type="Resource" id="Resource_ilplf"]
-script = ExtResource("10_o0cp4")
-Zones = [SubResource("Resource_scupb")]
+// Uniforms for player position and overlay effect
+uniform vec3 player_position;
+uniform float radius = 25.0;
+uniform vec4 overlay_color : hint_color;
+uniform float overlay_strength = 0.0; // Ranges from 0.0 (no overlay) to 1.0 (full overlay)
 
+void fragment() {
+    // Compute the distance from the fragment to the player position
+    float distance_to_player = distance(VERTEX, player_position);   
 
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_rd4th"]
+    // Determine the overlay factor based on distance and radius
+    float overlay_factor = smoothstep(radius, radius * 0.9, distance_to_player);
 
-[sub_resource type="BoxMesh" id="BoxMesh_ksdu6"]
+    // Mix the overlay color with the existing material color
+    vec4 base_color = texture(TEXTURE, UV);
+    vec4 final_color = mix(overlay_color, base_color, overlay_factor);
+
+    // Apply the overlay strength
+    ALBEDO = mix(base_color.rgb, final_color.rgb, overlay_strength);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxlq4"]
+render_priority = 0
+shader = SubResource("Shader_1stix")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w527i"]
+size = Vector3(2, 0, 2)
 
 [node name="Main" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -36.4484, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_wvy0c")
-
+environment = SubResource("Environment_chybd")
+script = ExtResource("2_dpbjy")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Ground" type="MeshInstance3D" parent="." node_paths=PackedStringArray("Player")]
-transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, -391.006, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_nvyjx")
 material_overlay = ExtResource("2_dqp1b")
 mesh = SubResource("PlaneMesh_64wmt")
 surface_material_override/0 = SubResource("ShaderMaterial_cxlq4")
 script = ExtResource("2_uv61q")
-Player = NodePath("../Player_Character")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
 shape = SubResource("BoxShape3D_w527i")
-
-[node name="Player_Character" parent="." node_paths=PackedStringArray("Map") instance=ExtResource("1_6t2fw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 58.3394, 0)
-script = ExtResource("2_qehyv")
-Map = NodePath("../TerraBrush")
-
-
 
 [node name="Manager" type="Node" parent="." node_paths=PackedStringArray("ingot")]
 script = ExtResource("4_gc2hg")
@@ -168,14 +158,14 @@ ingot = NodePath("Ingot")
 
 [node name="Ingot" type="Node" parent="Manager"]
 
-
-[node name="Groundtest" type="MultiMeshInstance3D" parent="."]
-multimesh = SubResource("MultiMesh_20xaj")
+[node name="ObjectSpawner" type="Node3D" parent="Manager" node_paths=PackedStringArray("Map")]
+script = ExtResource("8_3mxrg")
+Map = NodePath("../../TerraBrush")
+CopperResourceScene = ExtResource("9_e7lci")
+IronResourceScene = ExtResource("13_l7mfa")
+GoldResourceScene = ExtResource("14_qbkp4")
 
 [node name="PlayerInventoryManager" type="Control" parent="."]
-
-[node name="Inventory Manager" type="Control" parent="Manager"]
-
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -189,51 +179,31 @@ cursorItemPackedScene = ExtResource("12_20xxc")
 testItem = ExtResource("8_n27y6")
 metadata/_edit_use_anchors_ = true
 
+[node name="Node3D" parent="." instance=ExtResource("9_kmuow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.267573, 0, -1.50858)
 
-[node name="Container" type="Container" parent="Manager/Inventory Manager"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.036
-anchor_bottom = 0.063
-offset_right = -0.472004
-offset_bottom = 0.175999
-script = ExtResource("8_k76vs")
+[node name="Node3D2" parent="." instance=ExtResource("10_83yg4")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.64088, 0.68169, -2.12639)
 
-[node name="ColorRect" type="ColorRect" parent="Manager/Inventory Manager/Container"]
-layout_mode = 2
-color = Color(0.884703, 0.260816, 0.716615, 1)
+[node name="Node3D3" parent="." instance=ExtResource("10_83yg4")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.63405, 0, -1.23287)
 
-[node name="BiomeManager" type="Node3D" parent="Manager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -36.4484, 0)
-script = ExtResource("6_pufo3")
+[node name="Node3D4" parent="." instance=ExtResource("11_uce2h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.633701, 0, -2.39798)
 
-[node name="ObjectSpawner" type="Node3D" parent="Manager" node_paths=PackedStringArray("Map")]
-script = ExtResource("6_mtmf7")
-Map = NodePath("../../TerraBrush")
+[node name="Node3D5" parent="." instance=ExtResource("13_l7mfa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04554, -0.00177994, -2.63841)
+resourceStatic = null
 
-[node name="DroppedItem3D" type="Node3D" parent="."]
+[node name="Node3D6" parent="." instance=ExtResource("14_qbkp4")]
+transform = Transform3D(1.00214, 0, 0, 0, 1.00214, 0, 0, 0, 1.00214, 2.73517, 0, -0.41766)
+resourceStatic = null
 
-[node name="TerraBrush" type="Node3D" parent="."]
-script = ExtResource("7_2pj54")
-ZonesSize = 2049
-Resolution = 4
-DataPath = "res://Assets/Scenes/Main"
-CustomShader = SubResource("ShaderMaterial_lghg2")
-LODInitialCellWidth = 4.0
-TextureSets = ExtResource("8_u47is")
-TextureDetail = 16
-NearestTextureFilter = true
-Foliages = []
-Objects = []
-TerrainZones = SubResource("Resource_ilplf")
-metadata/_edit_lock_ = true
+[node name="Personnage" parent="." instance=ExtResource("14_vtcps")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.129, 2, -0.531)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="TerraBrush"]
+[node name="Laboratoire" parent="." instance=ExtResource("15_2vg7g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.529425, 0.484992, -16.4431)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TerraBrush/StaticBody3D"]
-shape = SubResource("HeightMapShape3D_rd4th")
-script = ExtResource("14_8gcg8")
-
-[node name="MeshInstance3D" parent="TerraBrush" instance=ExtResource("13_uj2kw")]
-transform = Transform3D(9000, 0, 0, 0, 0.5, 0, 0, 0, 9000, 0, -10, 0)
-skeleton = NodePath("")
+[node name="TerraBrush" parent="." instance=ExtResource("18_1on6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92, 0)

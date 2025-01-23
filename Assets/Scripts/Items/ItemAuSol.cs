@@ -5,7 +5,7 @@ public partial class ItemAuSol : StaticBody3D
 {
 
 	public StackItem stackItem {get;set;}
-    public void instantiate(StackItem item)
+	public void instantiate(StackItem item)
 
 	{
 		stackItem = item;
