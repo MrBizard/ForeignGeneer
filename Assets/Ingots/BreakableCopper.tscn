@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dr0wx8gw0fr57"]
 
-[ext_resource type="ArrayMesh" uid="uid://bm8u61v31ecnp" path="res://Assets/Model/pierre_resource.obj" id="1_upmjh"]
+[ext_resource type="ArrayMesh" uid="uid://v2auup8q11tr" path="res://Assets/Model/pierre_resource.obj" id="1_upmjh"]
 [ext_resource type="Material" uid="uid://ciyjaua6jtpmh" path="res://Assets/Texture/Ingots/GoldIngot.tres" id="2_x1loy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tt5wn"]

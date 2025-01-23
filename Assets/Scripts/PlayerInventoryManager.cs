@@ -98,24 +98,24 @@ public partial class PlayerInventoryManager : Control
 	/// </summary>
 	public void dropItemOutsideInventory()
 {
-    if (currentItemInMouse != null)
-    {
-        // Get the ItemStatic resource from the current item in the mouse
-        ItemStatic itemResource = currentItemInMouse.getResource();
+	if (currentItemInMouse != null)
+	{
+		// Get the ItemStatic resource from the current item in the mouse
+		ItemStatic itemResource = currentItemInMouse.getResource();
 
-        // Use the generic instantiate method to create the item at the drop position
-        ItemAuSol itemDrop = itemResource.instantiate<ItemAuSol>(getDropPosition());
+		// Use the generic instantiate method to create the item at the drop position
+		ItemAuSol itemDrop = itemResource.instantiate<ItemAuSol>(getDropPosition());
 		itemDrop.stackItem=currentItemInMouse;
 
-        // Add the item to the scene
-        GetParent().AddChild(itemDrop);
+		// Add the item to the scene
+		GetParent().AddChild(itemDrop);
 
-        // Clear the current item in the mouse
-        currentItemInMouse = null;
+		// Clear the current item in the mouse
+		currentItemInMouse = null;
 
-        // Start dragging the next item (if applicable)
-        startDraggingItem();
-    }
+		// Start dragging the next item (if applicable)
+		startDraggingItem();
+	}
 }
 
 	/// <summary>

@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://dxy583qe2yu3p"]
 
-[ext_resource type="Texture2D" uid="uid://l67usq2m444h" path="res://Assets/Texture/healthBar/CircularProgressBar.png" id="1_1lb0b"]
+[ext_resource type="Texture2D" uid="uid://bbh040afhilqm" path="res://Assets/Texture/healthBar/Crosshair-PNG-HD-Image.png" id="1_1lb0b"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player/HealthBar.cs" id="1_2tskg"]
-[ext_resource type="Texture2D" uid="uid://c43jnc1x8cb4g" path="res://Assets/Texture/healthBar/rond_noir.png" id="2_61aip"]
-[ext_resource type="Texture2D" uid="uid://bctxfcytce73y" path="res://Assets/Texture/pngHunger.png" id="3_lvlu3"]
-[ext_resource type="Texture2D" uid="uid://dtt0jb0q18pkd" path="res://Assets/Texture/pngHealth.png" id="4_fj60h"]
-[ext_resource type="Texture2D" uid="uid://dsmpq7igfo4mc" path="res://Assets/Texture/pngPollution2.png" id="5_klnu4"]
+[ext_resource type="Texture2D" path="res://Assets/Texture/healthBar/rond_noir.png" id="2_61aip"]
+[ext_resource type="Texture2D" path="res://Assets/Texture/pngHunger.png" id="3_lvlu3"]
+[ext_resource type="Texture2D" path="res://Assets/Texture/pngHealth.png" id="4_fj60h"]
+[ext_resource type="Texture2D" path="res://Assets/Texture/pngPollution2.png" id="5_klnu4"]
 
 [node name="CircularProgressBar" type="TextureProgressBar" node_paths=PackedStringArray("healthBar", "pollutionBar", "hungerBar")]
 anchors_preset = 2

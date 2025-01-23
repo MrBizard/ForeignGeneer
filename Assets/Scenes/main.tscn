@@ -1,11 +1,15 @@
-[gd_scene load_steps=26 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=30 format=3 uid="uid://dvxxm2v6se3nl"]
 
-[ext_resource type="Texture2D" uid="uid://cshgpc7k7548j" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://b15lkkjnjbf7x" path="res://Assets/damier.png" id="1_q455m"]
+[ext_resource type="Texture2D" uid="uid://b3av57ugvyn1k" path="res://Assets/Map/Scene/light-blue-polygon-abstract-backdrop-vector.png" id="1_uaivp"]
+[ext_resource type="Script" path="res://Assets/Map/Sky.cs" id="2_dpbjy"]
 [ext_resource type="Material" uid="uid://dpx2ub12p1e6i" path="res://Assets/Texture/Ingots/CopperIngot.tres" id="2_dqp1b"]
 [ext_resource type="Script" path="res://Assets/Scripts/World/MapTextureChanger3D.cs" id="2_uv61q"]
 [ext_resource type="Script" path="res://Assets/Scripts/Manager.cs" id="4_gc2hg"]
+[ext_resource type="Script" path="res://Assets/Map/ResourceGeneration.cs" id="8_3mxrg"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
+[ext_resource type="PackedScene" uid="uid://dr0wx8gw0fr57" path="res://Assets/Ingots/BreakableCopper.tscn" id="9_e7lci"]
 [ext_resource type="PackedScene" uid="uid://boeykrygcm5pg" path="res://Assets/Ingots/Qwartz.tscn" id="9_kmuow"]
 [ext_resource type="PackedScene" uid="uid://2afkyedmtxmx" path="res://Assets/Ingots/SteelBeam.tscn" id="10_83yg4"]
 [ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
@@ -15,8 +19,20 @@
 [ext_resource type="PackedScene" uid="uid://b128wbexawv5n" path="res://Assets/Ingots/BreakableGold.tscn" id="14_qbkp4"]
 [ext_resource type="PackedScene" uid="uid://cbqdocjdf345x" path="res://Assets/Prefabs/personnage.tscn" id="14_vtcps"]
 [ext_resource type="PackedScene" uid="uid://bm46vhmsrkfgg" path="res://Assets/Prefabs/laboratoire.tscn" id="15_2vg7g"]
+[ext_resource type="PackedScene" uid="uid://3ctfh5ewhkqf" path="res://Assets/Map/terra_brush.tscn" id="18_1on6b"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8cqe5"]
+sky_top_color = Color(0.339744, 0.418946, 0.755714, 1)
+sky_horizon_color = Color(0.0670527, 0.546076, 0.675175, 1)
+sky_curve = 0.227357
+sky_cover = ExtResource("1_uaivp")
+
+[sub_resource type="Sky" id="Sky_dt77i"]
+sky_material = SubResource("ProceduralSkyMaterial_8cqe5")
 
 [sub_resource type="Environment" id="Environment_chybd"]
+background_mode = 2
+sky = SubResource("Sky_dt77i")
 
 [sub_resource type="Shader" id="Shader_1mb4a"]
 code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable.mono's StandardMaterial3D.
@@ -111,25 +127,19 @@ shader = SubResource("Shader_1stix")
 [sub_resource type="BoxShape3D" id="BoxShape3D_w527i"]
 size = Vector3(2, 0, 2)
 
-[sub_resource type="TextMesh" id="TextMesh_ek6no"]
-
-[sub_resource type="MultiMesh" id="MultiMesh_20xaj"]
-use_colors = true
-mesh = SubResource("TextMesh_ek6no")
-
-[sub_resource type="BoxMesh" id="BoxMesh_ksdu6"]
-
 [node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_chybd")
+script = ExtResource("2_dpbjy")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
 [node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, -391.006, 0)
+visible = false
 material_override = SubResource("ShaderMaterial_nvyjx")
 material_overlay = ExtResource("2_dqp1b")
 mesh = SubResource("PlaneMesh_64wmt")
@@ -148,8 +158,12 @@ ingot = NodePath("Ingot")
 
 [node name="Ingot" type="Node" parent="Manager"]
 
-[node name="Groundtest" type="MultiMeshInstance3D" parent="."]
-multimesh = SubResource("MultiMesh_20xaj")
+[node name="ObjectSpawner" type="Node3D" parent="Manager" node_paths=PackedStringArray("Map")]
+script = ExtResource("8_3mxrg")
+Map = NodePath("../../TerraBrush")
+CopperResourceScene = ExtResource("9_e7lci")
+IronResourceScene = ExtResource("13_l7mfa")
+GoldResourceScene = ExtResource("14_qbkp4")
 
 [node name="PlayerInventoryManager" type="Control" parent="."]
 layout_mode = 3
@@ -165,11 +179,6 @@ cursorItemPackedScene = ExtResource("12_20xxc")
 testItem = ExtResource("8_n27y6")
 metadata/_edit_use_anchors_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.00015, 0, 0, 0, 0.983677, 0, 0, 0, 1.00352, -6.35277, 0, 0)
-mesh = SubResource("BoxMesh_ksdu6")
-skeleton = NodePath("")
-
 [node name="Node3D" parent="." instance=ExtResource("9_kmuow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.267573, 0, -1.50858)
 
@@ -184,12 +193,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.633701, 0, -2.39798)
 
 [node name="Node3D5" parent="." instance=ExtResource("13_l7mfa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04554, -0.00177994, -2.63841)
+resourceStatic = null
 
 [node name="Node3D6" parent="." instance=ExtResource("14_qbkp4")]
 transform = Transform3D(1.00214, 0, 0, 0, 1.00214, 0, 0, 0, 1.00214, 2.73517, 0, -0.41766)
+resourceStatic = null
 
 [node name="Personnage" parent="." instance=ExtResource("14_vtcps")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128953, 0, -0.531207)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.129, 2, -0.531)
 
 [node name="Laboratoire" parent="." instance=ExtResource("15_2vg7g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.529425, 0, -16.4431)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.529425, 0.484992, -16.4431)
+
+[node name="TerraBrush" parent="." instance=ExtResource("18_1on6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92, 0)

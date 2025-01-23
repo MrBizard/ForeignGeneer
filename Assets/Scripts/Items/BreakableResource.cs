@@ -15,7 +15,7 @@ public partial class BreakableResource : StaticBody3D
 	{
 		item= new StackItem(resourceStatic);
 		collisionShape = GetNode<CollisionShape3D>("CollisionShape3D");
-        
+		
 			
 	}
 

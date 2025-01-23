@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://b128wbexawv5n"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Items/BreakableResource.cs" id="1_uibr0"]
-[ext_resource type="ArrayMesh" uid="uid://bm8u61v31ecnp" path="res://Assets/Model/pierre_resource.obj" id="2_6jck3"]
+[ext_resource type="ArrayMesh" uid="uid://v2auup8q11tr" path="res://Assets/Model/pierre_resource.obj" id="2_6jck3"]
 [ext_resource type="Resource" uid="uid://bm3go87kfhwgj" path="res://Assets/Resource/Items/Ingots/GoldIngotBreakable.tres" id="2_h1brg"]
 [ext_resource type="Material" uid="uid://ciyjaua6jtpmh" path="res://Assets/Texture/Ingots/GoldIngot.tres" id="4_n3k8y"]
 

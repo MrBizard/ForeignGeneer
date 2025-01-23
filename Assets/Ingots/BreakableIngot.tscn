@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Assets/Scripts/Items/BreakableResource.cs" id="1_8bkoe"]
 [ext_resource type="Resource" uid="uid://cs7fqg0nt4r22" path="res://Assets/Resource/Items/Ingots/IronIngotBreakable.tres" id="2_sp6w1"]
-[ext_resource type="ArrayMesh" uid="uid://bm8u61v31ecnp" path="res://Assets/Model/pierre_resource.obj" id="3_rq4b1"]
+[ext_resource type="ArrayMesh" uid="uid://v2auup8q11tr" path="res://Assets/Model/pierre_resource.obj" id="3_rq4b1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0celr"]
 albedo_color = Color(0.485703, 0.485704, 0.485703, 1)

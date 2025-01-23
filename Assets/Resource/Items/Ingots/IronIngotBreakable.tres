@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=5 format=3 uid="uid://cs7fqg0nt4r22"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ResourceStatic.cs" id="1_1gqtl"]
-[ext_resource type="Texture2D" uid="uid://bq5ja65a0547e" path="res://Assets/Texture/Ingots/lingot_iron.png" id="1_jargm"]
+[ext_resource type="Texture2D" uid="uid://blddy8ly01ulb" path="res://Assets/Texture/Ingots/lingot_iron.png" id="1_jargm"]
 [ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Ingots/Ingot.tscn" id="3_wjtxt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eng13"]
