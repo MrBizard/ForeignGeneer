@@ -420,7 +420,6 @@ script = ExtResource("1_0i48f")
 _centralPackedScene = ExtResource("2_myhkg")
 _recipeListUiPackedScene = ExtResource("3_ejnxr")
 recipeList = ExtResource("4_byib5")
-central = null
 
 [node name="broyeuse" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)

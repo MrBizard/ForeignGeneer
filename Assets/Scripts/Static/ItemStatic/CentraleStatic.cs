@@ -21,7 +21,7 @@ public partial class CentraleStatic : ItemStatic
 
 		itemInstantiate.GlobalPosition = pos;
 
-		itemInstantiate.central = this;
+		itemInstantiate.electricalCost = electricalCost;
 
 		GD.Print($"Données du prefab : ElectricalCost = {electricalCost}, PollutionIndex = {pollutionIndex}");
 

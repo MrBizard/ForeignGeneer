@@ -18,7 +18,7 @@ public partial class FactoryStatic : ItemStatic
 
 		itemInstantiate.GlobalPosition = pos;
 
-		itemInstantiate.factoryStatic = this;
+		itemInstantiate.electricalCost = electricalCost;
 
 		GD.Print($"Données du prefab : ElectricalCost = {electricalCost}, PollutionIndex = {pollutionIndex}");
 

@@ -5,13 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="6_bx4pk"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
+[ext_resource type="Resource" uid="uid://dntk2t6cqixx2" path="res://Assets/Resource/Block/fonderie.tres" id="9_mj1jr"]
 [ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
-[ext_resource type="PackedScene" uid="uid://g6omwstlx734" path="res://Assets/Prefabs/central/CentralBiomasse.tscn" id="11_ueu8c"]
+[ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="11_ueu8c"]
 [ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
 [ext_resource type="PackedScene" uid="uid://dsto6j1nxsnuk" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
 [ext_resource type="Resource" uid="uid://cygoqqhi7v22u" path="res://Assets/Resource/Block/central/CoalCentral.tres" id="12_ncb1l"]
 [ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
-[ext_resource type="Resource" uid="uid://cgwe0r2wf87kp" path="res://Assets/Resource/Block/Fonderie.tres" id="19_e5pkf"]
 [ext_resource type="Script" path="res://addons/terrabrush/TerraBrush.cs" id="19_goxem"]
 [ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableGold.tscn" id="19_lp64r"]
 [ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableIngot.tscn" id="20_2qc85"]
@@ -349,7 +349,7 @@ inventoryUiPackedScene = ExtResource("9_5liml")
 cursorItemPackedScene = ExtResource("12_20xxc")
 testItem = ExtResource("8_n27y6")
 testItem2 = ExtResource("12_ncb1l")
-testItem3 = ExtResource("19_e5pkf")
+testItem3 = ExtResource("9_mj1jr")
 metadata/_edit_use_anchors_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -359,7 +359,6 @@ skeleton = NodePath("")
 
 [node name="Fonderie" parent="." instance=ExtResource("11_ueu8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.179714, 0, -3.56134)
-central = ExtResource("12_ncb1l")
 
 [node name="Fonderie2" parent="." instance=ExtResource("12_b1lrc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.63558, 0, -0.852051)

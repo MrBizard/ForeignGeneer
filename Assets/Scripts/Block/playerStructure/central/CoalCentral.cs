@@ -7,7 +7,6 @@ public partial class CoalCentral : StaticBody3D, ICentral
     [Export] private PackedScene _centralPackedScene;
     [Export] private PackedScene _recipeListUiPackedScene;
     [Export] public RecipeList recipeList { get; set; }
-    [Export]public CentraleStatic central { get; set; }
     public float pollutionInd { get; set; }
     public Inventory input { get; set; }
     public Craft craft { get; set; }
@@ -19,6 +18,7 @@ public partial class CoalCentral : StaticBody3D, ICentral
     private CentralUi _centralUi;
     private RecetteList _recipeListUi;
     private Manager _manager;
+    public float electricalCost = 0;
     public override void _Ready()
     {
         base._Ready();
@@ -80,7 +80,7 @@ public partial class CoalCentral : StaticBody3D, ICentral
         {
             return;
         }
-        _manager.addGlobalElectricity(central.electricalCost);
+        _manager.addGlobalElectricity(electricalCost);
         if (!craft.consumeResources())
         {
             return;
@@ -104,7 +104,7 @@ public partial class CoalCentral : StaticBody3D, ICentral
     private void onCraftFinished()
     {
         isCrafting = false;
-        _manager.removeGlobalElectricity(central.electricalCost);
+        _manager.removeGlobalElectricity(electricalCost);
         craftTimer.QueueFree();
 
         if (craft.recipe.output != null)

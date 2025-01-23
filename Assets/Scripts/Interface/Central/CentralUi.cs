@@ -92,7 +92,7 @@ public partial class CentralUi : Control
         if (_electricityLabel != null)
         {
             GD.Print("central ",_central);
-            _electricityLabel.Text = $"Puissance : {_central.central.electricalCost} kW/s|| Électricité totale : {_manager.getGlobalElectricity()} kW/s";
+            _electricityLabel.Text = $"Puissance : {_central.electricalCost} kW/s|| Électricité totale : {_manager.getGlobalElectricity()} kW/s";
         }
     }
 

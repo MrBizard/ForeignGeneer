@@ -9,8 +9,7 @@ public partial class Fonderie : StaticBody3D, IFactory
 	[Export] public PackedScene _recipeListUiPackedScene { get; set; }
 	[Export] public int _inputSlotCount { get; set; } = 2;
 	[Export] public PackedScene _factoryUiPackedScene { get; set; }
-	[Export] public FactoryStatic factoryStatic { get; set; }
-
+	public float electricalCost = 0;
 	// Autres propriétés
 	public Craft craft { get; set; }
 	public Inventory input { get; set; }
@@ -93,7 +92,7 @@ public partial class Fonderie : StaticBody3D, IFactory
 
 	private void startCraft()
 	{
-		if (isCrafting || !_manager.hasEnergy(factoryStatic.electricalCost))
+		if (isCrafting || !_manager.hasEnergy(electricalCost))
 		{
 			return;
 		}

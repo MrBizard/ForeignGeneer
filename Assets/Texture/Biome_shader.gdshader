@@ -9,7 +9,7 @@ uniform float overlay_strength = 0.0; // Ranges from 0.0 (no overlay) to 1.0 (fu
 
 void fragment() {
     // Compute the distance from the fragment to the player position
-    float distance_to_player = distance(VERTEX, player_position);   
+    float distance_to_player = distance(VERTEX, player_position);
 
     // Determine the overlay factor based on distance and radius
     float overlay_factor = smoothstep(radius, radius * 0.9, distance_to_player);

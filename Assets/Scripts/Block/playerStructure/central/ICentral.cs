@@ -6,7 +6,6 @@ public interface ICentral : IPlayerStructure, IRecipeUser
 {
     Inventory input { get; set; }
     Craft craft { get; set; }
-    CentraleStatic central { get; set; }
     short tier { get; set; }
     public float craftProgress { get; }
     public Timer craftTimer { get; set;}
