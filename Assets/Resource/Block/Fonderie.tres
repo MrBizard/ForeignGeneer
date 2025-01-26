@@ -1,13 +1,13 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://bplqhnnt1j10p"]
 
-[ext_resource type="Texture2D" uid="uid://7jopysk25vs3" path="res://Assets/Texture/factory/icon_fonderie.png" id="1_8f4um"]
-[ext_resource type="PackedScene" uid="uid://c4j426vhjg2ye" path="res://Assets/Model/block/factory/Fonderie.glb" id="2_x22m4"]
+[ext_resource type="Texture2D" uid="uid://cnrj6aqfhhttc" path="res://Assets/Texture/factory/icon_fonderie.png" id="1_8f4um"]
+[ext_resource type="PackedScene" uid="uid://3hd4ryoaeymv" path="res://Assets/Model/block/factory/Fonderie.glb" id="2_x22m4"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/FactoryStatic.cs" id="3_0kecq"]
 
 [resource]
 script = ExtResource("3_0kecq")
-ElectricalCost = 0
-PollutionIndex = 0
+electricalCost = 0
+pollutionIndex = 0
 _maxStack = 1
 _prefab = ExtResource("2_x22m4")
 _inventoryIcon = ExtResource("1_8f4um")

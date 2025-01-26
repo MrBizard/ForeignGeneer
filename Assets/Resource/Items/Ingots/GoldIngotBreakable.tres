@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=5 format=3 uid="uid://bm3go87kfhwgj"]
 
-[ext_resource type="Texture2D" uid="uid://dssws3dg5kxrq" path="res://Assets/Texture/Ingots/lingot_gold.png" id="1_ann2y"]
+[ext_resource type="Texture2D" uid="uid://buji373m5xcis" path="res://Assets/Texture/Ingots/lingot_gold.png" id="1_ann2y"]
 [ext_resource type="Material" uid="uid://ciyjaua6jtpmh" path="res://Assets/Texture/Ingots/GoldIngot.tres" id="2_bt32l"]
 [ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Ingots/Ingot.tscn" id="3_4mb63"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ResourceStatic.cs" id="3_ygy8x"]
