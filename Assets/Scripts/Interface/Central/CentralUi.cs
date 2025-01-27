@@ -10,7 +10,7 @@ public partial class CentralUi : Control
     private ProgressBar _craftProgressBar;
     private HBoxContainer _inputList;
     private VBoxContainer _mainContainer;
-    private PlayerInventoryManager _playerInventoryManager;
+    private InventoryManager _playerInventoryManager;
     private TextEdit _craftText;
     private Button _resetCraftButton;
     private Label _electricityLabel;
@@ -63,7 +63,7 @@ public partial class CentralUi : Control
         _mainContainer = GetNode<VBoxContainer>("Container");
         _inputList = GetNode<HBoxContainer>("Container/InputList");
         _craftProgressBar = GetNode<ProgressBar>("Container/ProgressBar");
-        _playerInventoryManager = GetNode<PlayerInventoryManager>("/root/Main/PlayerInventoryManager");
+        _playerInventoryManager = GetNode<InventoryManager>("/root/Main/PlayerInventoryManager");
         _craftText = GetNode<TextEdit>("CraftText");
         _electricityLabel = GetNode<Label>("Quantity");
         _manager = GetNode<Manager>("/root/Main/Manager");

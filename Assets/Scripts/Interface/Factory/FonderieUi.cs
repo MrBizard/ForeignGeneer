@@ -12,7 +12,7 @@ public partial class FonderieUi : Control
     private VBoxContainer _inputList;
     private VBoxContainer _outputContainer;
     private HBoxContainer _mainContainer;
-    private PlayerInventoryManager _playerInventoryManager;
+    private InventoryManager _playerInventoryManager;
     private TextEdit _craftText;
     private Button _resetCraftButton;
 
@@ -80,7 +80,7 @@ public partial class FonderieUi : Control
         _inputList = GetNode<VBoxContainer>("Container/InputList");
         _outputContainer = GetNode<VBoxContainer>("Container/OutputContainer");
         _craftProgressBar = GetNode<ProgressBar>("Container/ProgressBar");
-        _playerInventoryManager = GetNode<PlayerInventoryManager>("/root/Main/PlayerInventoryManager");
+        _playerInventoryManager = GetNode<InventoryManager>("/root/Main/PlayerInventoryManager");
         _craftText = GetNode<TextEdit>("CraftText");
 
         _resetCraftButton = GetNode<Button>("Button");

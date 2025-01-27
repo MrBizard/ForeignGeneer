@@ -163,7 +163,6 @@ public partial class Fonderie : StaticBody3D, IFactory
 				_recipeListUi = _recipeListUiPackedScene.Instantiate<RecetteList>();
 				GetTree().Root.AddChild(_recipeListUi);
 				_recipeListUi.initialize(this);
-				inventoryUi.setInventoryVisible(false); // Masquer l'inventaire si nécessaire
 			}
 		}
 		else
@@ -182,7 +181,6 @@ public partial class Fonderie : StaticBody3D, IFactory
 
 				if (!inventoryUi.Visible)
 				{
-					inventoryUi.setInventoryVisible(true); // Afficher l'inventaire
 					inventoryUi.Position = new Vector2(_factoryUi.Position.X - inventoryUi.Size.X - 10, _factoryUi.Position.Y);
 				}
 
@@ -215,10 +213,6 @@ public partial class Fonderie : StaticBody3D, IFactory
 		}
 
 		var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
-		if (inventoryUi != null)
-		{
-			inventoryUi.setInventoryVisible(false); // Masquer l'inventaire
-		}
 
 		Input.MouseMode = Input.MouseModeEnum.Hidden;
 	}

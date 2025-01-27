@@ -3,116 +3,61 @@ using Godot;
 public partial class InventoryUi : Control
 {
     [Export] public PackedScene slotUiPackedScene;
-    public PlayerInventoryManager playerInventoryManager;
     private HBoxContainer hotbarContainer;
     private GridContainer mainInventoryContainer;
-    private bool _isInventoryVisible = false; // Nouvelle variable pour gérer la visibilité
 
     public override void _Ready()
     {
-        Visible = _isInventoryVisible; // Synchroniser avec la variable
         hotbarContainer = GetNode<HBoxContainer>("Hotbar");
         mainInventoryContainer = GetNode<GridContainer>("MainInventory");
-        playerInventoryManager = GetParent<PlayerInventoryManager>();
-        initializeInventoryUi();
-        updateUi();
+
+        InitializeInventoryUi();
+        UpdateUi();
     }
 
     /// <summary>
     /// Initialise l'UI de l'inventaire.
     /// </summary>
-    private void initializeInventoryUi()
+    private void InitializeInventoryUi()
     {
-        for (int i = 0; i < playerInventoryManager.hotbarSize; i++)
+        for (int i = 0; i < InventoryManager.Instance.HotbarSize; i++)  
         {
             var slot = slotUiPackedScene.Instantiate<SlotUI>();
             hotbarContainer.AddChild(slot);
-            slot.initialize(playerInventoryManager.hotbar.getItem(i), playerInventoryManager.hotbar, playerInventoryManager);
+            slot.initialize(InventoryManager.Instance.hotbar.getItem(i), InventoryManager.Instance.hotbar, InventoryManager.Instance);
         }
 
-        for (int i = 0; i < playerInventoryManager.mainInventorySize; i++)
+        for (int i = 0; i < InventoryManager.Instance.mainInventorySize; i++)
         {
             var slot = slotUiPackedScene.Instantiate<SlotUI>();
             mainInventoryContainer.AddChild(slot);
-            slot.initialize(playerInventoryManager.mainInventory.getItem(i), playerInventoryManager.mainInventory, playerInventoryManager);
+            slot.initialize(InventoryManager.Instance.mainInventory.getItem(i), InventoryManager.Instance.mainInventory, InventoryManager.Instance);
         }
     }
 
     /// <summary>
     /// Met à jour l'UI de l'inventaire.
     /// </summary>
-    public void updateUi()
+    public void UpdateUi()
     {
-        for (int i = 0; i < playerInventoryManager.hotbarSize; i++)
+        for (int i = 0; i < InventoryManager.Instance.HotbarSize; i++)
         {
-            var item = playerInventoryManager.hotbar.getItem(i);
+            var item = InventoryManager.Instance.hotbar.getItem(i);
             if (item != null)
             {
                 var slot = hotbarContainer.GetChild(i) as SlotUI;
-                slot?.initialize(item, playerInventoryManager.hotbar, playerInventoryManager);
+                slot?.initialize(item, InventoryManager.Instance.hotbar, InventoryManager.Instance);
             }
         }
 
-        for (int i = 0; i < playerInventoryManager.mainInventorySize; i++)
+        for (int i = 0; i < InventoryManager.Instance.mainInventorySize; i++)
         {
-            var item = playerInventoryManager.mainInventory.getItem(i);
+            var item = InventoryManager.Instance.mainInventory.getItem(i);
             if (item != null)
             {
                 var slot = mainInventoryContainer.GetChild(i) as SlotUI;
-                slot?.initialize(item, playerInventoryManager.mainInventory, playerInventoryManager);
+                slot?.initialize(item, InventoryManager.Instance.mainInventory, InventoryManager.Instance);
             }
-        }
-    }
-
-    /// <summary>
-    /// Bascule la visibilité de l'inventaire.
-    /// </summary>
-    public void toggleInventory()
-    {
-        _isInventoryVisible = !_isInventoryVisible; // Mettre à jour la variable
-        Visible = _isInventoryVisible; // Synchroniser avec la propriété Visible
-        GD.Print("Inventory visibility toggled to: " + _isInventoryVisible);
-
-        if (_isInventoryVisible)
-        {
-            Input.MouseMode = Input.MouseModeEnum.Visible;
-            playerInventoryManager.MouseFilter = MouseFilterEnum.Stop;
-            updateUi();
-        }
-        else
-        {
-            if (playerInventoryManager.currentItemInMouse != null)
-            {
-                playerInventoryManager.dropItemOutsideInventory();
-            }
-            playerInventoryManager.MouseFilter = MouseFilterEnum.Ignore;
-            Input.MouseMode = Input.MouseModeEnum.Captured;
-        }
-    }
-
-    /// <summary>
-    /// Définit la visibilité de l'inventaire.
-    /// </summary>
-    /// <param name="visible">True pour afficher, False pour masquer.</param>
-    public void setInventoryVisible(bool visible)
-    {
-        _isInventoryVisible = visible;
-        Visible = _isInventoryVisible;
-
-        if (_isInventoryVisible)
-        {
-            Input.MouseMode = Input.MouseModeEnum.Visible;
-            playerInventoryManager.MouseFilter = MouseFilterEnum.Stop;
-            updateUi();
-        }
-        else
-        {
-            if (playerInventoryManager.currentItemInMouse != null)
-            {
-                playerInventoryManager.dropItemOutsideInventory();
-            }
-            playerInventoryManager.MouseFilter = MouseFilterEnum.Ignore;
-            Input.MouseMode = Input.MouseModeEnum.Captured;
         }
     }
 }

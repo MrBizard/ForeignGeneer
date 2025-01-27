@@ -29,7 +29,6 @@ public partial class FactoryStatic : ItemStatic
 	{
 		player.GetParent().AddChild(instantiateFactory(player.Position + new Vector3(1, 0.1f, 1)));
 
-		player._invManager.hotbar.removeItem(player.currentItemInHand, 1);
-		player._invManager.hotbar.notifyInventoryUpdated();
+		
 	}
 }

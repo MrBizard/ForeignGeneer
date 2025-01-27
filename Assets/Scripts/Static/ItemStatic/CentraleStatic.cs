@@ -32,7 +32,7 @@ public partial class CentraleStatic : ItemStatic
 	{
 		player.GetParent().AddChild(instantiateFactory(player.Position + new Vector3(1, 0.1f, 1)));
 
-		player._invManager.hotbar.removeItem(player.currentItemInHand, 1);
-		player._invManager.hotbar.notifyInventoryUpdated();
+		InventoryManager.Instance.hotbar.removeItem(0, 1);
+		InventoryManager.Instance.hotbar.notifyInventoryUpdated();
 	}
 }

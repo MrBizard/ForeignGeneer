@@ -1,144 +1,138 @@
 using Godot;
-using System;
 
 public partial class Player : CharacterBody3D
 {
-	public float Speed = 5.0f;
-	public const float LerpVal = 0.5f;
-	private bool b_IsSprinting = false;
-	public Inventory inv;
-	
-	private Node3D Armature;
-	private Node3D Pivot;
-	private SpringArm3D SpringArm;
-	private AnimationTree AnimTree;
+    public static Player Instance { get; private set; }
 
-	//main et l'objet a attaché
-	[Export] private Node3D handNode;
-    [Export] private PackedScene objectToAttach;
+    [Export] public float Speed = 5.0f; // Vitesse de base du joueur
+    public const float LerpVal = 0.5f; // Valeur de lissage pour les mouvements
+    private bool _isSprinting = false; // Indicateur de sprint
 
-	public int currentItemInHand = 0;
-	public PlayerInventoryManager _invManager;
-	public override void _Ready()
-	{
-		_invManager = GetNode<PlayerInventoryManager>("/root/Main/PlayerInventoryManager");
-		inv = _invManager.mainInventory;
-		Armature = GetNode<Node3D>("Armature_001");
-		Pivot = GetNode<Node3D>("Pivot");
-		SpringArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
-		AnimTree = GetNode<AnimationTree>("AnimationTree");
+    // Références aux nœuds de la scène
+    private Node3D _armature;
+    private Node3D _pivot;
+    private SpringArm3D _springArm;
+    private AnimationTree _animTree;
 
-		Input.MouseMode = Input.MouseModeEnum.Captured;
+    private Vector3 _movementDirection = Vector3.Zero; // Direction du mouvement
 
-		if (handNode == null)
-        {
-            GD.PrintErr("node de la main non assigné (script Player)");
-        }
-	}
-
-	public override void _UnhandledInput(InputEvent @event)
-	{
-		if (Input.IsKeyPressed(Key.Shift))
-		{
-			Speed = 50.0f;
-		}
-		else
-		{
-			Speed = 5.0f;
-		}
-		if (IsOnFloor() && Input.IsActionJustPressed("Jump"))
-		{
-			//saut
-			Velocity = new Vector3(Velocity.X, 5.0f, Velocity.Z);
-		}
-		if (@event is InputEventMouseMotion mouseMotionEvent)
-		{
-			Pivot.RotateY(-mouseMotionEvent.Relative.X* 0.005f);
-			SpringArm.RotateX(-mouseMotionEvent.Relative.Y * 0.005f);
-			Vector3 springArmRotation = SpringArm.Rotation;
-			springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 3, Mathf.Pi / 3);
-			SpringArm.Rotation = springArmRotation;
-		}
-	}
-
-	public override void _Process(double delta)
-	{
-		base._Process(delta);
-		if (Input.IsActionJustPressed("leftClick"))
-		{
-			
-		}
-		if (Input.IsActionJustPressed("rightClick"))
-		{
-			StackItem curentItem = _invManager.hotbar.getItem(currentItemInHand);
-			if (curentItem != null)
-			{
-				curentItem.getResource().RightClick(this);
-			}
-		}
-	}
-
-	public override void _PhysicsProcess(double delta)
-	{	
-
-		// Add gravity if not on the floor.
-		if (!IsOnFloor())
-		{
-			Velocity += GetGravity() * (float)delta;
-		}
-
-		
-		// Get input direction and handle movement and deceleration.
-		Vector2 inputDir = Input.GetVector("left", "right", "forward", "backward");
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-		direction = direction.Rotated(Vector3.Up, Pivot.Rotation.Y);
-
-		if (direction != Vector3.Zero)
-		{
-			Velocity = new Vector3(
-				Mathf.Lerp(Velocity.X, direction.X * Speed, LerpVal),
-				Velocity.Y,
-				Mathf.Lerp(Velocity.Z, direction.Z * Speed, LerpVal)
-			);
-
-			float targetRotationY = Mathf.Atan2(-Velocity.X, -Velocity.Z);
-			Armature.Rotation = new Vector3(
-				Armature.Rotation.X,
-				Mathf.LerpAngle(Armature.Rotation.Y, targetRotationY, LerpVal),
-				Armature.Rotation.Z
-			);
-		}
-		else
-		{
-			Velocity = new Vector3(
-				Mathf.Lerp(Velocity.X, 0.0f, LerpVal),
-				Velocity.Y,
-				Mathf.Lerp(Velocity.Z, 0.0f, LerpVal)
-			);
-		}
-
-		AnimTree.Set("parameters/BlendSpace1D/blend_position", Velocity.Length() / Speed);
-		MoveAndSlide();
-	}
-
-
-	// Permet d'attacher et de faire suivre l'objet actuellement selectionée dans la main 
-	//(necessite un personnage avec une main détaché du reste du corps
-	//	pour faire suivre l'objet avec l'animation)
-
-	/*public void AttachObjectToHand()
+    public override void _Ready()
     {
-        if (handNode == null || objectToAttach == null)
+        if (Instance == null)
         {
-            GD.PrintErr("Hand node or object to attach is not assigned!");
-            return;
+            Instance = this;
+        }
+        else
+        {
+            QueueFree(); // Assure qu'il n'y a qu'une seule instance
         }
 
-        var objectInstance = (Node3D)objectToAttach.Instantiate();
-        handNode.AddChild(objectInstance);
+        // Initialisation des références aux nœuds
+        _armature = GetNode<Node3D>("Armature_001");
+        _pivot = GetNode<Node3D>("Pivot");
+        _springArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
+        _animTree = GetNode<AnimationTree>("AnimationTree");
 
-        // Set object's transform (adjust as needed)
-        objectInstance.Translation = new Vector3(0, 0, 0); // Adjust for the hand position
-        objectInstance.RotationDegrees = new Vector3(0, 90, 0); // Adjust for orientation
-    }*/
+        // Capture la souris pour les contrôles de la caméra
+        Input.MouseMode = Input.MouseModeEnum.Captured;
+    }
+
+    // Méthode pour activer/désactiver le sprint
+    public void SetSprinting(bool isSprinting)
+    {
+        _isSprinting = isSprinting;
+        Speed = isSprinting ? 50.0f : 5.0f;
+    }
+
+    // Méthode pour faire sauter le joueur
+    public void Jump()
+    {
+        if (IsOnFloor())
+        {
+            Velocity = new Vector3(Velocity.X, 5.0f, Velocity.Z);
+        }
+    }
+
+    // Méthode pour gérer le clic gauche
+    public void LeftClick()
+    {
+        // Logique pour le clic gauche (à implémenter)
+    }
+
+    // Méthode pour gérer le clic droit
+    public void RightClick()
+    {
+        // Logique pour le clic droit (à implémenter)
+    }
+
+    // Méthode pour gérer la rotation de la caméra
+    public void RotateCamera(Vector2 mouseDelta)
+    {
+        _pivot.RotateY(-mouseDelta.X * 0.005f); // Rotation horizontale
+        _springArm.RotateX(-mouseDelta.Y * 0.005f); // Rotation verticale
+
+        // Limite la rotation verticale de la caméra
+        Vector3 springArmRotation = _springArm.Rotation;
+        springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 3, Mathf.Pi / 3);
+        _springArm.Rotation = springArmRotation;
+    }
+
+    // Méthode pour gérer le mouvement
+    public void Move(Vector2 inputDir)
+    {
+        _movementDirection = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+        _movementDirection = _movementDirection.Rotated(Vector3.Up, _pivot.Rotation.Y);
+    }
+
+    // Méthode pour arrêter le mouvement
+    public void StopMoving()
+    {
+        _movementDirection = Vector3.Zero;
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        // Applique la gravité si le joueur n'est pas au sol
+        if (!IsOnFloor())
+        {
+            Velocity += GetGravity() * (float)delta;
+        }
+
+        // Applique le mouvement
+        if (_movementDirection != Vector3.Zero)
+        {
+            Velocity = new Vector3(
+                Mathf.Lerp(Velocity.X, _movementDirection.X * Speed, LerpVal),
+                Velocity.Y,
+                Mathf.Lerp(Velocity.Z, _movementDirection.Z * Speed, LerpVal)
+            );
+
+            // Calcule la rotation du personnage en fonction de la direction
+            float targetRotationY = Mathf.Atan2(-Velocity.X, -Velocity.Z);
+            _armature.Rotation = new Vector3(
+                _armature.Rotation.X,
+                Mathf.LerpAngle(_armature.Rotation.Y, targetRotationY, LerpVal),
+                _armature.Rotation.Z
+            );
+        }
+        else
+        {
+            // Arrête progressivement le mouvement
+            Velocity = new Vector3(
+                Mathf.Lerp(Velocity.X, 0.0f, LerpVal),
+                Velocity.Y,
+                Mathf.Lerp(Velocity.Z, 0.0f, LerpVal)
+            );
+        }
+
+        // Met à jour l'animation du personnage
+        if (_animTree != null)
+        {
+            float blendPosition = Velocity.Length() / Speed;
+            _animTree.Set("parameters/BlendSpace1D/blend_position", blendPosition);
+        }
+
+        // Applique le mouvement
+        MoveAndSlide();
+    }
 }

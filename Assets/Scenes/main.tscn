@@ -1,14 +1,15 @@
-[gd_scene load_steps=110 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=111 format=3 uid="uid://dvxxm2v6se3nl"]
 
+[ext_resource type="Script" path="res://Assets/Scripts/manager/UiManager.cs" id="4_7gey5"]
 [ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="4_xqtcq"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="5_6hg80"]
+[ext_resource type="Script" path="res://Assets/Scripts/manager/InputManager.cs" id="5_41tt0"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="6_bx4pk"]
+[ext_resource type="Script" path="res://Assets/Scripts/manager/InventoryManager.cs" id="7_rb38d"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
 [ext_resource type="Resource" uid="uid://bplqhnnt1j10p" path="res://Assets/Resource/Block/Fonderie.tres" id="9_mj1jr"]
-[ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="10_pvxxy"]
 [ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="11_ueu8c"]
-[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="12_20xxc"]
 [ext_resource type="PackedScene" uid="uid://dsto6j1nxsnuk" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
 [ext_resource type="Resource" uid="uid://cygoqqhi7v22u" path="res://Assets/Resource/Block/central/CoalCentral.tres" id="12_ncb1l"]
 [ext_resource type="PackedScene" uid="uid://ktfq1ucdt8rt" path="res://Assets/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
@@ -323,50 +324,25 @@ environment = SubResource("Environment_chybd")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Personnage" parent="." instance=ExtResource("4_xqtcq")]
-
 [node name="Manager" type="Node" parent="."]
 script = ExtResource("5_6hg80")
 option = ExtResource("6_bx4pk")
 
-[node name="Ingot" type="Node" parent="Manager"]
+[node name="UiManager" type="Node" parent="Manager"]
+script = ExtResource("4_7gey5")
+_inventoryUIScene = ExtResource("9_5liml")
+
+[node name="InputManager" type="Node" parent="Manager"]
+script = ExtResource("5_41tt0")
+
+[node name="InventoryManager" type="Node" parent="Manager"]
+script = ExtResource("7_rb38d")
+testItem = ExtResource("8_n27y6")
+testItem2 = ExtResource("9_mj1jr")
+testItem3 = ExtResource("12_ncb1l")
 
 [node name="Groundtest" type="MultiMeshInstance3D" parent="."]
 multimesh = SubResource("MultiMesh_20xaj")
-
-[node name="PlayerInventoryManager" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("10_pvxxy")
-inventoryUiPackedScene = ExtResource("9_5liml")
-cursorItemPackedScene = ExtResource("12_20xxc")
-testItem = ExtResource("8_n27y6")
-testItem2 = ExtResource("12_ncb1l")
-testItem3 = ExtResource("9_mj1jr")
-metadata/_edit_use_anchors_ = true
-
-[node name="Fonderie" parent="." instance=ExtResource("11_ueu8c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5101, 0, -9.97661)
-
-[node name="Fonderie2" parent="." instance=ExtResource("12_b1lrc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8025, 0, -8.58498)
-
-[node name="Node3D" parent="." instance=ExtResource("19_lp64r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2422, -0.181495, 2.2958)
-
-[node name="Node3D2" parent="." instance=ExtResource("20_2qc85")]
-transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, 0.18498, -0.181495, 2.71123)
-
-[node name="Node3D4" parent="." instance=ExtResource("18_jsjwk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36416, -0.18536, 1.20138)
-
-[node name="labo" parent="." instance=ExtResource("21_58cnq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.33152, 0.20511, -18.8215)
 
 [node name="TerraBrush" type="Node3D" parent="."]
 script = ExtResource("19_goxem")
@@ -377,44 +353,69 @@ Objects = []
 TerrainZones = SubResource("Resource_04nko")
 metadata/_edit_lock_ = false
 
-[node name="Node3D3" parent="." instance=ExtResource("18_jsjwk")]
+[node name="worldStructure" type="Node" parent="."]
+
+[node name="static" type="Node" parent="worldStructure"]
+
+[node name="Fonderie" parent="worldStructure/static" instance=ExtResource("11_ueu8c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5101, 0, -9.97661)
+
+[node name="Fonderie2" parent="worldStructure/static" instance=ExtResource("12_b1lrc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8025, 0, -8.58498)
+
+[node name="Node3D" parent="worldStructure/static" instance=ExtResource("19_lp64r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2422, -0.181495, 2.2958)
+
+[node name="Node3D2" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
+transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, 0.18498, -0.181495, 2.71123)
+
+[node name="Node3D4" parent="worldStructure/static" instance=ExtResource("18_jsjwk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36416, -0.18536, 1.20138)
+
+[node name="labo" parent="worldStructure/static" instance=ExtResource("21_58cnq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.33152, 0.20511, -18.8215)
+
+[node name="Node3D3" parent="worldStructure/static" instance=ExtResource("18_jsjwk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6419, 0, 7.25972)
 
-[node name="Node3D5" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D5" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, -1.47083, 0, 39.1234)
 
-[node name="Node3D6" parent="." instance=ExtResource("19_lp64r")]
+[node name="Node3D6" parent="worldStructure/static" instance=ExtResource("19_lp64r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.58518, -2.38419e-07, 29.7133)
 
-[node name="Node3D7" parent="." instance=ExtResource("18_jsjwk")]
+[node name="Node3D7" parent="worldStructure/static" instance=ExtResource("18_jsjwk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.708, 2.38419e-07, -26.4752)
 
-[node name="Node3D8" parent="." instance=ExtResource("18_jsjwk")]
+[node name="Node3D8" parent="worldStructure/static" instance=ExtResource("18_jsjwk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -67.199, 0, -78.5171)
 
-[node name="Node3D9" parent="." instance=ExtResource("18_jsjwk")]
+[node name="Node3D9" parent="worldStructure/static" instance=ExtResource("18_jsjwk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.7063, 0, 39.5696)
 
-[node name="Node3D10" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D10" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, -34.4523, 2.38419e-07, 19.3216)
 
-[node name="Node3D11" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D11" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, 36.7932, 2.2354, -72.8373)
 
-[node name="Node3D12" parent="." instance=ExtResource("19_lp64r")]
+[node name="Node3D12" parent="worldStructure/static" instance=ExtResource("19_lp64r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.9789, 0, -26.1784)
 
-[node name="Node3D13" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D13" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, -0.794701, 0, 1.91642)
 
-[node name="Node3D14" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D14" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, -15.1598, 0, -4.2498)
 
-[node name="Node3D15" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D15" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, 22.8945, 0, -22.1644)
 
-[node name="Node3D16" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D16" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, -5.57622, -4.76837e-07, 10.731)
 
-[node name="Node3D17" parent="." instance=ExtResource("20_2qc85")]
+[node name="Node3D17" parent="worldStructure/static" instance=ExtResource("20_2qc85")]
 transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, -28.0309, 0, -39.6394)
+
+[node name="Personnage" parent="." instance=ExtResource("4_xqtcq")]
+process_priority = 2
