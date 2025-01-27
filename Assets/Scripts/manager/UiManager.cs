@@ -1,65 +1,66 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts.Interface;
 
 public partial class UiManager : Node
 {
-    public static UiManager Instance { get; private set; }
+    public static UiManager instance { get; private set; }
 
-    // Dictionnaire pour stocker les scènes d'UI par clé
-    private Dictionary<string, PackedScene> _uiScenes = new Dictionary<string, PackedScene>();
+    private Dictionary<string, PackedScene> uiScenes = new Dictionary<string, PackedScene>();
 
-    // Tableaux exportables pour les clés et les scènes
-    [Export] public Godot.Collections.Array<string> SceneKeys { get; set; } = new Godot.Collections.Array<string>();
-    [Export] public Godot.Collections.Array<PackedScene> UIScenes { get; set; } = new Godot.Collections.Array<PackedScene>();
+    [Export] public Godot.Collections.Array<string> sceneKeys { get; set; } = new Godot.Collections.Array<string>();
+    [Export] public Godot.Collections.Array<PackedScene> uiScenesList { get; set; } = new Godot.Collections.Array<PackedScene>();
 
-    private Node _currentOpenUI = null; // UI actuellement ouverte
-    private string _currentOpenUIId = null; // ID de la scène ouverte
+    private Node currentOpenUi = null;
+    private string currentOpenUiId = null;
+
+    public event Action<bool> onUiStateChanged;
 
     public override void _Ready()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
         else
         {
-            QueueFree(); // Assurer qu'il n'y a qu'une seule instance
+            QueueFree();
         }
 
-        // Associer chaque clé à une scène
-        for (int i = 0; i < SceneKeys.Count; i++)
+        for (int i = 0; i < sceneKeys.Count; i++)
         {
-            if (i < UIScenes.Count)
+            if (i < uiScenesList.Count)
             {
-                _uiScenes.Add(SceneKeys[i], UIScenes[i]);
+                uiScenes.Add(sceneKeys[i], uiScenesList[i]);
             }
         }
     }
 
     /// <summary>
-    /// Ouvre une UI spécifique par son identifiant.
+    /// Ouvre une interface utilisateur spécifique par son identifiant.
     /// </summary>
-    public void OpenUI(string uiId, Node data = null)
+    /// <param name="uiId">Identifiant de l'UI à ouvrir.</param>
+    /// <param name="data">Données optionnelles à passer à l'UI.</param>
+    public void openUi(string uiId, Node data = null)
     {
-        if (_currentOpenUI != null)
+        if (currentOpenUi != null)
         {
-            CloseUI(); // Ferme l'UI précédente
+            closeUi();
         }
 
-        // Vérifie si la clé existe dans le dictionnaire des scènes
-        if (_uiScenes.TryGetValue(uiId, out var uiScene))
+        if (uiScenes.TryGetValue(uiId, out var uiScene))
         {
-            _currentOpenUI = uiScene.Instantiate<Control>();  // Instancier la scène
-            AddChild(_currentOpenUI);  // Ajouter la scène à la hiérarchie
+            currentOpenUi = uiScene.Instantiate<Control>();
+            AddChild(currentOpenUi);
 
-            var baseUi = _currentOpenUI as BaseUi;
-            baseUi?.initialize(data);  // Initialiser si nécessaire
+            var baseUi = currentOpenUi as BaseUi;
+            baseUi?.initialize(data);
 
-            _currentOpenUIId = uiId; // Suivi de la scène actuellement ouverte
+            currentOpenUiId = uiId;
 
-            // Afficher la souris
             Input.MouseMode = Input.MouseModeEnum.Visible;
+            onUiStateChanged?.Invoke(true);
         }
         else
         {
@@ -68,26 +69,45 @@ public partial class UiManager : Node
     }
 
     /// <summary>
-    /// Ferme la UI actuelle.
+    /// Ferme l'interface utilisateur actuellement ouverte.
     /// </summary>
-    public void CloseUI()
+    public void closeUi()
     {
-        if (_currentOpenUI != null)
+        if (currentOpenUi != null)
         {
-            _currentOpenUI.QueueFree(); // Retirer la scène
-            _currentOpenUI = null;
-            _currentOpenUIId = null; // Réinitialiser l'ID de l'UI ouverte
+            currentOpenUi.QueueFree();
+            currentOpenUi = null;
+            currentOpenUiId = null;
 
-            // Cacher la souris
             Input.MouseMode = Input.MouseModeEnum.Captured;
+            onUiStateChanged?.Invoke(false);
         }
     }
 
     /// <summary>
-    /// Vérifie si une UI spécifique est ouverte.
+    /// Actualise l'interface utilisateur actuellement ouverte.
     /// </summary>
-    public bool IsUIOpen(string uiId)
+    /// <param name="data">Données optionnelles à passer à l'UI.</param>
+    public void refreshCurrentUi(Node data = null)
     {
-        return _currentOpenUIId == uiId;
+        if (currentOpenUi != null)
+        {
+            var baseUi = currentOpenUi as BaseUi;
+            baseUi?.updateUi();
+        }
+        else
+        {
+            GD.Print("No UI is currently open to refresh.");
+        }
+    }
+
+    /// <summary>
+    /// Vérifie si une interface utilisateur spécifique est ouverte.
+    /// </summary>
+    /// <param name="uiId">Identifiant de l'UI à vérifier.</param>
+    /// <returns>True si l'UI est ouverte, sinon False.</returns>
+    public bool isUiOpen(string uiId)
+    {
+        return currentOpenUiId == uiId;
     }
 }

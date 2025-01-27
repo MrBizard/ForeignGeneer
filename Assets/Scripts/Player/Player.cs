@@ -15,6 +15,7 @@ public partial class Player : CharacterBody3D
     private AnimationTree _animTree;
 
     private Vector3 _movementDirection = Vector3.Zero; // Direction du mouvement
+    private bool _isUiOpen = false; // Indicateur pour savoir si l'UI est ouverte
 
     public override void _Ready()
     {
@@ -35,6 +36,26 @@ public partial class Player : CharacterBody3D
 
         // Capture la souris pour les contrôles de la caméra
         Input.MouseMode = Input.MouseModeEnum.Captured;
+
+        // Abonnez-vous à l'événement de changement d'état de l'UI
+        UiManager.instance.onUiStateChanged += OnUiStateChanged;
+    }
+
+    // Méthode appelée lorsque l'état de l'UI change
+    private void OnUiStateChanged(bool isUiOpen)
+    {
+        _isUiOpen = isUiOpen;
+
+        if (_isUiOpen)
+        {
+            // Désactiver les contrôles de la souris pour le joueur
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+        }
+        else
+        {
+            // Réactiver les contrôles de la souris pour le joueur
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        }
     }
 
     // Méthode pour activer/désactiver le sprint
@@ -56,18 +77,38 @@ public partial class Player : CharacterBody3D
     // Méthode pour gérer le clic gauche
     public void LeftClick()
     {
+        if (_isUiOpen)
+        {
+            // Si l'UI est ouverte, ne pas gérer le clic gauche
+            return;
+        }
+
         // Logique pour le clic gauche (à implémenter)
+        GD.Print("Left click!");
     }
 
     // Méthode pour gérer le clic droit
     public void RightClick()
     {
+        if (_isUiOpen)
+        {
+            // Si l'UI est ouverte, ne pas gérer le clic droit
+            return;
+        }
+
         // Logique pour le clic droit (à implémenter)
+        GD.Print("Right click!");
     }
 
     // Méthode pour gérer la rotation de la caméra
     public void RotateCamera(Vector2 mouseDelta)
     {
+        if (_isUiOpen)
+        {
+            // Si l'UI est ouverte, ne pas appliquer la rotation de la caméra
+            return;
+        }
+
         _pivot.RotateY(-mouseDelta.X * 0.005f); // Rotation horizontale
         _springArm.RotateX(-mouseDelta.Y * 0.005f); // Rotation verticale
 
@@ -80,6 +121,12 @@ public partial class Player : CharacterBody3D
     // Méthode pour gérer le mouvement
     public void Move(Vector2 inputDir)
     {
+        if (_isUiOpen)
+        {
+            // Si l'UI est ouverte, ne pas appliquer le mouvement
+            return;
+        }
+
         _movementDirection = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         _movementDirection = _movementDirection.Rotated(Vector3.Up, _pivot.Rotation.Y);
     }
@@ -92,6 +139,12 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (_isUiOpen)
+        {
+            // Si l'UI est ouverte, ne pas appliquer les mouvements du joueur
+            return;
+        }
+
         // Applique la gravité si le joueur n'est pas au sol
         if (!IsOnFloor())
         {
@@ -134,5 +187,11 @@ public partial class Player : CharacterBody3D
 
         // Applique le mouvement
         MoveAndSlide();
+    }
+
+    public override void _ExitTree()
+    {
+        // Désabonnez-vous de l'événement lorsque le joueur est supprimé
+        UiManager.instance.onUiStateChanged -= OnUiStateChanged;
     }
 }

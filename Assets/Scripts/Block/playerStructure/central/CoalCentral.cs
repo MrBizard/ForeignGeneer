@@ -10,7 +10,6 @@ public partial class CoalCentral : StaticBody3D, ICentral
     public float pollutionInd { get; set; }
     public Inventory input { get; set; }
     public Craft craft { get; set; }
-    
     public short tier { get; set; }
     public float craftProgress { get; private set; }
     public Timer craftTimer { get; set; }
@@ -36,20 +35,7 @@ public partial class CoalCentral : StaticBody3D, ICentral
         {
             craftProgress = 1f - (float)(craftTimer.TimeLeft / craft.recipe.duration);
             _centralUi?.updateProgressBar(craftProgress);
-            _centralUi?.updateElectricity(); // Mettre à jour l'affichage de l'électricité
-        }
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        base._Input(@event);
-
-        if (@event.IsActionPressed("inventory")) // Remplacez "inventory" par l'action correspondant à la touche Tab
-        {
-            if (_centralUi != null || _recipeListUi != null)
-            {
-                closeUi();
-            }
+            _centralUi?.updateElectricity();
         }
     }
 
@@ -62,6 +48,10 @@ public partial class CoalCentral : StaticBody3D, ICentral
         _centralUi?.updateUi();
     }
 
+    /// <summary>
+    /// Définit la recette à utiliser pour le craft.
+    /// </summary>
+    /// <param name="recipe">La recette à utiliser.</param>
     public void setCraft(Recipe recipe)
     {
         craft = recipe == null ? null : new Craft(recipe);
@@ -97,40 +87,50 @@ public partial class CoalCentral : StaticBody3D, ICentral
         {
             bool outputAdded = craft.addOutput();
             if (!outputAdded) return;
-            startCraft();  // Répétez le craft si nécessaire
+            startCraft();
         }
 
-        // Retirer l'électricité lorsque le craft s'arrête
         _centralUi?.updateProgressBar(0f);
         _centralUi?.updateElectricity();
         onInventoryUpdated();
     }
 
-    public void closeUi()
-    {
-        UiManager.Instance.CloseUI();
-    }
-
-    public void dismantle()
-    {
-        // Non implémenté pour l'instant
-        throw new System.NotImplementedException();
-    }
-
+    /// <summary>
+    /// Ouvre l'interface utilisateur de la centrale.
+    /// </summary>
     public void openUi()
     {
-        closeUi(); // Ferme toute UI précédente avant d'en ouvrir une nouvelle
-        
+        closeUi();
         if (craft == null)
         {
-            UiManager.Instance.OpenUI("RecipeListUI", this);
+            UiManager.instance.openUi("RecipeListUI", this);
         }
         else
         {
-            UiManager.Instance.OpenUI("CentralUi", this);
+            UiManager.instance.openUi("CentralUi", this);
         }
-
-        // Définir le mode de la souris sur Visible
         Input.MouseMode = Input.MouseModeEnum.Visible;
+    }
+
+    /// <summary>
+    /// Ferme l'interface utilisateur de la centrale.
+    /// </summary>
+    public void closeUi()
+    {
+        UiManager.instance.closeUi();
+    }
+
+    /// <summary>
+    /// Détruit la centrale.
+    /// </summary>
+    public void dismantle()
+    {
+        if (isCrafting)
+        {
+            craftTimer.Stop();
+            craftTimer.QueueFree();
+        }
+        input.onInventoryUpdated -= onInventoryUpdated;
+        QueueFree();
     }
 }

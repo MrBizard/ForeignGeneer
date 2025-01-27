@@ -30,18 +30,33 @@ public partial class SlotUI : Control
     /// <summary>
     /// Met à jour l'affichage du slot en fonction de son contenu.
     /// </summary>
+    private StackItem _lastStackItem;
+    private int _lastStackCount;
+
     public void updateSlot()
     {
+        if (_stackItem == _lastStackItem && _stackItem?.getStack() == _lastStackCount)
+        {
+            return; // Rien n'a changé, pas besoin de mettre à jour
+        }
+
         if (_stackItem != null && _stackItem.getStack() > 0)
         {
-            _icon.Texture = _stackItem.getResource().getInventoryIcon;
-            _countLabel.Text = _stackItem.getStack() > 1 ? _stackItem.getStack().ToString() : "";
+            var resource = _stackItem.getResource();
+            if (resource != null)
+            {
+                _icon.Texture = resource.getInventoryIcon;
+                _countLabel.Text = _stackItem.getStack() > 1 ? _stackItem.getStack().ToString() : "";
+            }
         }
         else
         {
             _icon.Texture = null;
             _countLabel.Text = "";
         }
+
+        _lastStackItem = _stackItem;
+        _lastStackCount = _stackItem?.getStack() ?? 0;
     }
 
     public override void _GuiInput(InputEvent @event)
@@ -68,6 +83,7 @@ public partial class SlotUI : Control
                 InventoryManager.Instance.currentItemInMouse = _stackItem;
                 _inventory.deleteItem(GetIndex());
                 _stackItem = null;
+                _inventory.notifyInventoryUpdated(); // Ajoutez cette ligne
             }
         }
         else
@@ -79,6 +95,7 @@ public partial class SlotUI : Control
                     _stackItem = InventoryManager.Instance.currentItemInMouse;
                     _inventory.addItemToSlot(_stackItem, GetIndex());
                     InventoryManager.Instance.currentItemInMouse = null;
+                    _inventory.notifyInventoryUpdated(); // Ajoutez cette ligne
                 }
                 else if (_stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
                 {
@@ -87,12 +104,14 @@ public partial class SlotUI : Control
                     {
                         InventoryManager.Instance.currentItemInMouse = null;
                     }
+                    _inventory.notifyInventoryUpdated(); // Ajoutez cette ligne
                 }
                 else
                 {
                     var temp = _stackItem;
                     _stackItem = InventoryManager.Instance.currentItemInMouse;
                     InventoryManager.Instance.currentItemInMouse = temp;
+                    _inventory.notifyInventoryUpdated(); // Ajoutez cette ligne
                 }
             }
             else
@@ -134,5 +153,11 @@ public partial class SlotUI : Control
         {
             GD.PrintErr("Background TextureRect is not assigned!");
         }
+    }
+    public void clearSlot()
+    {
+        _icon.Texture = null;
+        _countLabel.Text = "";
+        _stackItem = null;
     }
 }

@@ -1,8 +1,9 @@
 using Godot;
 using System;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
+using ForeignGeneer.Assets.Scripts.Interface;
 
-public partial class RecetteList : Control
+public partial class RecetteList : BaseUi
 {
     [Export] private PackedScene _recipeUiPacked;
     private GridContainer _scrollContainer;
@@ -16,10 +17,10 @@ public partial class RecetteList : Control
     /// <summary>
     /// Initialise la liste des recettes.
     /// </summary>
-    /// <param name="factory">L'usine associée à cette liste de recettes.</param>
-    public void initialize(IRecipeUser recipeUser)
+    /// <param name="data">L'usine associée à cette liste de recettes.</param>
+    public override void initialize(Node data)
     {
-        _recipeUser = recipeUser;
+        _recipeUser = (IRecipeUser)data;
 
         if (_recipeUser.recipeList.recipeList == null || _recipeUser.recipeList.recipeList.Count == 0)
         {
@@ -33,6 +34,11 @@ public partial class RecetteList : Control
             recipeUi.Connect(nameof(RecipeChoiceUi.RecipeClicked), new Callable(this, nameof(onRecipeClicked)));
             _scrollContainer.AddChild(recipeUi);
         }
+    }
+
+    public override void updateUi()
+    {
+        throw new NotImplementedException();
     }
 
     private void onRecipeClicked(Recipe recipe)
