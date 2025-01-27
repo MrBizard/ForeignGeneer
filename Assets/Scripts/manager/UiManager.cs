@@ -1,12 +1,20 @@
 using Godot;
+using System.Collections.Generic;
+using ForeignGeneer.Assets.Scripts.Interface;
 
 public partial class UiManager : Node
 {
     public static UiManager Instance { get; private set; }
 
-    private Control _currentOpenUI = null;
+    // Dictionnaire pour stocker les scènes d'UI par clé
+    private Dictionary<string, PackedScene> _uiScenes = new Dictionary<string, PackedScene>();
 
-    [Export] private PackedScene _inventoryUIScene;
+    // Tableaux exportables pour les clés et les scènes
+    [Export] public Godot.Collections.Array<string> SceneKeys { get; set; } = new Godot.Collections.Array<string>();
+    [Export] public Godot.Collections.Array<PackedScene> UIScenes { get; set; } = new Godot.Collections.Array<PackedScene>();
+
+    private Node _currentOpenUI = null; // UI actuellement ouverte
+    private string _currentOpenUIId = null; // ID de la scène ouverte
 
     public override void _Ready()
     {
@@ -16,53 +24,70 @@ public partial class UiManager : Node
         }
         else
         {
-            QueueFree(); // Assure qu'il n'y a qu'une seule instance
+            QueueFree(); // Assurer qu'il n'y a qu'une seule instance
+        }
+
+        // Associer chaque clé à une scène
+        for (int i = 0; i < SceneKeys.Count; i++)
+        {
+            if (i < UIScenes.Count)
+            {
+                _uiScenes.Add(SceneKeys[i], UIScenes[i]);
+            }
         }
     }
 
     /// <summary>
-    /// Ouvre ou ferme l'UI de l'inventaire.
+    /// Ouvre une UI spécifique par son identifiant.
     /// </summary>
-    public void ToggleInventoryUI()
+    public void OpenUI(string uiId, Node data = null)
     {
         if (_currentOpenUI != null)
         {
-            CloseCurrentUI();
+            CloseUI(); // Ferme l'UI précédente
+        }
+
+        // Vérifie si la clé existe dans le dictionnaire des scènes
+        if (_uiScenes.TryGetValue(uiId, out var uiScene))
+        {
+            _currentOpenUI = uiScene.Instantiate<Control>();  // Instancier la scène
+            AddChild(_currentOpenUI);  // Ajouter la scène à la hiérarchie
+
+            var baseUi = _currentOpenUI as BaseUi;
+            baseUi?.initialize(data);  // Initialiser si nécessaire
+
+            _currentOpenUIId = uiId; // Suivi de la scène actuellement ouverte
+
+            // Afficher la souris
+            Input.MouseMode = Input.MouseModeEnum.Visible;
         }
         else
         {
-            OpenInventoryUI();
+            GD.PrintErr($"UI with id {uiId} not found.");
         }
     }
 
     /// <summary>
-    /// Ouvre l'UI de l'inventaire.
+    /// Ferme la UI actuelle.
     /// </summary>
-    private void OpenInventoryUI()
-    {
-        _currentOpenUI = _inventoryUIScene.Instantiate<Control>();
-        AddChild(_currentOpenUI);
-
-        // Mettre à jour l'UI de l'inventaire
-        var inventoryUI = _currentOpenUI as InventoryUi;
-        inventoryUI?.UpdateUi();
-
-        // Configurer la souris
-        Input.MouseMode = Input.MouseModeEnum.Visible;
-    }
-
-    /// <summary>
-    /// Ferme l'UI actuelle.
-    /// </summary>
-    public void CloseCurrentUI()
+    public void CloseUI()
     {
         if (_currentOpenUI != null)
         {
-            _currentOpenUI.QueueFree();
+            _currentOpenUI.QueueFree(); // Retirer la scène
             _currentOpenUI = null;
+            _currentOpenUIId = null; // Réinitialiser l'ID de l'UI ouverte
 
-            // Configurer la souris
+            // Cacher la souris
             Input.MouseMode = Input.MouseModeEnum.Captured;
         }
+    }
+
+    /// <summary>
+    /// Vérifie si une UI spécifique est ouverte.
+    /// </summary>
+    public bool IsUIOpen(string uiId)
+    {
+        return _currentOpenUIId == uiId;
     }
 }

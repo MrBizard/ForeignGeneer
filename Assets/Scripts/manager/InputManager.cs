@@ -21,7 +21,14 @@ public partial class InputManager : Node
         // Gestion de l'inventaire
         if (Input.IsActionJustPressed("inventory"))
         {
-            UiManager.Instance.ToggleInventoryUI();
+            if (!UiManager.Instance.IsUIOpen("InventoryUI"))
+            {
+                UiManager.Instance.OpenUI("InventoryUI");
+            }
+            else
+            {
+                UiManager.Instance.CloseUI();
+            }
         }
 
         // Gestion du sprint

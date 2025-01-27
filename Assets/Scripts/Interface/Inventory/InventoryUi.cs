@@ -24,14 +24,14 @@ public partial class InventoryUi : Control
         {
             var slot = slotUiPackedScene.Instantiate<SlotUI>();
             hotbarContainer.AddChild(slot);
-            slot.initialize(InventoryManager.Instance.hotbar.getItem(i), InventoryManager.Instance.hotbar, InventoryManager.Instance);
+            slot.initialize(InventoryManager.Instance.hotbar.getItem(i), InventoryManager.Instance.hotbar);
         }
 
         for (int i = 0; i < InventoryManager.Instance.mainInventorySize; i++)
         {
             var slot = slotUiPackedScene.Instantiate<SlotUI>();
             mainInventoryContainer.AddChild(slot);
-            slot.initialize(InventoryManager.Instance.mainInventory.getItem(i), InventoryManager.Instance.mainInventory, InventoryManager.Instance);
+            slot.initialize(InventoryManager.Instance.mainInventory.getItem(i), InventoryManager.Instance.mainInventory);
         }
     }
 
@@ -46,7 +46,7 @@ public partial class InventoryUi : Control
             if (item != null)
             {
                 var slot = hotbarContainer.GetChild(i) as SlotUI;
-                slot?.initialize(item, InventoryManager.Instance.hotbar, InventoryManager.Instance);
+                slot?.initialize(item, InventoryManager.Instance.hotbar);
             }
         }
 
@@ -56,7 +56,7 @@ public partial class InventoryUi : Control
             if (item != null)
             {
                 var slot = mainInventoryContainer.GetChild(i) as SlotUI;
-                slot?.initialize(item, InventoryManager.Instance.mainInventory, InventoryManager.Instance);
+                slot?.initialize(item, InventoryManager.Instance.mainInventory);
             }
         }
     }

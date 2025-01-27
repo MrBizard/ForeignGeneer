@@ -10,6 +10,4 @@ public interface ICentral : IPlayerStructure, IRecipeUser
     public float craftProgress { get; }
     public Timer craftTimer { get; set;}
     public bool isCrafting { get;}
-    public void closeUi();
-    public void openUi();
 }

@@ -33,6 +33,7 @@ public partial class PlayerInventory : Inventory
 
 	
 
+	
 	private void openMiniGameInterface()
 	{
 		PackedScene minigameScene = GD.Load<PackedScene>("res://MinigameInterface.tscn");

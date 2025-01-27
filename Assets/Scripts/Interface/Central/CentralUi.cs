@@ -1,8 +1,9 @@
 using Godot;
 using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.central;
+using ForeignGeneer.Assets.Scripts.Interface;
 
-public partial class CentralUi : Control
+public partial class CentralUi : BaseUi
 {
     [Export] private PackedScene _slotUi;
     private CoalCentral _central;
@@ -10,7 +11,6 @@ public partial class CentralUi : Control
     private ProgressBar _craftProgressBar;
     private HBoxContainer _inputList;
     private VBoxContainer _mainContainer;
-    private InventoryManager _playerInventoryManager;
     private TextEdit _craftText;
     private Button _resetCraftButton;
     private Label _electricityLabel;
@@ -20,21 +20,15 @@ public partial class CentralUi : Control
     /// </summary>
     /// <param name="central">La centrale associée à cette interface.</param>
     /// <param name="inventoryUi">L'interface d'inventaire à afficher à côté de la centrale.</param>
-    public void initialize(CoalCentral central, InventoryUi inventoryUi)
+    public override void initialize(Node data)
     {
-        _central = central;
+        _central = (CoalCentral)data;
 
         // Initialiser l'emplacement d'entrée
         _inputSlot = _slotUi.Instantiate<SlotUI>();
-        _inputSlot.initialize(_central.input.slots[0], _central.input, _playerInventoryManager);
+        _inputSlot.initialize(_central.input.slots[0], _central.input);
         _inputSlot.setBackgroundTexture(_central.craft.recipe.input[0].getResource().getInventoryIcon);
         _inputList.AddChild(_inputSlot);
-
-        if (inventoryUi != null)
-        {
-            inventoryUi.Visible = true;
-            inventoryUi.Position = new Vector2(Position.X - inventoryUi.Size.X - 10, Position.Y);
-        }
 
         Input.MouseMode = Input.MouseModeEnum.Visible;
 
@@ -53,7 +47,7 @@ public partial class CentralUi : Control
     public void updateUi()
     {
         var inputStackItem = _central.input.getItem(0);
-        _inputSlot.initialize(inputStackItem, _central.input, _playerInventoryManager);
+        _inputSlot.initialize(inputStackItem, _central.input);
         _inputSlot.updateSlot();
     }
 
@@ -63,7 +57,6 @@ public partial class CentralUi : Control
         _mainContainer = GetNode<VBoxContainer>("Container");
         _inputList = GetNode<HBoxContainer>("Container/InputList");
         _craftProgressBar = GetNode<ProgressBar>("Container/ProgressBar");
-        _playerInventoryManager = GetNode<InventoryManager>("/root/Main/PlayerInventoryManager");
         _craftText = GetNode<TextEdit>("CraftText");
         _electricityLabel = GetNode<Label>("Quantity");
         _manager = GetNode<Manager>("/root/Main/Manager");
@@ -89,26 +82,15 @@ public partial class CentralUi : Control
     /// <param name="electricity">La quantité d'électricité à afficher.</param>
     public void updateElectricity()
     {
-        if (_electricityLabel != null)
+        if (_electricityLabel != null && _central != null)
         {
             GD.Print("central ",_central);
             _electricityLabel.Text = $"Puissance : {_central.electricalCost} kW/s|| Électricité totale : {_manager.getGlobalElectricity()} kW/s";
         }
     }
-
-    /// <summary>
-    /// Ferme l'interface utilisateur de la centrale.
-    /// </summary>
-    public void closeUi()
-    {
-        Visible = false;
-        Input.MouseMode = Input.MouseModeEnum.Hidden;
-        QueueFree();
-    }
-
     private void onResetCraftButtonPressed()
     {
         _central.setCraft(null);
-        _central.openUi();
+        updateUi();
     }
 }

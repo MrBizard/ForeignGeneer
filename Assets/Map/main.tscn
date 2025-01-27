@@ -1,11 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://buaekevq6x28v"]
+[gd_scene load_steps=9 format=3 uid="uid://buaekevq6x28v"]
 
 [ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_3puoc"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="3_6fncv"]
-[ext_resource type="Script" path="res://Assets/Scripts/PlayerInventoryManager.cs" id="3_isres"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="4_gc2hg"]
-[ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="4_jirmv"]
-[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="5_y7u3e"]
 [ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="7_tdmn0"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player/PlayerInventory.cs" id="8_k76vs"]
 
@@ -39,9 +36,6 @@ option = ExtResource("3_6fncv")
 [node name="Inventory Manager" type="Control" parent="Manager"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("3_isres")
-inventoryUiPackedScene = ExtResource("4_jirmv")
-cursorItemPackedScene = ExtResource("5_y7u3e")
 
 [node name="Container" type="Container" parent="Manager/Inventory Manager"]
 layout_mode = 1

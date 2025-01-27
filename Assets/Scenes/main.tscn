@@ -1,32 +1,35 @@
-[gd_scene load_steps=111 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=114 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/manager/UiManager.cs" id="4_7gey5"]
+[ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="4_g41yq"]
 [ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="4_xqtcq"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="5_6hg80"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InputManager.cs" id="5_41tt0"]
+[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="5_uqkd8"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="6_bx4pk"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InventoryManager.cs" id="7_rb38d"]
+[ext_resource type="PackedScene" uid="uid://ddp7q1ns3jgci" path="res://Assets/Scenes/UI/centrale/CentralUi.tscn" id="7_xxbhk"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
 [ext_resource type="Resource" uid="uid://bplqhnnt1j10p" path="res://Assets/Resource/Block/Fonderie.tres" id="9_mj1jr"]
 [ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="11_ueu8c"]
 [ext_resource type="PackedScene" uid="uid://dsto6j1nxsnuk" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
 [ext_resource type="Resource" uid="uid://cygoqqhi7v22u" path="res://Assets/Resource/Block/central/CoalCentral.tres" id="12_ncb1l"]
-[ext_resource type="PackedScene" uid="uid://ktfq1ucdt8rt" path="res://Assets/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
+[ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
 [ext_resource type="Script" path="res://addons/terrabrush/TerraBrush.cs" id="19_goxem"]
-[ext_resource type="PackedScene" uid="uid://cn0y2hdd0ln3x" path="res://Assets/Ingots/BreakableGold.tscn" id="19_lp64r"]
-[ext_resource type="PackedScene" uid="uid://5w1ay5mgky0h" path="res://Assets/Ingots/BreakableIngot.tscn" id="20_2qc85"]
-[ext_resource type="Texture2D" uid="uid://dd5bxfb3fr1jx" path="res://Assets/Texture/grass/grass lowpoly.png" id="20_dhlk7"]
+[ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableGold.tscn" id="19_lp64r"]
+[ext_resource type="PackedScene" path="res://Assets/Ingots/BreakableIngot.tscn" id="20_2qc85"]
+[ext_resource type="Texture2D" uid="uid://dq1o7v701q3ma" path="res://Assets/Texture/grass/grass lowpoly.png" id="20_dhlk7"]
 [ext_resource type="Texture2D" uid="uid://bnewil42ssigy" path="res://Assets/Scenes/Main/Heightmap_0_0.res" id="20_ennuc"]
 [ext_resource type="PackedScene" uid="uid://bm46vhmsrkfgg" path="res://Assets/Scenes/laboratoire.tscn" id="21_58cnq"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZoneResource.cs" id="21_230gm"]
-[ext_resource type="Texture2D" uid="uid://t4cw67sivpg" path="res://Assets/Texture/grass/Vol_42_1_Height.png" id="21_o67be"]
-[ext_resource type="Texture2D" uid="uid://dm0y1mqwp4dl8" path="res://Assets/Texture/grass/Vol_42_1_Normal.png" id="22_c18t6"]
+[ext_resource type="Texture2D" uid="uid://d4fv52jtakeyf" path="res://Assets/Texture/grass/Vol_42_1_Height.png" id="21_o67be"]
+[ext_resource type="Texture2D" uid="uid://bavx1ld1hrkkl" path="res://Assets/Texture/grass/Vol_42_1_Normal.png" id="22_c18t6"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZonesResource.cs" id="22_teg6v"]
-[ext_resource type="Texture2D" uid="uid://bwk5ix84er781" path="res://Assets/Texture/rock/rock lowpoly.png" id="23_4b35g"]
+[ext_resource type="Texture2D" uid="uid://cke43m8vbx6h4" path="res://Assets/Texture/rock/rock lowpoly.png" id="23_4b35g"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/TextureSetResource.cs" id="23_5bc04"]
-[ext_resource type="Texture2D" uid="uid://cfebw4haj2w58" path="res://Assets/Texture/grass/Vol_42_1_Roughness.png" id="23_rjxmx"]
-[ext_resource type="Texture2D" uid="uid://b4qgs0i5stvvr" path="res://Assets/Texture/dirt/dirt lowpoly.png" id="25_ucwgl"]
+[ext_resource type="Texture2D" uid="uid://b3n3ee3u2yoit" path="res://Assets/Texture/grass/Vol_42_1_Roughness.png" id="23_rjxmx"]
+[ext_resource type="Texture2D" uid="uid://5rqwagc12qd1" path="res://Assets/Texture/dirt/dirt lowpoly.png" id="25_ucwgl"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/TextureSetsResource.cs" id="27_p0dka"]
 [ext_resource type="Texture2D" uid="uid://bp06vlp1q2jlp" path="res://Assets/Scenes/Main/Heightmap_1_0.res" id="29_7vanb"]
 [ext_resource type="Texture2D" uid="uid://g1hbtcte2rvp" path="res://Assets/Scenes/Main/Splatmap_0_0_0.res" id="29_t3dt6"]
@@ -330,7 +333,8 @@ option = ExtResource("6_bx4pk")
 
 [node name="UiManager" type="Node" parent="Manager"]
 script = ExtResource("4_7gey5")
-_inventoryUIScene = ExtResource("9_5liml")
+SceneKeys = ["FonderieUI", "RecipeListUI", "InventoryUI", "CentralUi"]
+UIScenes = [ExtResource("4_g41yq"), ExtResource("5_uqkd8"), ExtResource("9_5liml"), ExtResource("7_xxbhk")]
 
 [node name="InputManager" type="Node" parent="Manager"]
 script = ExtResource("5_41tt0")
@@ -345,6 +349,7 @@ testItem3 = ExtResource("12_ncb1l")
 multimesh = SubResource("MultiMesh_20xaj")
 
 [node name="TerraBrush" type="Node3D" parent="."]
+visible = false
 script = ExtResource("19_goxem")
 DataPath = "res://Assets/Scenes/Main"
 TextureSets = SubResource("Resource_bt4g8")

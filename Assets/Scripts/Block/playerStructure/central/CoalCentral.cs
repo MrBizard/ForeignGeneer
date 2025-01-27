@@ -19,11 +19,12 @@ public partial class CoalCentral : StaticBody3D, ICentral
     private RecetteList _recipeListUi;
     private Manager _manager;
     public float electricalCost = 0;
+
     public override void _Ready()
     {
         base._Ready();
         input = new Inventory(1);
-        recipeList.init();
+        recipeList?.init();
         input.onInventoryUpdated += onInventoryUpdated;
         _manager = (Manager)GetNode("/root/Main/Manager");
     }
@@ -34,12 +35,8 @@ public partial class CoalCentral : StaticBody3D, ICentral
         if (isCrafting)
         {
             craftProgress = 1f - (float)(craftTimer.TimeLeft / craft.recipe.duration);
-
-            if (_centralUi != null)
-            {
-                _centralUi.updateProgressBar(craftProgress);
-                _centralUi.updateElectricity(); // Mettre à jour l'affichage de l'électricité
-            }
+            _centralUi?.updateProgressBar(craftProgress);
+            _centralUi?.updateElectricity(); // Mettre à jour l'affichage de l'électricité
         }
     }
 
@@ -62,7 +59,6 @@ public partial class CoalCentral : StaticBody3D, ICentral
         {
             startCraft();
         }
-
         _centralUi?.updateUi();
     }
 
@@ -76,20 +72,11 @@ public partial class CoalCentral : StaticBody3D, ICentral
 
     private void startCraft()
     {
-        if (isCrafting)
-        {
-            return;
-        }
-        _manager.addGlobalElectricity(electricalCost);
-        if (!craft.consumeResources())
-        {
-            return;
-        }
+        if (isCrafting) return;
 
-        if (craft.recipe.duration <= 0)
-        {
-            return;
-        }
+        _manager.addGlobalElectricity(electricalCost);
+        if (!craft.consumeResources()) return;
+        if (craft.recipe.duration <= 0) return;
 
         isCrafting = true;
         craftProgress = 0f;
@@ -98,7 +85,6 @@ public partial class CoalCentral : StaticBody3D, ICentral
         craftTimer.Timeout += onCraftFinished;
         AddChild(craftTimer);
         craftTimer.Start();
-        
     }
 
     private void onCraftFinished()
@@ -110,89 +96,38 @@ public partial class CoalCentral : StaticBody3D, ICentral
         if (craft.recipe.output != null)
         {
             bool outputAdded = craft.addOutput();
-
-            if (!outputAdded)
-            {
-                return;
-            }
-            else
-            {
-                startCraft();
-            }
+            if (!outputAdded) return;
+            startCraft();  // Répétez le craft si nécessaire
         }
 
         // Retirer l'électricité lorsque le craft s'arrête
-
-        if (_centralUi != null)
-        {
-            _centralUi.updateProgressBar(0f);
-            _centralUi.updateElectricity();
-        }
-
+        _centralUi?.updateProgressBar(0f);
+        _centralUi?.updateElectricity();
         onInventoryUpdated();
     }
 
     public void closeUi()
     {
-        if (_centralUi != null)
-        {
-            _centralUi.closeUi();
-            _centralUi = null;
-        }
-
-        if (_recipeListUi != null)
-        {
-            _recipeListUi.QueueFree();
-            _recipeListUi = null;
-        }
-
-        // Définir le mode de la souris sur Hidden
-        Input.MouseMode = Input.MouseModeEnum.Captured;
+        UiManager.Instance.CloseUI();
     }
 
     public void dismantle()
     {
+        // Non implémenté pour l'instant
         throw new System.NotImplementedException();
     }
 
     public void openUi()
     {
-        var inventoryUi = GetNode<InventoryUi>("/root/Main/PlayerInventoryManager/InventoryUi");
-
-        closeUi();
+        closeUi(); // Ferme toute UI précédente avant d'en ouvrir une nouvelle
+        
         if (craft == null)
         {
-            if (_recipeListUiPackedScene != null)
-            {
-                _recipeListUi = _recipeListUiPackedScene.Instantiate<RecetteList>();
-                GetTree().Root.AddChild(_recipeListUi);
-                _recipeListUi.initialize(this);
-            }
+            UiManager.Instance.OpenUI("RecipeListUI", this);
         }
         else
         {
-            if (_centralPackedScene != null)
-            {
-                _centralUi = _centralPackedScene.Instantiate<CentralUi>();
-                GetTree().Root.AddChild(_centralUi);
-
-                if (inventoryUi == null)
-                {
-                    return;
-                }
-
-                _centralUi.initialize(this, inventoryUi);
-
-                if (isCrafting)
-                {
-                    _centralUi.updateProgressBar(craftProgress);
-                }
-                else
-                {
-                    _centralUi.updateProgressBar(0f);
-                }
-                _centralUi.updateElectricity();
-            }
+            UiManager.Instance.OpenUI("CentralUi", this);
         }
 
         // Définir le mode de la souris sur Visible
