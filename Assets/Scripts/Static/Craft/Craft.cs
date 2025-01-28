@@ -111,6 +111,7 @@ public class Craft
 
         if (outputSlotItem == null)
         {
+            GD.Print("Ajout d'un nouvel item dans le slot de sortie.");
             output.addItemToSlot(new StackItem(recipeItem.getResource(), recipeItem.getStack()), 0);
             return true;
         }
@@ -119,6 +120,7 @@ public class Craft
             int remainingSpace = outputSlotItem.getResource().getMaxStack - outputSlotItem.getStack();
             if (remainingSpace >= recipeItem.getStack())
             {
+                GD.Print("Ajout de l'output dans le slot existant.");
                 outputSlotItem.add(recipeItem.getStack());
                 return true;
             }
@@ -133,5 +135,6 @@ public class Craft
             GD.Print("Le slot de sortie contient un item différent.");
             return false;
         }
-    }
+     }
+    
 }

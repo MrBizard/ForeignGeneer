@@ -40,6 +40,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     {
         if (isCrafting)
         {
+            craftProgress += (float)delta / craft.recipe.duration;
             updateProgressBar(craftProgress);
         }
     }
@@ -109,35 +110,9 @@ public partial class Fonderie : StaticBody3D, IFactory
     {
         isCrafting = false;
         craftTimer.QueueFree();
-        updateUi();
-        if (craft.recipe.output != null)
-        {
-            bool outputAdded = craft.addOutput();
-
-            if (!outputAdded)
-            {
-                GD.Print("Impossible d'ajouter l'objet fabriqué à l'inventaire de sortie.");
-            }
-            else
-            {
-                GD.Print("Craft terminé avec succès.");
-
-                // Vérifie si l'inventaire de sortie peut accepter un nouvel item avant de démarrer un nouveau craft
-                var outputSlotItem = output.getItem(0);
-                if (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack)
-                {
-                    startCraft();
-                }
-                else
-                {
-                    GD.Print("L'inventaire de sortie est plein. Craft en pause.");
-                }
-            }
-        }
-
-        // Mettre à jour l'interface utilisateur dans tous les cas
-        updateProgressBar(0f);
-        updateUi();
+        bool outputAdded = craft.addOutput();
+        GD.Print("Craft terminé. Output ajouté : " + outputAdded);
+        updateUi(); 
     }
 
     /// <summary>

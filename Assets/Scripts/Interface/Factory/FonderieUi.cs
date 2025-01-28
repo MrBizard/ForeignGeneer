@@ -12,7 +12,7 @@ public partial class FonderieUi : BaseUi
     private SlotUI _outputSlot;
     private ProgressBar _progressBar;
     private List<SlotUI> _inputSlots = new List<SlotUI>();
-
+    private Button _button;
     public override void _Ready()
     {
         base._Ready();
@@ -20,8 +20,9 @@ public partial class FonderieUi : BaseUi
         _outputContainer = GetNode<VBoxContainer>("Machine/Container/OutputContainer");
         _craftText = GetNode<TextEdit>("Machine/CraftText");
         _progressBar = GetNode<ProgressBar>("Machine/Container/ProgressBar");
-        
+        _button = GetNode<Button>("Machine/Button");
         GD.Print("progress : ", _progressBar);
+        _button.Connect("pressed", new Callable(this,nameof(onButtonBack) ));
     }
 
     /// <summary>
@@ -80,13 +81,13 @@ public partial class FonderieUi : BaseUi
     {
         foreach (var child in _outputContainer.GetChildren())
         {
-            child.QueueFree();
+            child.QueueFree(); // Supprime les anciens enfants
         }
 
-        _outputSlot = _slotUi.Instantiate<SlotUI>();
-        _outputSlot.initialize(_fonderie.output.slots[0], _fonderie.output, true);
-        updateOutputSlotBackground();
-        _outputContainer.AddChild(_outputSlot);
+        _outputSlot = _slotUi.Instantiate<SlotUI>(); // Instancie le nouveau slot
+        _outputSlot.initialize(_fonderie.output.slots[0], _fonderie.output, true); // Initialise le slot
+        updateOutputSlotBackground(); // Met à jour l'arrière-plan du slot
+        _outputContainer.AddChild(_outputSlot); // Ajoute le slot à l'interface
     }
 
     private void updateCraftText()
@@ -124,31 +125,34 @@ public partial class FonderieUi : BaseUi
         // Mettre à jour les slots d'entrée
         for (int i = 0; i < _fonderie.input.slots.Count; i++)
         {
-            if (_inputSlots[i] != null) // Vérifie si le slot existe
+            if (_inputSlots[i] != null)
             {
                 var slotItem = _fonderie.input.getItem(i);
                 if (slotItem != null)
                 {
-                    _inputSlots[i].updateSlot(); // Passez l'item au slot
+                    _inputSlots[i].updateSlot();
                 }
                 else
                 {
-                    _inputSlots[i].clearSlot(); // Efface le contenu du slot
+                    _inputSlots[i].clearSlot();
                 }
             }
         }
-
+        GD.Print("outputSlot : ",_outputSlot);
         // Mettre à jour le slot de sortie
-        if (_outputSlot != null) // Vérifie si le slot de sortie existe
+        if (_outputSlot != null)
         {
             var outputItem = _fonderie.output.getItem(0);
+            _outputSlot.setStackItem(outputItem);
             if (outputItem != null)
             {
-                _outputSlot.updateSlot(); // Passez l'item au slot
+                GD.Print("Mise à jour du slot de sortie avec l'item : " + outputItem.getResource().GetName());
+                _outputSlot.updateSlot();
             }
             else
             {
-                _outputSlot.clearSlot(); // Efface le contenu du slot
+                GD.Print("Slot de sortie vide.");
+                _outputSlot.clearSlot();
             }
         }
     }
@@ -170,5 +174,10 @@ public partial class FonderieUi : BaseUi
             _fonderie.output.onInventoryUpdated -= onInventoryUpdated;
         }
         base._ExitTree();
+    }
+
+    private void onButtonBack()
+    {
+        UiManager.instance.openUi("RecipeListUI", _fonderie);
     }
 }

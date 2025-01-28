@@ -58,6 +58,7 @@ public class Inventory
 
 		if (success)
 		{
+			GD.Print("Item ajouté avec succès. Déclenchement de onInventoryUpdated.");
 			onInventoryUpdated?.Invoke(); // Déclenche l'événement
 		}
 
@@ -66,7 +67,10 @@ public class Inventory
 
 	/// <summary>
 	/// Retire une quantité d'item d'un slot spécifique.
+	/// Si le slot devient vide, il est réinitialisé à null.
 	/// </summary>
+	/// <param name="slotIndex">Index du slot cible.</param>
+	/// <param name="amount">Quantité à retirer.</param>
 	public void removeItem(int slotIndex, int amount)
 	{
 		if (slots[slotIndex] != null)
@@ -81,14 +85,15 @@ public class Inventory
 	}
 
 	/// <summary>
-	/// Supprime l'item dans le slot.
+	// Supprime l'item dans le slot
 	/// </summary>
+	/// <param name="slotIndex">Index du slot cible.</param>
 	public void deleteItem(int slotIndex)
 	{
 		if (slots[slotIndex] != null)
 		{
 			slots[slotIndex] = null;
-			onInventoryUpdated?.Invoke();
+			onInventoryUpdated?.Invoke(); 
 		}
 	}
 

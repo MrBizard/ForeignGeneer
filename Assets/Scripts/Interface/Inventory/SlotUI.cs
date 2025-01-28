@@ -27,6 +27,10 @@ public partial class SlotUI : Control
         updateSlot();
     }
 
+    public void setStackItem(StackItem stackItem)
+    {
+        _stackItem = stackItem;
+    }
     /// <summary>
     /// Met à jour l'affichage du slot en fonction de son contenu.
     /// </summary>
@@ -35,28 +39,18 @@ public partial class SlotUI : Control
 
     public void updateSlot()
     {
-        if (_stackItem == _lastStackItem && _stackItem?.getStack() == _lastStackCount)
-        {
-            return; // Rien n'a changé, pas besoin de mettre à jour
-        }
-
         if (_stackItem != null && _stackItem.getStack() > 0)
         {
-            var resource = _stackItem.getResource();
-            if (resource != null)
-            {
-                _icon.Texture = resource.getInventoryIcon;
-                _countLabel.Text = _stackItem.getStack() > 1 ? _stackItem.getStack().ToString() : "";
-            }
+            GD.Print("Mise à jour du slot avec l'item : " + _stackItem.getResource().GetName());
+            _icon.Texture = _stackItem.getResource().getInventoryIcon;
+            _countLabel.Text = _stackItem.getStack() > 1 ? _stackItem.getStack().ToString() : "";
         }
         else
         {
+            GD.Print("Slot vide.");
             _icon.Texture = null;
             _countLabel.Text = "";
         }
-
-        _lastStackItem = _stackItem;
-        _lastStackCount = _stackItem?.getStack() ?? 0;
     }
 
     public override void _GuiInput(InputEvent @event)
