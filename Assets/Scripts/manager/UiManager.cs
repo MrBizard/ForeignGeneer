@@ -12,7 +12,7 @@ public partial class UiManager : Node
     [Export] public Godot.Collections.Array<string> sceneKeys { get; set; } = new Godot.Collections.Array<string>();
     [Export] public Godot.Collections.Array<PackedScene> uiScenesList { get; set; } = new Godot.Collections.Array<PackedScene>();
 
-    private Node currentOpenUi = null;
+    public Node currentOpenUi = null;
     private string currentOpenUiId = null;
 
     public event Action<bool> onUiStateChanged;
@@ -109,5 +109,13 @@ public partial class UiManager : Node
     public bool isUiOpen(string uiId)
     {
         return currentOpenUiId == uiId;
+    }
+    /// <summary>
+    /// Vérifie si une interface utilisateur est actuellement ouverte.
+    /// </summary>
+    /// <returns>True si une UI est ouverte, sinon False.</returns>
+    public bool IsAnyUiOpen()
+    {
+        return currentOpenUi != null;
     }
 }

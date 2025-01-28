@@ -4,24 +4,16 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure;
 
 public partial class Raycast : RayCast3D
 {
-    [Export] public RayCast3D ray;
-
-    public override void _PhysicsProcess(double delta)
-    {
-        if (Input.IsActionJustPressed("interragir"))
-        {
-            getObjectInGround();
-        }
-    }
-
-    private void getObjectInGround()
+    /// <summary>
+    /// Détecte et interagit avec l'objet touché par le raycast.
+    /// </summary>
+    public void InteractWithObject()
     {
         if (IsColliding())
         {
             switch (GetCollider())
             {
                 case ItemAuSol item:
-                    
                     InventoryManager.Instance.mainInventory.addItem(item.stackItem);
                     item.QueueFree();
                     break;

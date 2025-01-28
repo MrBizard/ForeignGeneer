@@ -20,6 +20,8 @@ public partial class FonderieUi : BaseUi
         _outputContainer = GetNode<VBoxContainer>("Machine/Container/OutputContainer");
         _craftText = GetNode<TextEdit>("Machine/CraftText");
         _progressBar = GetNode<ProgressBar>("Machine/Container/ProgressBar");
+        
+        GD.Print("progress : ", _progressBar);
     }
 
     /// <summary>
@@ -48,12 +50,14 @@ public partial class FonderieUi : BaseUi
             GD.PrintErr("FonderieUi: Data is not of type Fonderie.");
         }
     }
+
     private void onInventoryUpdated()
     {
         updateUi();
         updateCraftText();
         updateOutputSlotBackground();
     }
+
     private void initializeInputSlots()
     {
         foreach (var child in _inputList.GetChildren())
@@ -157,6 +161,7 @@ public partial class FonderieUi : BaseUi
     {
         _progressBar.Value = progress * 100;
     }
+
     public override void _ExitTree()
     {
         if (_fonderie != null)

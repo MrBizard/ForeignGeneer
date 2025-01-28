@@ -1,18 +1,22 @@
 using Godot;
+using System;
 
 public partial class InputManager : Node
 {
     public static InputManager Instance { get; private set; }
+
+    private Raycast raycast;
 
     public override void _Ready()
     {
         if (Instance == null)
         {
             Instance = this;
+            raycast = GetNode<Raycast>("/root/Main/Personnage/Pivot/SpringArm3D/Camera3D/RayCast3D");        
         }
         else
         {
-            QueueFree(); // Assure qu'il n'y a qu'une seule instance
+            QueueFree(); 
         }
     }
 
@@ -21,27 +25,15 @@ public partial class InputManager : Node
         // Gestion de l'inventaire
         if (Input.IsActionJustPressed("inventory"))
         {
-            if (!UiManager.instance.isUiOpen("inventoryUi"))
-            {
-                UiManager.instance.openUi("inventoryUi");
-            }
-            else
-            {
-                UiManager.instance.closeUi();
-            }
+            HandleUiToggle("inventoryUi");
         }
 
+        // Gestion des options
         if (Input.IsActionJustPressed("option"))
         {
-            if (!UiManager.instance.isUiOpen("optionUi"))
-            {
-                UiManager.instance.openUi("optionUi");
-            }
-            else
-            {
-                UiManager.instance.closeUi();
-            }
+            HandleUiToggle("optionUi");
         }
+
         // Gestion du sprint
         if (Input.IsActionJustPressed("sprint"))
         {
@@ -79,14 +71,38 @@ public partial class InputManager : Node
         {
             Player.Instance.StopMoving();
         }
+
+        if (Input.IsActionJustPressed("interragir"))
+        {
+            HandleInteraction();
+        }
     }
 
     public override void _Input(InputEvent @event)
     {
-        // Gestion de la rotation de la caméra
         if (@event is InputEventMouseMotion mouseMotionEvent)
         {
             Player.Instance.RotateCamera(mouseMotionEvent.Relative);
+        }
+    }
+
+    private void HandleUiToggle(string uiName)
+    {
+        if (UiManager.instance.IsAnyUiOpen())
+        {
+            UiManager.instance.closeUi();
+        }
+        else
+        {
+            UiManager.instance.openUi(uiName);
+        }
+    }
+
+    private void HandleInteraction()
+    {
+        if (raycast != null)
+        {
+            raycast.InteractWithObject(); 
         }
     }
 }

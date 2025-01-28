@@ -15,8 +15,6 @@ public partial class Fonderie : StaticBody3D, IFactory
     public Timer craftTimer;
     public bool isCrafting { get; private set; } = false;
 
-    private FonderieUi _factoryUi;
-    private RecetteList _recipeListUi;
     private Manager _manager;
 
     public override void _Ready()
@@ -38,6 +36,13 @@ public partial class Fonderie : StaticBody3D, IFactory
         _manager = GetNode<Manager>("/root/Main/Manager");
     }
 
+    public override void _Process(double delta)
+    {
+        if (isCrafting)
+        {
+            updateProgressBar(craftProgress);
+        }
+    }
     /// <summary>
     /// Définit la recette à utiliser pour le craft.
     /// </summary>
@@ -66,7 +71,7 @@ public partial class Fonderie : StaticBody3D, IFactory
                 startCraft();
             }
         }
-        _factoryUi?.updateUi();
+        updateUi();
     }
 
     private void startCraft()
@@ -95,7 +100,8 @@ public partial class Fonderie : StaticBody3D, IFactory
         craftTimer.Timeout += onCraftFinished;
         AddChild(craftTimer);
         craftTimer.Start();
-
+        updateProgressBar(0f);
+        updateUi();
         GD.Print("Craft démarré.");
     }
 
@@ -103,7 +109,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     {
         isCrafting = false;
         craftTimer.QueueFree();
-
+        updateUi();
         if (craft.recipe.output != null)
         {
             bool outputAdded = craft.addOutput();
@@ -130,11 +136,8 @@ public partial class Fonderie : StaticBody3D, IFactory
         }
 
         // Mettre à jour l'interface utilisateur dans tous les cas
-        if (_factoryUi != null)
-        {
-            _factoryUi.updateProgressBar(0f);
-            _factoryUi.updateUi();
-        }
+        updateProgressBar(0f);
+        updateUi();
     }
 
     /// <summary>
@@ -180,4 +183,21 @@ public partial class Fonderie : StaticBody3D, IFactory
     }
 
     public float pollutionInd { get; set; }
+
+    private void updateUi()
+    {
+        if (UiManager.instance.IsAnyUiOpen())
+        {
+            UiManager.instance.refreshCurrentUi(this);
+        }
+    }
+
+    private void updateProgressBar(float progress)
+    {
+        if (UiManager.instance.isUiOpen("FonderieUI"))
+        {
+            FonderieUi fonderieUi = UiManager.instance.currentOpenUi as FonderieUi;
+            fonderieUi?.updateProgressBar(progress);
+        }
+    }
 }
