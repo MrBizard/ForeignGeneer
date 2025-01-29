@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.Static.Craft;
 using Godot;
 using MonoCustomResourceRegistry;
 
@@ -7,6 +8,8 @@ public partial class CentraleStatic : ItemStatic
     [Export] public int electricalCost { get; set; }
     [Export] public int pollutionIndex { get; set; }
     [Export] public int durability { get; set; }
+    [Export] public int tier { get; set; }
+    [Export] public RecipeList recipeList { get; set; }
 
     public CentraleStatic() {}
 
@@ -19,23 +22,28 @@ public partial class CentraleStatic : ItemStatic
     }
 
     /// <summary>
-    /// Instancie un objet de type CoalCentral à une position donnée.
+    /// Instancie un objet de type Central à une position donnée.
     /// </summary>
     /// <param name="pos">La position où l'objet doit être instancié.</param>
     /// <returns>L'objet instancié.</returns>
-    public CoalCentral instantiateFactory(Vector3 pos)
+    public Fonderie instantiateFactory(Vector3 pos)
     {
-        CoalCentral itemInstantiate = _prefab.Instantiate<CoalCentral>();
+        PackedScene scene = GD.Load<PackedScene>(_scenePath);
+        if (scene == null)
+        {
+            GD.PrintErr("Impossible de charger la scène : " + _scenePath);
+            return null;
+        }
 
+        var itemInstantiate = scene.Instantiate<Fonderie>();
         itemInstantiate.GlobalPosition = pos;
-        itemInstantiate.electricalCost = electricalCost;
-
         return itemInstantiate;
     }
 
+
     /// <summary>
     /// Action effectuée lorsque l'utilisateur clique sur l'objet avec le bouton droit.
-    /// Place un objet CoalCentral près du joueur et consomme un item du hotbar.
+    /// Place un objet Central près du joueur et consomme un item du hotbar.
     /// </summary>
     /// <param name="player">Le joueur qui a effectué le clic.</param>
     public override void RightClick(Player player)

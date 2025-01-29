@@ -1,22 +1,29 @@
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
+using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
 public partial class Fonderie : StaticBody3D, IFactory
 {
-    [Export] public RecipeList recipeList { get; set; }
     [Export] public int inputSlotCount { get; set; } = 2;
-    public float electricalCost = 0;
+    [Export]public FactoryStatic factoryStatic { get; set; }
     public Craft craft { get; set; }
     public Inventory input { get; set; }
-    public short tier { get; set; }
     public Inventory output { get; set; }
     public float craftProgress { get; private set; }
-    public Timer craftTimer;
+    public Timer craftTimer { get; set; }
     public bool isCrafting { get; private set; } = false;
-
-    private Manager _manager;
-
+    public RecipeList recipeList 
+    {
+        get => factoryStatic?.recipeList;
+        set 
+        {
+            if (factoryStatic != null) 
+            {
+                factoryStatic.recipeList = value;
+            }
+        }
+    }
     public override void _Ready()
     {
         base._Ready();
@@ -30,10 +37,9 @@ public partial class Fonderie : StaticBody3D, IFactory
     {
         input = new Inventory(inputSlotCount);
         output = new Inventory(1);
-        recipeList?.init();
+        factoryStatic.recipeList?.init();
         input.onInventoryUpdated += onInventoryUpdated;
         output.onInventoryUpdated += onInventoryUpdated;
-        _manager = GetNode<Manager>("/root/Main/Manager");
     }
 
     public override void _Process(double delta)
@@ -44,6 +50,7 @@ public partial class Fonderie : StaticBody3D, IFactory
             updateProgressBar(craftProgress);
         }
     }
+    
 
     /// <summary>
     /// Définit la recette à utiliser pour le craft.
@@ -86,7 +93,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     /// </summary>
     private void startCraft()
     {
-        if (isCrafting || !_manager.hasEnergy(electricalCost))
+        if (isCrafting || EnergyManager.instance.hasEnergy(factoryStatic.electricalCost))
         {
             return;
         }

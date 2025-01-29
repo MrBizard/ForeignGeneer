@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.Static.Craft;
 using Godot;
 using MonoCustomResourceRegistry;
 
@@ -6,7 +7,8 @@ public partial class FactoryStatic : ItemStatic
 {
     [Export] public int electricalCost { get; set; }
     [Export] public int pollutionIndex { get; set; }
-
+    [Export] public int tier { get; set; }
+    [Export] public RecipeList recipeList { get; set; }
     public override void LeftClick()
     {
         GD.Print("Factory Left Clicked");
@@ -19,13 +21,18 @@ public partial class FactoryStatic : ItemStatic
     /// <returns>The instantiated Fonderie object.</returns>
     public Fonderie instantiateFactory(Vector3 pos)
     {
-        var itemInstantiate = _prefab.Instantiate<Fonderie>();
+        PackedScene scene = GD.Load<PackedScene>(_scenePath);
+        if (scene == null)
+        {
+            GD.PrintErr("Impossible de charger la scène : " + _scenePath);
+            return null;
+        }
 
+        var itemInstantiate = scene.Instantiate<Fonderie>();
         itemInstantiate.GlobalPosition = pos;
-        itemInstantiate.electricalCost = electricalCost;
-
         return itemInstantiate;
     }
+
 
     /// <summary>
     /// Handles the right-click action. Instantiates a new Fonderie at the player's position.
@@ -35,4 +42,5 @@ public partial class FactoryStatic : ItemStatic
     {
         player.GetParent().AddChild(instantiateFactory(player.Position + new Vector3(1, 0.1f, 1)));
     }
+    
 }

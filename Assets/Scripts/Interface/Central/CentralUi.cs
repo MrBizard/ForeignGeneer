@@ -1,10 +1,11 @@
 using Godot;
 using ForeignGeneer.Assets.Scripts.Interface;
+using ForeignGeneer.Assets.Scripts.manager;
 
 public partial class CentralUi : BaseUi
 {
     [Export] private PackedScene _slotUi;
-    private CoalCentral _central;
+    private Central _central;
     private SlotUI _inputSlot;
     private ProgressBar _craftProgressBar;
     private HBoxContainer _inputList;
@@ -12,7 +13,6 @@ public partial class CentralUi : BaseUi
     private TextEdit _craftText;
     private Button _resetCraftButton;
     private Label _electricityLabel;
-    private Manager _manager;
 
     public override void _Ready()
     {
@@ -22,7 +22,6 @@ public partial class CentralUi : BaseUi
         _craftProgressBar = GetNode<ProgressBar>("Machine/Container/ProgressBar");
         _craftText = GetNode<TextEdit>("Machine/CraftText");
         _electricityLabel = GetNode<Label>("Machine/Quantity");
-        _manager = GetNode<Manager>("/root/Main/Manager");
         _resetCraftButton = GetNode<Button>("Machine/Button");
         _resetCraftButton.Connect("pressed", new Callable(this, nameof(onResetCraftButtonPressed)));
     }
@@ -33,7 +32,7 @@ public partial class CentralUi : BaseUi
     /// <param name="data">The central node associated with this interface.</param>
     public override void initialize(Node data)
     {
-        _central = (CoalCentral)data;
+        _central = (Central)data;
 
         if (_inputSlot == null)
         {
@@ -80,7 +79,7 @@ public partial class CentralUi : BaseUi
     {
         if (_electricityLabel != null && _central != null)
         {
-            _electricityLabel.Text = $"Puissance : {_central.electricalCost} kW/s || Électricité totale : {_manager.getGlobalElectricity()} kW/s";
+            _electricityLabel.Text = $"Puissance : {_central.centralStatic.electricalCost} kW/s || Électricité totale : {EnergyManager.instance.getGlobalElectricity()} kW/s";
         }
     }
     /// <summary>

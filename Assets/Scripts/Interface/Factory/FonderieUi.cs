@@ -41,10 +41,10 @@ public partial class FonderieUi : BaseUi
                 _fonderie.output.onInventoryUpdated += onInventoryUpdated;
             }
 
-            initializeInputSlots();  // Initialise les slots d'entrée
-            initializeOutputSlot();  // Initialise le slot de sortie
-            updateCraftText();       // Met à jour le texte de la recette
-            updateUi();              // Met à jour l'UI
+            initializeInputSlots();  
+            initializeOutputSlot();  
+            updateCraftText();       
+            updateUi();              
         }
         else
         {
@@ -54,21 +54,19 @@ public partial class FonderieUi : BaseUi
 
     private void onInventoryUpdated()
     {
-        updateUi();  // Met à jour l'UI lorsque l'inventaire change
-        updateCraftText();  // Met à jour le texte de la recette
-        updateOutputSlotBackground();  // Met à jour l'arrière-plan du slot de sortie
+        updateUi();  
+        updateCraftText();  
+        updateOutputSlotBackground(); 
     }
 
     private void initializeInputSlots()
     {
-        // On vide les anciens slots d'entrée
         foreach (var child in _inputList.GetChildren())
         {
             child.QueueFree();
         }
         _inputSlots.Clear();
 
-        // On initialise les slots d'entrée avec l'inventaire de la fonderie
         for (int i = 0; i < _fonderie.input.slots.Count; i++)
         {
             var slot = _slotUi.Instantiate<SlotUI>();
@@ -81,22 +79,19 @@ public partial class FonderieUi : BaseUi
 
     private void initializeOutputSlot()
     {
-        // On vide les anciens enfants du container de sortie
         foreach (var child in _outputContainer.GetChildren())
         {
             child.QueueFree();
         }
 
-        // On instancie et initialise le slot de sortie
         _outputSlot = _slotUi.Instantiate<SlotUI>();
-        _outputSlot.initialize(_fonderie.output, 0, true);  // True signifie qu'il est un slot de sortie
-        updateOutputSlotBackground();  // Met à jour l'arrière-plan du slot
-        _outputContainer.AddChild(_outputSlot);  // Ajoute le slot au container de sortie
+        _outputSlot.initialize(_fonderie.output, 0, true);
+        updateOutputSlotBackground(); 
+        _outputContainer.AddChild(_outputSlot);  
     }
 
     private void updateCraftText()
     {
-        // Met à jour le texte pour la recette en cours
         if (_fonderie.craft != null && _fonderie.craft.recipe != null)
         {
             _craftText.Text = "Résultat : " + _fonderie.craft.recipe.output.getResource().GetName();
@@ -113,7 +108,6 @@ public partial class FonderieUi : BaseUi
 
     private void updateOutputSlotBackground()
     {
-        // Met à jour l'arrière-plan du slot de sortie avec l'icône de la ressource de sortie
         if (_outputSlot != null && _fonderie.craft != null && _fonderie.craft.recipe != null)
         {
             _outputSlot.setBackgroundTexture(_fonderie.craft.recipe.output.getResource().getInventoryIcon);
@@ -128,7 +122,6 @@ public partial class FonderieUi : BaseUi
         if (_fonderie == null)
             return;
 
-        // Mettre à jour les slots d'entrée
         for (int i = 0; i < _fonderie.input.slots.Count; i++)
         {
             if (_inputSlots[i] != null)
@@ -136,26 +129,25 @@ public partial class FonderieUi : BaseUi
                 var slotItem = _fonderie.input.getItem(i);
                 if (slotItem != null)
                 {
-                    _inputSlots[i].updateSlot();  // Met à jour le contenu du slot
+                    _inputSlots[i].updateSlot();  
                 }
                 else
                 {
-                    _inputSlots[i].clearSlot();  // Vide le slot si nécessaire
+                    _inputSlots[i].clearSlot(); 
                 }
             }
         }
 
-        // Mettre à jour le slot de sortie
         if (_outputSlot != null)
         {
             var outputItem = _fonderie.output.getItem(0);
             if (outputItem != null)
             {
-                _outputSlot.updateSlot();  // Met à jour le contenu du slot de sortie
+                _outputSlot.updateSlot();  
             }
             else
             {
-                _outputSlot.clearSlot();  // Vide le slot de sortie si nécessaire
+                _outputSlot.clearSlot(); 
             }
         }
     }
@@ -181,6 +173,7 @@ public partial class FonderieUi : BaseUi
 
     private void onButtonBack()
     {
+        _fonderie.setCraft(null);
         UiManager.instance.openUi("RecipeListUI", _fonderie);
     }
 }

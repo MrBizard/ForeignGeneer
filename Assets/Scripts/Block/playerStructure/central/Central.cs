@@ -1,23 +1,32 @@
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.central;
+using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class CoalCentral : StaticBody3D, ICentral
+public partial class Central : StaticBody3D, ICentral
 {
-    [Export] private PackedScene _centralPackedScene;
-    [Export] private PackedScene _recipeListUiPackedScene;
-    [Export] public RecipeList recipeList { get; set; }
-    public float pollutionInd { get; set; }
+    [Export] private PackedScene _centralUiPackedScene;
+    [Export] private PackedScene _recipeListUiPackedScene; 
+    [Export] public CentraleStatic centralStatic;
     public Inventory input { get; set; }
     public Craft craft { get; set; }
-    public short tier { get; set; }
     public float craftProgress { get; private set; }
     public Timer craftTimer { get; set; }
     public bool isCrafting { get; private set; } = false;
+    
+    public RecipeList recipeList 
+    {
+        get => centralStatic?.recipeList;
+        set 
+        {
+            if (centralStatic != null) 
+            {
+                centralStatic.recipeList = value;
+            }
+        }
+    }
     private CentralUi _centralUi;
     private RecetteList _recipeListUi;
-    private Manager _manager;
-    public float electricalCost = 0;
 
     /// <summary>
     /// Called when the node is added to the scene. Initializes the central UI and inventory.
@@ -26,9 +35,9 @@ public partial class CoalCentral : StaticBody3D, ICentral
     {
         base._Ready();
         input = new Inventory(1);
-        recipeList?.init();
         input.onInventoryUpdated += onInventoryUpdated;
-        _manager = (Manager)GetNode("/root/Main/Manager");
+        centralStatic.recipeList?.init();
+        PollutionManager.instance.addPolution(0);   
     }
 
     /// <summary>
@@ -57,7 +66,7 @@ public partial class CoalCentral : StaticBody3D, ICentral
         }
         _centralUi?.updateUi();
     }
-
+    
     /// <summary>
     /// Sets the recipe to be used for crafting and opens the crafting UI.
     /// </summary>
@@ -77,7 +86,7 @@ public partial class CoalCentral : StaticBody3D, ICentral
     {
         if (isCrafting) return;
 
-        _manager.addGlobalElectricity(electricalCost);
+        EnergyManager.instance.addGlobalElectricity(centralStatic.electricalCost);
 
         if (!craft.consumeResources()) return;
 
@@ -89,7 +98,7 @@ public partial class CoalCentral : StaticBody3D, ICentral
         craftTimer = new Timer();
         craftTimer.WaitTime = craft.recipe.duration;
         craftTimer.Timeout += onCraftFinished;
-        _manager.addGlobalElectricity(electricalCost);
+        EnergyManager.instance.addGlobalElectricity(centralStatic.electricalCost);
         _centralUi?.updateElectricity();
         AddChild(craftTimer);
         craftTimer.Start();
@@ -101,7 +110,8 @@ public partial class CoalCentral : StaticBody3D, ICentral
     private void onCraftFinished()
     {
         isCrafting = false;
-        _manager.removeGlobalElectricity(electricalCost);
+        
+        EnergyManager.instance.removeGlobalElectricity(centralStatic.electricalCost);
         _centralUi?.updateElectricity();
         craftTimer.QueueFree(); 
 

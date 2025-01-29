@@ -3,7 +3,7 @@ using Godot;
 public partial class ItemStatic : Resource
 {
     [Export] private int _maxStack;
-    [Export] public PackedScene _prefab;
+    [Export] public string _scenePath;
     [Export] private Material _material;
     [Export] private Texture2D _inventoryIcon;
 
@@ -13,10 +13,10 @@ public partial class ItemStatic : Resource
         set => _maxStack = value;
     }
 
-    public PackedScene getPrefab
+    public string getPrefab
     {
-        get => _prefab;
-        set => _prefab = value;
+        get => _scenePath;
+        set => _scenePath = value;
     }
 
     public Material getMaterial
@@ -39,10 +39,29 @@ public partial class ItemStatic : Resource
         _inventoryIcon = inventoryIcon;
     }
 
-    public ItemAuSol instantiate(Vector3 pos)
+    public ItemAuSol Instantiate(Vector3 pos)
     {
-        ItemAuSol itemInstantiate = _prefab.Instantiate<ItemAuSol>();
+        if (string.IsNullOrEmpty(_scenePath))
+        {
+            GD.PrintErr("scenePath is not set for this item.");
+            return null;
+        }
 
+        PackedScene scene = GD.Load<PackedScene>(_scenePath);
+        if (scene == null)
+        {
+            GD.PrintErr($"Failed to load scene at path: {_scenePath}");
+            return null;
+        }
+
+        ItemAuSol itemInstantiate = scene.Instantiate<ItemAuSol>();
+        if (itemInstantiate == null)
+        {
+            GD.PrintErr("Failed to instantiate ItemAuSol.");
+            return null;
+        }
+
+        // Appliquer le matériau si disponible
         if (_material != null)
         {
             MeshInstance3D meshInstance = itemInstantiate.GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
@@ -59,6 +78,7 @@ public partial class ItemStatic : Resource
         itemInstantiate.GlobalPosition = pos;
         return itemInstantiate;
     }
+
 
     public virtual void LeftClick()
     {
