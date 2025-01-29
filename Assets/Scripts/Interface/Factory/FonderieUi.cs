@@ -1,6 +1,6 @@
-using Godot;
 using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts.Interface;
+using Godot;
 
 public partial class FonderieUi : BaseUi
 {
@@ -13,6 +13,7 @@ public partial class FonderieUi : BaseUi
     private ProgressBar _progressBar;
     private List<SlotUI> _inputSlots = new List<SlotUI>();
     private Button _button;
+
     public override void _Ready()
     {
         base._Ready();
@@ -21,8 +22,7 @@ public partial class FonderieUi : BaseUi
         _craftText = GetNode<TextEdit>("Machine/CraftText");
         _progressBar = GetNode<ProgressBar>("Machine/Container/ProgressBar");
         _button = GetNode<Button>("Machine/Button");
-        GD.Print("progress : ", _progressBar);
-        _button.Connect("pressed", new Callable(this,nameof(onButtonBack) ));
+        _button.Connect("pressed", new Callable(this, nameof(onButtonBack)));
     }
 
     /// <summary>
@@ -41,10 +41,10 @@ public partial class FonderieUi : BaseUi
                 _fonderie.output.onInventoryUpdated += onInventoryUpdated;
             }
 
-            initializeInputSlots();
-            initializeOutputSlot();
-            updateCraftText();
-            updateUi();
+            initializeInputSlots();  // Initialise les slots d'entrée
+            initializeOutputSlot();  // Initialise le slot de sortie
+            updateCraftText();       // Met à jour le texte de la recette
+            updateUi();              // Met à jour l'UI
         }
         else
         {
@@ -54,23 +54,25 @@ public partial class FonderieUi : BaseUi
 
     private void onInventoryUpdated()
     {
-        updateUi();
-        updateCraftText();
-        updateOutputSlotBackground();
+        updateUi();  // Met à jour l'UI lorsque l'inventaire change
+        updateCraftText();  // Met à jour le texte de la recette
+        updateOutputSlotBackground();  // Met à jour l'arrière-plan du slot de sortie
     }
 
     private void initializeInputSlots()
     {
+        // On vide les anciens slots d'entrée
         foreach (var child in _inputList.GetChildren())
         {
             child.QueueFree();
         }
         _inputSlots.Clear();
 
+        // On initialise les slots d'entrée avec l'inventaire de la fonderie
         for (int i = 0; i < _fonderie.input.slots.Count; i++)
         {
             var slot = _slotUi.Instantiate<SlotUI>();
-            slot.initialize(_fonderie.input.slots[i], _fonderie.input);
+            slot.initialize(_fonderie.input, i);
             slot.setBackgroundTexture(_fonderie.craft.recipe.input[i].getResource().getInventoryIcon);
             _inputSlots.Add(slot);
             _inputList.AddChild(slot);
@@ -79,25 +81,28 @@ public partial class FonderieUi : BaseUi
 
     private void initializeOutputSlot()
     {
+        // On vide les anciens enfants du container de sortie
         foreach (var child in _outputContainer.GetChildren())
         {
-            child.QueueFree(); // Supprime les anciens enfants
+            child.QueueFree();
         }
 
-        _outputSlot = _slotUi.Instantiate<SlotUI>(); // Instancie le nouveau slot
-        _outputSlot.initialize(_fonderie.output.slots[0], _fonderie.output, true); // Initialise le slot
-        updateOutputSlotBackground(); // Met à jour l'arrière-plan du slot
-        _outputContainer.AddChild(_outputSlot); // Ajoute le slot à l'interface
+        // On instancie et initialise le slot de sortie
+        _outputSlot = _slotUi.Instantiate<SlotUI>();
+        _outputSlot.initialize(_fonderie.output, 0, true);  // True signifie qu'il est un slot de sortie
+        updateOutputSlotBackground();  // Met à jour l'arrière-plan du slot
+        _outputContainer.AddChild(_outputSlot);  // Ajoute le slot au container de sortie
     }
 
     private void updateCraftText()
     {
+        // Met à jour le texte pour la recette en cours
         if (_fonderie.craft != null && _fonderie.craft.recipe != null)
         {
             _craftText.Text = "Résultat : " + _fonderie.craft.recipe.output.getResource().GetName();
             foreach (StackItem stack in _fonderie.craft.recipe.input)
             {
-                _craftText.Text += "\n - " + stack.getStack() + " x " + stack.getResource().GetName();
+                _craftText.Text += $"\n - {stack.getStack()} x {stack.getResource().GetName()}";
             }
         }
         else
@@ -108,6 +113,7 @@ public partial class FonderieUi : BaseUi
 
     private void updateOutputSlotBackground()
     {
+        // Met à jour l'arrière-plan du slot de sortie avec l'icône de la ressource de sortie
         if (_outputSlot != null && _fonderie.craft != null && _fonderie.craft.recipe != null)
         {
             _outputSlot.setBackgroundTexture(_fonderie.craft.recipe.output.getResource().getInventoryIcon);
@@ -130,29 +136,26 @@ public partial class FonderieUi : BaseUi
                 var slotItem = _fonderie.input.getItem(i);
                 if (slotItem != null)
                 {
-                    _inputSlots[i].updateSlot();
+                    _inputSlots[i].updateSlot();  // Met à jour le contenu du slot
                 }
                 else
                 {
-                    _inputSlots[i].clearSlot();
+                    _inputSlots[i].clearSlot();  // Vide le slot si nécessaire
                 }
             }
         }
-        GD.Print("outputSlot : ",_outputSlot);
+
         // Mettre à jour le slot de sortie
         if (_outputSlot != null)
         {
             var outputItem = _fonderie.output.getItem(0);
-            _outputSlot.setStackItem(outputItem);
             if (outputItem != null)
             {
-                GD.Print("Mise à jour du slot de sortie avec l'item : " + outputItem.getResource().GetName());
-                _outputSlot.updateSlot();
+                _outputSlot.updateSlot();  // Met à jour le contenu du slot de sortie
             }
             else
             {
-                GD.Print("Slot de sortie vide.");
-                _outputSlot.clearSlot();
+                _outputSlot.clearSlot();  // Vide le slot de sortie si nécessaire
             }
         }
     }

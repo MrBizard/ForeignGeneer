@@ -13,10 +13,11 @@ public partial class InventoryManager : Node
 
     public Inventory mainInventory { get; private set; }
     public Inventory hotbar { get; private set; }
-    public StackItem currentItemInMouse { get; private set; } // Item actuellement porté par la souris
+    public StackItem currentItemInMouse { get; private set; }
 
-    [Export] private PackedScene slotBasePackedScene; // Scène PackedScene pour SlotBase
-    private Control slotBaseInstance; // Instance de SlotBase qui suit la souris
+    [Export] private PackedScene slotBasePackedScene;
+    private Control slotBaseInstance;
+    public int currentSlotHotbar = 0;
 
     public override void _Ready()
     {
@@ -26,13 +27,12 @@ public partial class InventoryManager : Node
         }
         else
         {
-            QueueFree(); // Assure qu'il n'y a qu'une seule instance
+            QueueFree();
         }
 
         mainInventory = new Inventory(mainInventorySize);
         hotbar = new Inventory(hotbarSize);
 
-        // Exemple d'initialisation (à supprimer en production)
         mainInventory.addItemToSlot(new StackItem(testItem, 50), 10);
         mainInventory.addItemToSlot(new StackItem(testItem, 67), 7);
         mainInventory.addItemToSlot(new StackItem(testItem2, 1), 1);
@@ -42,7 +42,6 @@ public partial class InventoryManager : Node
 
     public override void _Process(double delta)
     {
-        // Si un item est porté par la souris, mettez à jour la position de SlotBase
         if (currentItemInMouse != null && slotBaseInstance != null)
         {
             slotBaseInstance.Position = GetViewport().GetMousePosition();
@@ -50,7 +49,7 @@ public partial class InventoryManager : Node
     }
 
     /// <summary>
-    /// Définit l'item actuellement porté par la souris.
+    /// Sets the item currently held by the mouse.
     /// </summary>
     public void setCurrentItemInMouse(StackItem item)
     {
@@ -66,31 +65,37 @@ public partial class InventoryManager : Node
         {
             if (slotBasePackedScene == null)
             {
-                GD.PrintErr("slotBasePackedScene n'est pas assigné !");
+                GD.PrintErr("slotBasePackedScene is not assigned!");
                 return;
             }
 
-            // Instancier SlotBase
             slotBaseInstance = slotBasePackedScene.Instantiate<Control>();
             AddChild(slotBaseInstance);
 
-            // Configurer l'icône et la quantité
             Sprite2D icon = slotBaseInstance.GetNode<Sprite2D>("Icon");
             Label countLabel = slotBaseInstance.GetNode<Label>("CountLabel");
 
             if (icon == null || countLabel == null)
             {
-                GD.PrintErr("Les nœuds Icon ou CountLabel sont manquants dans SlotBase !");
+                GD.PrintErr("Missing Icon or CountLabel nodes in SlotBase!");
                 return;
             }
 
-            icon.Texture = item.getResource().getInventoryIcon; // Assurez-vous que `getInventoryIcon` existe
+            icon.Texture = item.getResource().getInventoryIcon;
             countLabel.Text = item.getStack().ToString();
+        }
+        else
+        {
+            if (slotBaseInstance != null)
+            {
+                slotBaseInstance.QueueFree();
+                slotBaseInstance = null;
+            }
         }
     }
 
     /// <summary>
-    /// Ajoute un item à un slot spécifique de l'inventaire principal.
+    /// Adds an item to a specific slot in the main inventory.
     /// </summary>
     public void addItemToMainInventory(StackItem item, int slotIndex)
     {
@@ -98,7 +103,7 @@ public partial class InventoryManager : Node
     }
 
     /// <summary>
-    /// Ajoute un item à un slot spécifique de la hotbar.
+    /// Adds an item to a specific slot in the hotbar.
     /// </summary>
     public void addItemToHotbar(StackItem item, int slotIndex)
     {

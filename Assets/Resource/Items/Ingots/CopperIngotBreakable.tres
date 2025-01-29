@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=5 format=3 uid="uid://yc5a6wv1hxvf"]
 
-[ext_resource type="Texture2D" uid="uid://brbqkpahyx4oa" path="res://Assets/Texture/Ingots/lingot_copper.png" id="1_7nete"]
+[ext_resource type="Texture2D" uid="uid://bwg23wa83c0ed" path="res://Assets/Texture/Ingots/lingot_copper.png" id="1_7nete"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ResourceStatic.cs" id="1_un6d0"]
 [ext_resource type="PackedScene" uid="uid://b2y0l5pql3pqs" path="res://Assets/Ingots/Ingot.tscn" id="3_av0iq"]
 

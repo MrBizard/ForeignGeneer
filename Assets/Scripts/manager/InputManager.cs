@@ -12,29 +12,26 @@ public partial class InputManager : Node
         if (Instance == null)
         {
             Instance = this;
-            raycast = GetNode<Raycast>("/root/Main/Personnage/Pivot/SpringArm3D/Camera3D/RayCast3D");        
+            raycast = GetNode<Raycast>("/root/Main/Personnage/Pivot/SpringArm3D/Camera3D/RayCast3D");
         }
         else
         {
-            QueueFree(); 
+            QueueFree();
         }
     }
 
     public override void _Process(double delta)
     {
-        // Gestion de l'inventaire
         if (Input.IsActionJustPressed("inventory"))
         {
             HandleUiToggle("inventoryUi");
         }
 
-        // Gestion des options
         if (Input.IsActionJustPressed("option"))
         {
             HandleUiToggle("optionUi");
         }
 
-        // Gestion du sprint
         if (Input.IsActionJustPressed("sprint"))
         {
             Player.Instance.SetSprinting(true);
@@ -44,13 +41,11 @@ public partial class InputManager : Node
             Player.Instance.SetSprinting(false);
         }
 
-        // Gestion du saut
         if (Input.IsActionJustPressed("jump"))
         {
             Player.Instance.Jump();
         }
 
-        // Gestion des clics
         if (Input.IsActionJustPressed("leftClick"))
         {
             Player.Instance.LeftClick();
@@ -61,7 +56,6 @@ public partial class InputManager : Node
             Player.Instance.RightClick();
         }
 
-        // Gestion du mouvement
         Vector2 inputDir = Input.GetVector("left", "right", "forward", "backward");
         if (inputDir != Vector2.Zero)
         {
@@ -102,7 +96,7 @@ public partial class InputManager : Node
     {
         if (raycast != null)
         {
-            raycast.InteractWithObject(); 
+            raycast.InteractWithObject();
         }
     }
 }

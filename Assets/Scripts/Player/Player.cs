@@ -2,21 +2,66 @@ using Godot;
 
 public partial class Player : CharacterBody3D
 {
+    #region Attributs
+
+    /// <summary>
+    /// Instance statique du joueur. Garantit qu'il n'y a qu'une seule instance du joueur dans le jeu.
+    /// </summary>
     public static Player Instance { get; private set; }
 
-    [Export] public float Speed = 5.0f; // Vitesse de base du joueur
-    public const float LerpVal = 0.5f; // Valeur de lissage pour les mouvements
-    private bool _isSprinting = false; // Indicateur de sprint
+    /// <summary>
+    /// Vitesse du joueur. Défini par défaut à 5.0f.
+    /// </summary>
+    [Export] public float Speed = 5.0f;
 
-    // Références aux nœuds de la scène
+    /// <summary>
+    /// Valeur utilisée pour l'interpolation des mouvements du joueur. Utilisée pour rendre les mouvements plus fluides.
+    /// </summary>
+    public const float LerpVal = 0.5f;
+
+    /// <summary>
+    /// Indicateur du mode sprint du joueur.
+    /// </summary>
+    private bool _isSprinting = false;
+
+    /// <summary>
+    /// Référence à l'armature du joueur, utilisée pour la rotation du modèle 3D.
+    /// </summary>
     private Node3D _armature;
+
+    /// <summary>
+    /// Référence au pivot de la caméra, utilisé pour contrôler la rotation de la caméra.
+    /// </summary>
     private Node3D _pivot;
+
+    /// <summary>
+    /// Référence au bras de printemps qui maintient la caméra à une certaine distance du joueur.
+    /// </summary>
     private SpringArm3D _springArm;
+
+    /// <summary>
+    /// Référence à l'arbre d'animation du joueur, qui gère les transitions d'animations.
+    /// </summary>
     private AnimationTree _animTree;
 
-    private Vector3 _movementDirection = Vector3.Zero; // Direction du mouvement
-    private bool _isUiOpen = false; // Indicateur pour savoir si l'UI est ouverte
+    /// <summary>
+    /// Direction du mouvement du joueur en 3D.
+    /// </summary>
+    private Vector3 _movementDirection = Vector3.Zero;
 
+    /// <summary>
+    /// Indicateur qui détermine si l'interface utilisateur est ouverte.
+    /// </summary>
+    private bool _isUiOpen = false;
+
+    #endregion
+
+    #region Méthodes
+
+    /// <summary>
+    /// Méthode appelée lorsque l'objet Player est prêt dans la scène. 
+    /// Initialise les nœuds nécessaires et s'abonne aux événements de changement d'état de l'UI.
+    /// </summary>
     public override void _Ready()
     {
         if (Instance == null)
@@ -25,133 +70,112 @@ public partial class Player : CharacterBody3D
         }
         else
         {
-            QueueFree(); // Assure qu'il n'y a qu'une seule instance
+            QueueFree(); // Assure qu'il n'y a qu'une seule instance du joueur.
         }
 
-        // Initialisation des références aux nœuds
         _armature = GetNode<Node3D>("Armature_001");
         _pivot = GetNode<Node3D>("Pivot");
         _springArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
         _animTree = GetNode<AnimationTree>("AnimationTree");
 
-        // Capture la souris pour les contrôles de la caméra
-        Input.MouseMode = Input.MouseModeEnum.Captured;
-
-        // Abonnez-vous à l'événement de changement d'état de l'UI
-        UiManager.instance.onUiStateChanged += OnUiStateChanged;
+        Input.MouseMode = Input.MouseModeEnum.Captured; // Capture le curseur de la souris.
+        UiManager.instance.onUiStateChanged += OnUiStateChanged; // S'abonne aux changements d'état de l'UI.
     }
 
-    // Méthode appelée lorsque l'état de l'UI change
+    /// <summary>
+    /// Méthode appelée lorsque l'état de l'UI change.
+    /// Change le mode de la souris en fonction de l'état de l'UI.
+    /// </summary>
     private void OnUiStateChanged(bool isUiOpen)
     {
         _isUiOpen = isUiOpen;
-
-        if (_isUiOpen)
-        {
-            // Désactiver les contrôles de la souris pour le joueur
-            Input.MouseMode = Input.MouseModeEnum.Visible;
-        }
-        else
-        {
-            // Réactiver les contrôles de la souris pour le joueur
-            Input.MouseMode = Input.MouseModeEnum.Captured;
-        }
+        Input.MouseMode = _isUiOpen ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
     }
 
-    // Méthode pour activer/désactiver le sprint
+    /// <summary>
+    /// Active ou désactive le sprint du joueur.
+    /// </summary>
     public void SetSprinting(bool isSprinting)
     {
         _isSprinting = isSprinting;
         Speed = isSprinting ? 50.0f : 5.0f;
     }
 
-    // Méthode pour faire sauter le joueur
+    /// <summary>
+    /// Permet au joueur de sauter s'il est sur le sol.
+    /// </summary>
     public void Jump()
     {
         if (IsOnFloor())
         {
-            Velocity = new Vector3(Velocity.X, 5.0f, Velocity.Z);
+            Velocity = new Vector3(Velocity.X, 5.0f, Velocity.Z); // Applique une vélocité verticale.
         }
     }
 
-    // Méthode pour gérer le clic gauche
+    /// <summary>
+    /// Gestion du clic gauche du joueur.
+    /// </summary>
     public void LeftClick()
     {
-        if (_isUiOpen)
-        {
-            // Si l'UI est ouverte, ne pas gérer le clic gauche
-            return;
-        }
-
-        // Logique pour le clic gauche (à implémenter)
-        GD.Print("Left click!");
+        if (_isUiOpen) return; // Ignore les clics si l'UI est ouverte.
+        InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar).getResource().LeftClick();
     }
 
-    // Méthode pour gérer le clic droit
+    /// <summary>
+    /// Gestion du clic droit du joueur.
+    /// </summary>
     public void RightClick()
     {
-        if (_isUiOpen)
-        {
-            // Si l'UI est ouverte, ne pas gérer le clic droit
-            return;
-        }
-
-        // Logique pour le clic droit (à implémenter)
-        GD.Print("Right click!");
+        if (_isUiOpen) return; // Ignore les clics si l'UI est ouverte.
+        InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar).getResource().RightClick(this);
     }
 
-    // Méthode pour gérer la rotation de la caméra
+    /// <summary>
+    /// Gère la rotation de la caméra en fonction des déplacements de la souris.
+    /// </summary>
     public void RotateCamera(Vector2 mouseDelta)
     {
-        if (_isUiOpen)
-        {
-            // Si l'UI est ouverte, ne pas appliquer la rotation de la caméra
-            return;
-        }
+        if (_isUiOpen) return; // Ignore la rotation si l'UI est ouverte.
 
-        _pivot.RotateY(-mouseDelta.X * 0.005f); // Rotation horizontale
-        _springArm.RotateX(-mouseDelta.Y * 0.005f); // Rotation verticale
+        _pivot.RotateY(-mouseDelta.X * 0.005f); // Rotation horizontale.
+        _springArm.RotateX(-mouseDelta.Y * 0.005f); // Rotation verticale.
 
-        // Limite la rotation verticale de la caméra
         Vector3 springArmRotation = _springArm.Rotation;
-        springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 3, Mathf.Pi / 3);
+        springArmRotation.X = Mathf.Clamp(springArmRotation.X, -Mathf.Pi / 3, Mathf.Pi / 3); // Limite la rotation verticale.
         _springArm.Rotation = springArmRotation;
     }
 
-    // Méthode pour gérer le mouvement
+    /// <summary>
+    /// Permet au joueur de se déplacer selon les entrées du clavier.
+    /// </summary>
     public void Move(Vector2 inputDir)
     {
-        if (_isUiOpen)
-        {
-            // Si l'UI est ouverte, ne pas appliquer le mouvement
-            return;
-        }
+        if (_isUiOpen) return; // Ignore les mouvements si l'UI est ouverte.
 
         _movementDirection = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-        _movementDirection = _movementDirection.Rotated(Vector3.Up, _pivot.Rotation.Y);
+        _movementDirection = _movementDirection.Rotated(Vector3.Up, _pivot.Rotation.Y); // Applique la rotation de la caméra à la direction.
     }
 
-    // Méthode pour arrêter le mouvement
+    /// <summary>
+    /// Arrête le mouvement du joueur.
+    /// </summary>
     public void StopMoving()
     {
-        _movementDirection = Vector3.Zero;
+        _movementDirection = Vector3.Zero; // Arrête le mouvement.
     }
 
+    /// <summary>
+    /// Méthode appelée à chaque frame physique pour appliquer la gravité, le mouvement et les animations.
+    /// </summary>
     public override void _PhysicsProcess(double delta)
     {
-        if (_isUiOpen)
+        if (_isUiOpen) return; // Ignore la physique si l'UI est ouverte.
+
+        if (!IsOnFloor()) 
         {
-            // Si l'UI est ouverte, ne pas appliquer les mouvements du joueur
-            return;
+            Velocity += GetGravity() * (float)delta; // Applique la gravité si le joueur n'est pas au sol.
         }
 
-        // Applique la gravité si le joueur n'est pas au sol
-        if (!IsOnFloor())
-        {
-            Velocity += GetGravity() * (float)delta;
-        }
-
-        // Applique le mouvement
         if (_movementDirection != Vector3.Zero)
         {
             Velocity = new Vector3(
@@ -160,7 +184,6 @@ public partial class Player : CharacterBody3D
                 Mathf.Lerp(Velocity.Z, _movementDirection.Z * Speed, LerpVal)
             );
 
-            // Calcule la rotation du personnage en fonction de la direction
             float targetRotationY = Mathf.Atan2(-Velocity.X, -Velocity.Z);
             _armature.Rotation = new Vector3(
                 _armature.Rotation.X,
@@ -170,7 +193,6 @@ public partial class Player : CharacterBody3D
         }
         else
         {
-            // Arrête progressivement le mouvement
             Velocity = new Vector3(
                 Mathf.Lerp(Velocity.X, 0.0f, LerpVal),
                 Velocity.Y,
@@ -178,20 +200,23 @@ public partial class Player : CharacterBody3D
             );
         }
 
-        // Met à jour l'animation du personnage
         if (_animTree != null)
         {
             float blendPosition = Velocity.Length() / Speed;
             _animTree.Set("parameters/BlendSpace1D/blend_position", blendPosition);
         }
 
-        // Applique le mouvement
-        MoveAndSlide();
+        MoveAndSlide(); // Applique le mouvement au joueur.
     }
 
+    /// <summary>
+    /// Méthode appelée lors de la suppression de l'objet de la scène.
+    /// Désabonne les événements de l'UI.
+    /// </summary>
     public override void _ExitTree()
     {
-        // Désabonnez-vous de l'événement lorsque le joueur est supprimé
         UiManager.instance.onUiStateChanged -= OnUiStateChanged;
     }
+
+    #endregion
 }

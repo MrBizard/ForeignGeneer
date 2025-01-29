@@ -4,19 +4,19 @@ public partial class SlotUI : Control
 {
     private TextureRect _icon;
     private Label _countLabel;
-    private StackItem _stackItem;
     private Inventory _inventory;
     private TextureRect _backIcon;
     private Panel _background;
     private bool _isOutputSlot = false;
+    private int _slotIndex;
 
     /// <summary>
-    /// Initialise le slot avec un item, un inventaire et un gestionnaire d'inventaire.
+    /// Initialise le slot avec un inventaire et un index.
     /// </summary>
-    public void initialize(StackItem stackItem, Inventory inventory, bool isOutputSlot = false)
+    public void initialize(Inventory inventory, int slotIndex, bool isOutputSlot = false)
     {
-        _stackItem = stackItem;
         _inventory = inventory;
+        _slotIndex = slotIndex;
         _isOutputSlot = isOutputSlot;
 
         _background = GetNode<Panel>("Background");
@@ -27,23 +27,18 @@ public partial class SlotUI : Control
         updateSlot();
     }
 
-    public void setStackItem(StackItem stackItem)
-    {
-        _stackItem = stackItem;
-    }
     /// <summary>
     /// Met à jour l'affichage du slot en fonction de son contenu.
     /// </summary>
-    private StackItem _lastStackItem;
-    private int _lastStackCount;
-
     public void updateSlot()
     {
-        if (_stackItem != null && _stackItem.getStack() > 0)
+        var stackItem = _inventory.getItem(_slotIndex);
+
+        if (stackItem != null && stackItem.getStack() > 0)
         {
-            GD.Print("Mise à jour du slot avec l'item : " + _stackItem.getResource().GetName());
-            _icon.Texture = _stackItem.getResource().getInventoryIcon;
-            _countLabel.Text = _stackItem.getStack() > 1 ? _stackItem.getStack().ToString() : "";
+            GD.Print("Mise à jour du slot avec l'item : " + stackItem.getResource().GetName());
+            _icon.Texture = stackItem.getResource().getInventoryIcon;
+            _countLabel.Text = stackItem.getStack() > 1 ? stackItem.getStack().ToString() : "";
         }
         else
         {
@@ -69,121 +64,117 @@ public partial class SlotUI : Control
     }
 
     private void handleLeftClick()
+{
+    if (InventoryManager.Instance.currentItemInMouse == null)
     {
-        if (InventoryManager.Instance.currentItemInMouse == null)
+        var stackItem = _inventory.getItem(_slotIndex);
+        if (stackItem != null)
         {
-            if (_stackItem != null)
+            // Prendre l'item du slot
+            InventoryManager.Instance.setCurrentItemInMouse(stackItem);
+            _inventory.deleteItem(_slotIndex);
+            _inventory.notifyInventoryUpdated();
+        }
+    }
+    else
+    {
+        if (!_isOutputSlot)
+        {
+            var stackItem = _inventory.getItem(_slotIndex);
+            if (stackItem == null)
             {
-                // Prendre l'item du slot
-                InventoryManager.Instance.setCurrentItemInMouse(_stackItem);
-                _inventory.deleteItem(GetIndex());
-                _stackItem = null;
+                // Poser l'item dans le slot vide
+                _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _slotIndex);
+                InventoryManager.Instance.setCurrentItemInMouse(null); // Mettre à jour l'item dans la souris
+                _inventory.notifyInventoryUpdated();
+            }
+            else if (stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
+            {
+                // Fusionner les stacks si c'est le même item
+                InventoryManager.Instance.currentItemInMouse.setStack(stackItem.add(InventoryManager.Instance.currentItemInMouse.getStack()));
+                if (InventoryManager.Instance.currentItemInMouse.getStack() <= 0)
+                {
+                    InventoryManager.Instance.setCurrentItemInMouse(null);
+                }
+                _inventory.notifyInventoryUpdated();
+            }
+            else
+            {
+                // Échanger les items
+                var temp = stackItem;
+                _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse,_slotIndex);
+                InventoryManager.Instance.setCurrentItemInMouse(temp); // Mettre à jour l'item dans la souris
                 _inventory.notifyInventoryUpdated();
             }
         }
         else
         {
-            if (!_isOutputSlot)
+            GD.Print("Impossible de poser des objets dans le slot de sortie.");
+        }
+    }
+    updateSlot();
+    // Met à jour l'affichage de l'item dans la souris après chaque interaction
+    InventoryManager.Instance.setCurrentItemInMouse(InventoryManager.Instance.currentItemInMouse);
+}
+
+
+    private void handleRightClick()
+    {
+        var stackItem = _inventory.getItem(_slotIndex);
+        if (stackItem != null && stackItem.getStack() > 1) // Vérifie qu'il y a un item et qu'il peut être divisé
+        {
+            // Diviser le stack en deux
+            int halfStack = stackItem.getStack() / 2;
+            int remainingStack = stackItem.getStack() - halfStack;
+
+            // Créer un nouvel item avec la moitié divisée
+            StackItem splitItem = new StackItem(stackItem.getResource(), halfStack);
+
+            // Mettre à jour la quantité dans le slot actuel
+            stackItem.setStack(remainingStack);
+
+            // Gérer l'item porté par la souris
+            StackItem currentMouseItem = InventoryManager.Instance.currentItemInMouse;
+            if (currentMouseItem == null)
             {
-                if (_stackItem == null)
+                // Si la souris ne porte rien, définir l'item divisé comme item actuel
+                InventoryManager.Instance.setCurrentItemInMouse(splitItem);
+            }
+            else if (currentMouseItem.getResource() == splitItem.getResource())
+            {
+                // Si la souris porte le même type d'item, ajouter la moitié divisée
+                int excess = currentMouseItem.add(splitItem.getStack()); // Ajoute et récupère l'excédent
+
+                if (excess > 0)
                 {
-                    // Poser l'item dans le slot vide
-                    _stackItem = InventoryManager.Instance.currentItemInMouse;
-                    _inventory.addItemToSlot(_stackItem, GetIndex());
-                    InventoryManager.Instance.setCurrentItemInMouse(null);
-                    _inventory.notifyInventoryUpdated();
+                    // S'il y a un excédent, le remettre dans le slot d'origine
+                    stackItem.setStack(stackItem.getStack() + excess);
                 }
-                else if (_stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
-                {
-                    // Fusionner les stacks si c'est le même item
-                    InventoryManager.Instance.currentItemInMouse.setStack(_stackItem.add(InventoryManager.Instance.currentItemInMouse.getStack()));
-                    if (InventoryManager.Instance.currentItemInMouse.getStack() <= 0)
-                    {
-                        InventoryManager.Instance.setCurrentItemInMouse(null);
-                    }
-                    _inventory.notifyInventoryUpdated();
-                }
-                else
-                {
-                    // Échanger les items
-                    var temp = _stackItem;
-                    _stackItem = InventoryManager.Instance.currentItemInMouse;
-                    InventoryManager.Instance.setCurrentItemInMouse(temp);
-                    _inventory.notifyInventoryUpdated();
-                }
+
+                // Mettre à jour l'item porté par la souris
+                InventoryManager.Instance.setCurrentItemInMouse(currentMouseItem);
             }
             else
             {
-                GD.Print("Impossible de poser des objets dans le slot de sortie.");
-            }
-        }
-        updateSlot();
-    }
-
-    private void handleRightClick()
-{
-    if (_stackItem != null && _stackItem.getStack() > 1) // Vérifie qu'il y a un item et qu'il peut être divisé
-    {
-        // Diviser le stack en deux
-        int halfStack = _stackItem.getStack() / 2;
-        int remainingStack = _stackItem.getStack() - halfStack;
-
-        // Créer un nouvel item avec la moitié divisée
-        StackItem splitItem = new StackItem(_stackItem.getResource(), halfStack);
-
-        // Mettre à jour la quantité dans le slot actuel
-        _stackItem.setStack(remainingStack);
-
-        // Gérer l'item porté par la souris
-        StackItem currentMouseItem = InventoryManager.Instance.currentItemInMouse;
-        if (currentMouseItem == null)
-        {
-            // Si la souris ne porte rien, définir l'item divisé comme item actuel
-            InventoryManager.Instance.setCurrentItemInMouse(splitItem);
-        }
-        else if (currentMouseItem.getResource() == splitItem.getResource())
-        {
-            // Si la souris porte le même type d'item, ajouter la moitié divisée
-            int excess = currentMouseItem.add(splitItem.getStack()); // Ajoute et récupère l'excédent
-
-            if (excess > 0)
-            {
-                // S'il y a un excédent, le remettre dans le slot d'origine
-                _stackItem.setStack(_stackItem.getStack() + excess);
+                // Si la souris porte un autre type d'item, ne rien faire (ou afficher un message)
+                GD.Print("Impossible de diviser : la souris porte un autre type d'item.");
+                // Annuler la division et remettre la quantité originale dans le slot
+                stackItem.setStack(stackItem.getStack() + splitItem.getStack());
+                return;
             }
 
-            // Mettre à jour l'item porté par la souris
-            InventoryManager.Instance.setCurrentItemInMouse(currentMouseItem);
+            // Mettre à jour l'affichage et notifier le changement
+            _inventory.notifyInventoryUpdated();
+            updateSlot();
         }
-        else
+        else if (stackItem != null && stackItem.getStack() == 1)
         {
-            // Si la souris porte un autre type d'item, ne rien faire (ou afficher un message)
-            GD.Print("Impossible de diviser : la souris porte un autre type d'item.");
-            // Annuler la division et remettre la quantité originale dans le slot
-            _stackItem.setStack(_stackItem.getStack() + splitItem.getStack());
-            return;
+            // Si le stack est de 1, simplement déplacer l'item vers la souris
+            InventoryManager.Instance.setCurrentItemInMouse(stackItem);
+            _inventory.deleteItem(_slotIndex);
+            _inventory.notifyInventoryUpdated();
+            updateSlot();
         }
-
-        // Mettre à jour l'affichage et notifier le changement
-        _inventory.notifyInventoryUpdated();
-        updateSlot();
-    }
-    else if (_stackItem != null && _stackItem.getStack() == 1)
-    {
-        // Si le stack est de 1, simplement déplacer l'item vers la souris
-        InventoryManager.Instance.setCurrentItemInMouse(_stackItem);
-        _stackItem = null;
-        _inventory.notifyInventoryUpdated();
-        updateSlot();
-    }
-}
-
-    /// <summary>
-    /// Retourne l'item actuellement dans le slot.
-    /// </summary>
-    public StackItem getStackItem()
-    {
-        return _stackItem;
     }
 
     /// <summary>
@@ -208,6 +199,5 @@ public partial class SlotUI : Control
     {
         _icon.Texture = null;
         _countLabel.Text = "";
-        _stackItem = null;
     }
 }

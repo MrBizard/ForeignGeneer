@@ -1,6 +1,4 @@
 using Godot;
-using System.Collections.Generic;
-using ForeignGeneer.Assets.Scripts.block.playerStructure.central;
 using ForeignGeneer.Assets.Scripts.Interface;
 
 public partial class CentralUi : BaseUi
@@ -30,42 +28,43 @@ public partial class CentralUi : BaseUi
     }
 
     /// <summary>
-    /// Initialise l'interface utilisateur de la centrale.
+    /// Initializes the central interface. This method should be called once to initialize the UI.
     /// </summary>
-    /// <param name="data">La centrale associée à cette interface.</param>
+    /// <param name="data">The central node associated with this interface.</param>
     public override void initialize(Node data)
     {
         _central = (CoalCentral)data;
 
-        _inputSlot = _slotUi.Instantiate<SlotUI>();
-        _inputSlot.initialize(_central.input.slots[0], _central.input);
-        _inputSlot.setBackgroundTexture(_central.craft.recipe.input[0].getResource().getInventoryIcon);
-        _inputList.AddChild(_inputSlot);
-
-        Input.MouseMode = Input.MouseModeEnum.Visible;
+        if (_inputSlot == null)
+        {
+            _inputSlot = _slotUi.Instantiate<SlotUI>();
+            _inputSlot.initialize(_central.input, 0);
+            _inputSlot.setBackgroundTexture(_central.craft.recipe.input[0].getResource().getInventoryIcon);
+            _inputList.AddChild(_inputSlot);
+        }
 
         _craftText.Text = "Résultat : Énergie";
         foreach (StackItem stack in _central.craft.recipe.input)
         {
-            _craftText.Text += "\n - " + stack.getStack() + " x " + stack.getResource().GetName();
+            _craftText.Text += $"\n - {stack.getStack()} x {stack.getResource().GetName()}";
         }
+
         updateElectricity();
     }
 
     /// <summary>
-    /// Met à jour l'interface utilisateur de la centrale.
+    /// Updates the central interface UI. This method is called on each UI update.
     /// </summary>
     public override void updateUi()
     {
         var inputStackItem = _central.input.getItem(0);
-        _inputSlot.initialize(inputStackItem, _central.input);
         _inputSlot.updateSlot();
     }
 
     /// <summary>
-    /// Met à jour la barre de progression de la centrale.
+    /// Updates the progress bar of the central.
     /// </summary>
-    /// <param name="progress">La progression actuelle (entre 0 et 1).</param>
+    /// <param name="progress">The current progress (between 0 and 1).</param>
     public void updateProgressBar(float progress)
     {
         if (_craftProgressBar != null)
@@ -75,7 +74,7 @@ public partial class CentralUi : BaseUi
     }
 
     /// <summary>
-    /// Met à jour l'affichage de l'électricité.
+    /// Updates the electricity display.
     /// </summary>
     public void updateElectricity()
     {
@@ -84,7 +83,9 @@ public partial class CentralUi : BaseUi
             _electricityLabel.Text = $"Puissance : {_central.electricalCost} kW/s || Électricité totale : {_manager.getGlobalElectricity()} kW/s";
         }
     }
-
+    /// <summary>
+    /// Bouton retour
+    /// </summary>
     private void onResetCraftButtonPressed()
     {
         _central.setCraft(null);

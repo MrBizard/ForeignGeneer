@@ -24,7 +24,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     }
 
     /// <summary>
-    /// Initialise la fonderie.
+    /// Initialise la fonderie avec les inventaires d'entrée et de sortie et la liste des recettes.
     /// </summary>
     public void init()
     {
@@ -44,16 +44,16 @@ public partial class Fonderie : StaticBody3D, IFactory
             updateProgressBar(craftProgress);
         }
     }
+
     /// <summary>
     /// Définit la recette à utiliser pour le craft.
     /// </summary>
-    /// <param name="recipe">La recette à utiliser.</param>
+    /// <param name="recipe">La recette à utiliser pour le craft.</param>
     public void setCraft(Recipe recipe)
     {
         if (recipe == null)
         {
             craft = null;
-            GD.Print("Aucune recette définie.");
             return;
         }
 
@@ -62,6 +62,9 @@ public partial class Fonderie : StaticBody3D, IFactory
         openUi();
     }
 
+    /// <summary>
+    /// Mise à jour de l'inventaire. Démarre le craft si les conditions sont remplies.
+    /// </summary>
     private void onInventoryUpdated()
     {
         if (!isCrafting && craft != null && craft.compareRecipe())
@@ -69,12 +72,18 @@ public partial class Fonderie : StaticBody3D, IFactory
             var outputSlotItem = output.getItem(0);
             if (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack)
             {
-                startCraft();
+                if (craft.consumeResources())
+                {
+                    startCraft();
+                }
             }
         }
         updateUi();
     }
 
+    /// <summary>
+    /// Démarre le processus de fabrication si les ressources et les conditions sont valides.
+    /// </summary>
     private void startCraft()
     {
         if (isCrafting || !_manager.hasEnergy(electricalCost))
@@ -84,13 +93,11 @@ public partial class Fonderie : StaticBody3D, IFactory
 
         if (!craft.consumeResources())
         {
-            GD.Print("Pas assez de ressources pour démarrer le craft.");
             return;
         }
 
         if (craft.recipe.duration <= 0)
         {
-            GD.Print("La durée de la recette est invalide.");
             return;
         }
 
@@ -103,16 +110,25 @@ public partial class Fonderie : StaticBody3D, IFactory
         craftTimer.Start();
         updateProgressBar(0f);
         updateUi();
-        GD.Print("Craft démarré.");
     }
 
+    /// <summary>
+    /// Lorsque le processus de fabrication est terminé, ajoute l'item au slot de sortie et redémarre si nécessaire.
+    /// </summary>
     private void onCraftFinished()
     {
         isCrafting = false;
         craftTimer.QueueFree();
+
         bool outputAdded = craft.addOutput();
-        GD.Print("Craft terminé. Output ajouté : " + outputAdded);
-        updateUi(); 
+
+        var outputSlotItem = output.getItem(0);
+        if (outputAdded && (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack))
+        {
+            startCraft();
+        }
+
+        updateUi();
     }
 
     /// <summary>
@@ -140,7 +156,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     }
 
     /// <summary>
-    /// Détruit la fonderie.
+    /// Détruit la fonderie et libère les ressources.
     /// </summary>
     public void dismantle()
     {
@@ -154,11 +170,13 @@ public partial class Fonderie : StaticBody3D, IFactory
         output.onInventoryUpdated -= onInventoryUpdated;
 
         QueueFree();
-        GD.Print("Fonderie détruite.");
     }
 
     public float pollutionInd { get; set; }
 
+    /// <summary>
+    /// Met à jour l'interface utilisateur si elle est ouverte.
+    /// </summary>
     private void updateUi()
     {
         if (UiManager.instance.IsAnyUiOpen())
@@ -167,6 +185,9 @@ public partial class Fonderie : StaticBody3D, IFactory
         }
     }
 
+    /// <summary>
+    /// Met à jour la barre de progression de la fonderie si l'UI est ouverte.
+    /// </summary>
     private void updateProgressBar(float progress)
     {
         if (UiManager.instance.isUiOpen("FonderieUI"))
