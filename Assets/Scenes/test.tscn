@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://7gqak8ynlu31"]
+
+[ext_resource type="Texture2D" uid="uid://c3rwlqpjwta0i" path="res://Assets/damier.png" id="1_ermdq"]
+[ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
+[ext_resource type="PackedScene" uid="uid://ssd24ysd284l" path="res://Assets/Prefabs/manager.tscn" id="2_kk7j7"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wv613"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t7p5m"]
+albedo_color = Color(0.77, 0.2541, 0.451862, 1)
+albedo_texture = ExtResource("1_ermdq")
+uv1_scale = Vector3(30, 30, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lneut"]
+size = Vector3(60.0014, 1, 59.4444)
+
+[node name="Main" type="Node3D"]
+
+[node name="MeshInstance3D" type="StaticBody3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0)
+lod_bias = 0.001
+mesh = SubResource("PlaneMesh_wv613")
+surface_material_override/0 = SubResource("StandardMaterial3D_t7p5m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 0.01, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_lneut")
+
+[node name="Manager" parent="." instance=ExtResource("2_kk7j7")]
+
+[node name="Personnage" parent="." instance=ExtResource("1_qfhkf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.102576, 0.135)
+
+[node name="worldStructure" type="Node" parent="."]
+
+[node name="static" type="Node" parent="worldStructure"]

@@ -33,13 +33,14 @@ public partial class FactoryStatic : ItemStatic
         return itemInstantiate;
     }
 
-
     /// <summary>
     /// Handles the right-click action. Instantiates a new Fonderie at the player's position.
     /// </summary>
     /// <param name="player">The player who triggered the right-click action.</param>
     public override void RightClick(Player player)
     {
+        InventoryManager manager = InventoryManager.Instance;
+        manager.hotbar.removeItem(manager.currentSlotHotbar,1);
         player.GetParent().AddChild(instantiateFactory(player.raycast.getWorldCursorPosition()));
     }
     

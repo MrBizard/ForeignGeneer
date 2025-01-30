@@ -36,13 +36,11 @@ public partial class SlotUI : Control
 
         if (stackItem != null && stackItem.getStack() > 0)
         {
-            GD.Print("Mise à jour du slot avec l'item : " + stackItem.getResource().GetName());
             _icon.Texture = stackItem.getResource().getInventoryIcon;
             _countLabel.Text = stackItem.getStack() > 1 ? stackItem.getStack().ToString() : "";
         }
         else
         {
-            GD.Print("Slot vide.");
             _icon.Texture = null;
             _countLabel.Text = "";
         }
@@ -107,10 +105,6 @@ public partial class SlotUI : Control
                 _inventory.notifyInventoryUpdated();
             }
         }
-        else
-        {
-            GD.Print("Impossible de poser des objets dans le slot de sortie.");
-        }
     }
     updateSlot();
     // Met à jour l'affichage de l'item dans la souris après chaque interaction
@@ -156,8 +150,6 @@ public partial class SlotUI : Control
             }
             else
             {
-                // Si la souris porte un autre type d'item, ne rien faire (ou afficher un message)
-                GD.Print("Impossible de diviser : la souris porte un autre type d'item.");
                 // Annuler la division et remettre la quantité originale dans le slot
                 stackItem.setStack(stackItem.getStack() + splitItem.getStack());
                 return;

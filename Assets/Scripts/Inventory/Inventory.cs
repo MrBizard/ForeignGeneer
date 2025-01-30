@@ -58,7 +58,6 @@ public class Inventory
 
 		if (success)
 		{
-			GD.Print("Item ajouté avec succès. Déclenchement de onInventoryUpdated.");
 			onInventoryUpdated?.Invoke(); // Déclenche l'événement
 		}
 
@@ -149,8 +148,6 @@ public class Inventory
     /// </summary>
     public int addOneItem(StackItem item)
 	{
-	    GD.Print(item.getStack().ToString());
-
 	    // Recherche si l'item existe déjà dans l'inventaire
 	    for (int i = 0; i < slots.Count; i++)
 	    {
@@ -160,24 +157,16 @@ public class Inventory
 	            if (slots[i].getStack() < slots[i].getResource().getMaxStack)
 	            {
 	                int remaining = slots[i].add(1);
-	                GD.Print("restant : " + remaining);
 	                return 0;
-	            }
-	            else
-	            {
-	                GD.Print("limite atteint");
 	            }
 	        }
 	    }
 
-	    GD.Print("phase 2");
 	    // Si l'item n'existe pas encore dans l'inventaire
 	    for (int i = 0; i < slots.Count; i++)
 	    {
 	        if (slots[i] == null)
 	        {
-	            GD.Print("slot libre trouvé");
-
 	            // Crée une nouvelle instance de StackItem pour éviter de modifier la référence originale
 	            slots[i] = new StackItem(item.getResource());
 	            slots[i].setStack(1); // Initialise le slot avec 1 item

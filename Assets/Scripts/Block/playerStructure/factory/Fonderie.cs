@@ -95,7 +95,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     /// </summary>
     private void startCraft()
     {
-        if (isCrafting || EnergyManager.instance.hasEnergy(factoryStatic.electricalCost))
+        if (isCrafting || !EnergyManager.instance.hasEnergy(factoryStatic.electricalCost))
         {
             return;
         }

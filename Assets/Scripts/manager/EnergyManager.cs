@@ -29,6 +29,6 @@ public partial class EnergyManager : Node
 
     public bool hasEnergy(float value)
     {
-        return _globalElectricity >= value;
+        return _globalElectricity - value > 0;
     }
 }

@@ -1,23 +1,9 @@
-[gd_scene load_steps=117 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=103 format=3 uid="uid://dvxxm2v6se3nl"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/manager/UiManager.cs" id="4_7gey5"]
-[ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="4_g41yq"]
+[ext_resource type="PackedScene" uid="uid://ssd24ysd284l" path="res://Assets/Prefabs/manager.tscn" id="1_qiebo"]
 [ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="4_xqtcq"]
-[ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="5_6hg80"]
-[ext_resource type="Script" path="res://Assets/Scripts/manager/InputManager.cs" id="5_41tt0"]
-[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="5_uqkd8"]
-[ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="6_bx4pk"]
-[ext_resource type="Script" path="res://Assets/Scripts/manager/InventoryManager.cs" id="7_rb38d"]
-[ext_resource type="PackedScene" uid="uid://ddp7q1ns3jgci" path="res://Assets/Scenes/UI/centrale/CentralUi.tscn" id="7_xxbhk"]
-[ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="8_n27y6"]
-[ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="9_5liml"]
-[ext_resource type="Resource" uid="uid://blqmnqkdcbi7l" path="res://Assets/Resource/Block/factory/Fonderie.tres" id="9_mj1jr"]
 [ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="11_ueu8c"]
 [ext_resource type="PackedScene" uid="uid://ceeumu8ai6jxw" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
-[ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/central.tres" id="12_ncb1l"]
-[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="13_s5pir"]
-[ext_resource type="Script" path="res://Assets/Scripts/manager/EnergyManager.cs" id="14_6hfwn"]
-[ext_resource type="Script" path="res://Assets/Scripts/manager/PollutionManager.cs" id="15_pg1vx"]
 [ext_resource type="PackedScene" uid="uid://ktfq1ucdt8rt" path="res://Assets/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
 [ext_resource type="Script" path="res://addons/terrabrush/TerraBrush.cs" id="19_goxem"]
 [ext_resource type="PackedScene" uid="uid://cn0y2hdd0ln3x" path="res://Assets/Ingots/BreakableGold.tscn" id="19_lp64r"]
@@ -330,36 +316,12 @@ environment = SubResource("Environment_chybd")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Manager" type="Node" parent="."]
-script = ExtResource("5_6hg80")
-option = ExtResource("6_bx4pk")
-
-[node name="UiManager" type="Node" parent="Manager"]
-script = ExtResource("4_7gey5")
-sceneKeys = ["RecipeListUI", "FonderieUI", "CentralUi", "inventoryUi", "optionUi"]
-uiScenesList = [ExtResource("5_uqkd8"), ExtResource("4_g41yq"), ExtResource("7_xxbhk"), ExtResource("9_5liml"), ExtResource("6_bx4pk")]
-
-[node name="InputManager" type="Node" parent="Manager"]
-script = ExtResource("5_41tt0")
-
-[node name="InventoryManager" type="Node" parent="Manager"]
-script = ExtResource("7_rb38d")
-testItem = ExtResource("8_n27y6")
-testItem2 = ExtResource("9_mj1jr")
-testItem3 = ExtResource("12_ncb1l")
-slotBasePackedScene = ExtResource("13_s5pir")
-
-[node name="EnergyManager" type="Node" parent="Manager"]
-script = ExtResource("14_6hfwn")
-
-[node name="PollutionManager" type="Node" parent="Manager"]
-script = ExtResource("15_pg1vx")
+[node name="Manager" parent="." instance=ExtResource("1_qiebo")]
 
 [node name="Groundtest" type="MultiMeshInstance3D" parent="."]
 multimesh = SubResource("MultiMesh_20xaj")
 
 [node name="TerraBrush" type="Node3D" parent="."]
-visible = false
 script = ExtResource("19_goxem")
 DataPath = "res://Assets/Scenes/Main"
 TextureSets = SubResource("Resource_bt4g8")
