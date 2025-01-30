@@ -24,6 +24,8 @@ public partial class Fonderie : StaticBody3D, IFactory
             }
         }
     }
+
+    private FonderieUi _fonderieUi;
     public override void _Ready()
     {
         base._Ready();
@@ -151,6 +153,7 @@ public partial class Fonderie : StaticBody3D, IFactory
         else
         {
             UiManager.instance.openUi("FonderieUI", this);
+            _fonderieUi = (FonderieUi)UiManager.instance.getUi("FonderieUI");
         }
     }
 
@@ -199,8 +202,8 @@ public partial class Fonderie : StaticBody3D, IFactory
     {
         if (UiManager.instance.isUiOpen("FonderieUI"))
         {
-            FonderieUi fonderieUi = UiManager.instance.currentOpenUi as FonderieUi;
-            fonderieUi?.updateProgressBar(progress);
+            _fonderieUi.updateProgressBar(progress);
         }
     }
+
 }

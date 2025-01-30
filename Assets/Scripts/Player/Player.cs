@@ -53,7 +53,7 @@ public partial class Player : CharacterBody3D
     /// Indicateur qui détermine si l'interface utilisateur est ouverte.
     /// </summary>
     private bool _isUiOpen = false;
-
+    public Raycast raycast;
     #endregion
 
     #region Méthodes
@@ -77,7 +77,7 @@ public partial class Player : CharacterBody3D
         _pivot = GetNode<Node3D>("Pivot");
         _springArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
         _animTree = GetNode<AnimationTree>("AnimationTree");
-
+        raycast = GetNode<Raycast>("Pivot/SpringArm3D/Camera3D/RayCast3D");
         Input.MouseMode = Input.MouseModeEnum.Captured; // Capture le curseur de la souris.
         UiManager.instance.onUiStateChanged += OnUiStateChanged; // S'abonne aux changements d'état de l'UI.
     }

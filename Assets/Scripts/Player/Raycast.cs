@@ -4,6 +4,12 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure;
 
 public partial class Raycast : RayCast3D
 {
+    public override void _Ready()
+    {
+        base._Ready();
+        TargetPosition = new Vector3(0, -10 ,0);
+    }
+
     /// <summary>
     /// Détecte et interagit avec l'objet touché par le raycast.
     /// </summary>
@@ -27,5 +33,18 @@ public partial class Raycast : RayCast3D
                     break;
             }
         }
+    }
+    /// <summary>
+    /// Récupère la position mondiale ciblée par le raycast.
+    /// </summary>
+    /// <returns>La position mondiale du point de collision, ou Vector3.Zero si aucun objet n'est touché.</returns>
+    public Vector3 getWorldCursorPosition()
+    {
+        if (IsColliding())
+        {
+            return GetCollisionPoint();
+        }
+
+        return Vector3.Zero;
     }
 }

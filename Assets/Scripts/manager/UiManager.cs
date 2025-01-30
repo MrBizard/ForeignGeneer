@@ -118,4 +118,21 @@ public partial class UiManager : Node
     {
         return currentOpenUi != null;
     }
+    /// <summary>
+    /// Récupère une référence à l'interface utilisateur spécifiée si elle est ouverte.
+    /// </summary>
+    /// <param name="uiId">Identifiant de l'UI à récupérer.</param>
+    /// <returns>Une référence à l'UI si elle est ouverte, sinon null.</returns>
+    public Node getUi(string uiId)
+    {
+        if (isUiOpen(uiId))
+        {
+            return currentOpenUi;
+        }
+        else
+        {
+            GD.Print($"UI with id {uiId} is not currently open.");
+            return null;
+        }
+    }
 }

@@ -7,7 +7,7 @@ public partial class Central : StaticBody3D, ICentral
 {
     [Export] private PackedScene _centralUiPackedScene;
     [Export] private PackedScene _recipeListUiPackedScene; 
-    [Export] public CentraleStatic centralStatic;
+    [Export] public FactoryStatic centralStatic;
     public Inventory input { get; set; }
     public Craft craft { get; set; }
     public float craftProgress { get; private set; }
@@ -37,7 +37,7 @@ public partial class Central : StaticBody3D, ICentral
         input = new Inventory(1);
         input.onInventoryUpdated += onInventoryUpdated;
         centralStatic.recipeList?.init();
-        PollutionManager.instance.addPolution(0);   
+        PollutionManager.instance.addPolution(0);
     }
 
     /// <summary>
@@ -85,9 +85,7 @@ public partial class Central : StaticBody3D, ICentral
     private void startCraft()
     {
         if (isCrafting) return;
-
-        EnergyManager.instance.addGlobalElectricity(centralStatic.electricalCost);
-
+        
         if (!craft.consumeResources()) return;
 
         if (craft.recipe.duration <= 0) return;
@@ -95,15 +93,15 @@ public partial class Central : StaticBody3D, ICentral
         isCrafting = true;
         craftProgress = 0f; 
         _centralUi?.updateProgressBar(craftProgress); 
+        _centralUi?.updateElectricity();
         craftTimer = new Timer();
         craftTimer.WaitTime = craft.recipe.duration;
         craftTimer.Timeout += onCraftFinished;
         EnergyManager.instance.addGlobalElectricity(centralStatic.electricalCost);
-        _centralUi?.updateElectricity();
         AddChild(craftTimer);
         craftTimer.Start();
     }
-
+    
     /// <summary>
     /// Called when the crafting process is finished, adding the produced resources to the inventory and updating the UI.
     /// </summary>
@@ -138,6 +136,7 @@ public partial class Central : StaticBody3D, ICentral
         else
         {
             UiManager.instance.openUi("CentralUi", this);
+            _centralUi = (CentralUi)UiManager.instance.getUi("CentralUi");
         }
         Input.MouseMode = Input.MouseModeEnum.Visible;
     }
@@ -172,8 +171,10 @@ public partial class Central : StaticBody3D, ICentral
     {
         if (UiManager.instance.isUiOpen("CentralUi"))
         {
-            CentralUi centralUi = UiManager.instance.currentOpenUi as CentralUi;
-            centralUi?.updateProgressBar(progress);
+            if (_centralUi is CentralUi)
+            {
+                _centralUi.updateProgressBar(progress);
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ public partial class FactoryStatic : ItemStatic
     /// </summary>
     /// <param name="pos">The position where the Fonderie will be instantiated.</param>
     /// <returns>The instantiated Fonderie object.</returns>
-    public Fonderie instantiateFactory(Vector3 pos)
+    public StaticBody3D instantiateFactory(Vector3 pos)
     {
         PackedScene scene = GD.Load<PackedScene>(_scenePath);
         if (scene == null)
@@ -28,7 +28,7 @@ public partial class FactoryStatic : ItemStatic
             return null;
         }
 
-        var itemInstantiate = scene.Instantiate<Fonderie>();
+        var itemInstantiate = scene.Instantiate<StaticBody3D>();
         itemInstantiate.GlobalPosition = pos;
         return itemInstantiate;
     }
@@ -40,7 +40,7 @@ public partial class FactoryStatic : ItemStatic
     /// <param name="player">The player who triggered the right-click action.</param>
     public override void RightClick(Player player)
     {
-        player.GetParent().AddChild(instantiateFactory(player.Position + new Vector3(1, 0.1f, 1)));
+        player.GetParent().AddChild(instantiateFactory(player.raycast.getWorldCursorPosition()));
     }
     
 }
