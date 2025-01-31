@@ -13,7 +13,4 @@ public partial class Manager : Node
 		AddChild(optionUI); 
 		optionUI.Visible = false;
 	}
-
-	
-
 }

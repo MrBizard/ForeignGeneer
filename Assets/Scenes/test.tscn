@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://7gqak8ynlu31"]
+[gd_scene load_steps=9 format=3 uid="uid://0r4bxj3uot8q"]
 
-[ext_resource type="Texture2D" uid="uid://c3rwlqpjwta0i" path="res://Assets/damier.png" id="1_ermdq"]
-[ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
-[ext_resource type="PackedScene" uid="uid://ssd24ysd284l" path="res://Assets/Prefabs/manager.tscn" id="2_kk7j7"]
+[ext_resource type="Texture2D" uid="uid://s8jnyv8qa23s" path="res://Assets/damier.png" id="1_ermdq"]
+[ext_resource type="PackedScene" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
+[ext_resource type="PackedScene" uid="uid://c6xr5ux6th5oq" path="res://Assets/Prefabs/manager.tscn" id="2_kk7j7"]
+[ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="4_na8ne"]
+[ext_resource type="PackedScene" uid="uid://ceeumu8ai6jxw" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="5_phnvt"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wv613"]
 
@@ -37,3 +39,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.102576, 0.135)
 [node name="worldStructure" type="Node" parent="."]
 
 [node name="static" type="Node" parent="worldStructure"]
+
+[node name="central_biomasse" parent="worldStructure/static" instance=ExtResource("4_na8ne")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50742, 0.1, -6.50304)
+
+[node name="Fonderie" parent="worldStructure/static" instance=ExtResource("5_phnvt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.30948, 0.1, -6.99811)

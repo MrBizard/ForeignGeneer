@@ -1,14 +1,14 @@
 [gd_scene load_steps=42 format=4 uid="uid://ceeumu8ai6jxw"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/Fonderie.cs" id="1_6n8xl"]
-[ext_resource type="Texture2D" uid="uid://c0udy4podirpl" path="res://Assets/Model/block/factory/Fonderie_MetalPlates006_2K-JPG_Color.jpg" id="1_xwv5d"]
+[ext_resource type="Texture2D" uid="uid://dtrcrjshixfiv" path="res://Assets/Model/block/factory/Fonderie_MetalPlates006_2K-JPG_Color.jpg" id="1_xwv5d"]
 [ext_resource type="Resource" uid="uid://blqmnqkdcbi7l" path="res://Assets/Resource/Block/factory/Fonderie.tres" id="2_r2dqx"]
-[ext_resource type="Texture2D" uid="uid://dh6oelnfwmpf6" path="res://Assets/Model/block/factory/Fonderie_MetalPlates006_2K-JPG_Metalness-MetalPlates006_2K-JPG_Roughness.png" id="2_rlqwn"]
-[ext_resource type="Texture2D" uid="uid://cql7mgfcrpxnx" path="res://Assets/Model/block/factory/Fonderie_MetalPlates006_2K-JPG_NormalGL.jpg" id="3_hxqe8"]
-[ext_resource type="Texture2D" uid="uid://45n5nbyn7to6" path="res://Assets/Model/block/factory/Fonderie_ne pas jeter.png" id="4_jegxq"]
-[ext_resource type="Texture2D" uid="uid://c4yfi7adhn0ti" path="res://Assets/Model/block/factory/Fonderie_corrugated_iron_02_diff_2k.jpg" id="5_57b42"]
-[ext_resource type="Texture2D" uid="uid://dt041l0niqwo3" path="res://Assets/Model/block/factory/Fonderie_corrugated_iron_02_metal_2k-corrugated_iron_02_rough_2k.png" id="6_iq7o2"]
-[ext_resource type="Texture2D" uid="uid://d0s7lxiw2yn7h" path="res://Assets/Model/block/factory/Fonderie_corrugated_iron_02_nor_gl_2k.png" id="7_2jox6"]
+[ext_resource type="Texture2D" uid="uid://d32f5e336kc00" path="res://Assets/Model/block/factory/Fonderie_MetalPlates006_2K-JPG_Metalness-MetalPlates006_2K-JPG_Roughness.png" id="2_rlqwn"]
+[ext_resource type="Texture2D" uid="uid://di58a1061n85l" path="res://Assets/Model/block/factory/Fonderie_MetalPlates006_2K-JPG_NormalGL.jpg" id="3_hxqe8"]
+[ext_resource type="Texture2D" uid="uid://cnr6q8425uahl" path="res://Assets/Model/block/factory/Fonderie_ne pas jeter.png" id="4_jegxq"]
+[ext_resource type="Texture2D" uid="uid://bd7csl7qs1asa" path="res://Assets/Model/block/factory/Fonderie_corrugated_iron_02_diff_2k.jpg" id="5_57b42"]
+[ext_resource type="Texture2D" uid="uid://ck7hhfb0wsshk" path="res://Assets/Model/block/factory/Fonderie_corrugated_iron_02_metal_2k-corrugated_iron_02_rough_2k.png" id="6_iq7o2"]
+[ext_resource type="Texture2D" uid="uid://8gcnoq7ss7il" path="res://Assets/Model/block/factory/Fonderie_corrugated_iron_02_nor_gl_2k.png" id="7_2jox6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yuhh2"]
 resource_name = "Material"
