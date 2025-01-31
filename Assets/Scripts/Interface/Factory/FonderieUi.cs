@@ -83,7 +83,6 @@ public partial class FonderieUi : BaseUi
         {
             child.QueueFree();
         }
-
         _outputSlot = _slotUi.Instantiate<SlotUI>();
         _outputSlot.initialize(_fonderie.output, 0, true);
         updateOutputSlotBackground(); 

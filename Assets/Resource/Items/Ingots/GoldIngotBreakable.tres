@@ -7,7 +7,7 @@
 [resource]
 resource_name = "Gold unbreakable"
 script = ExtResource("3_ygy8x")
-_maxStack = 99
-_scenePath = ""
+_maxStack = 1
+_scenePath = "res://Assets/Prefabs/Ingots/BreakableGold.tscn"
 _material = ExtResource("2_bt32l")
 _inventoryIcon = ExtResource("1_ann2y")

@@ -6,4 +6,4 @@
 resource_name = "SteelBeam"
 script = ExtResource("2_eg24f")
 _maxStack = 99
-_scenePath = ""
+_scenePath = "res://Assets/Prefabs/Ingots/SteelBeam.tscn"

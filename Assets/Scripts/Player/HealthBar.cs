@@ -7,10 +7,7 @@ public partial class HealthBar : Control
 	[Export] public TextureProgressBar healthBar ;
     [Export] public TextureProgressBar pollutionBar;
     [Export] public TextureProgressBar hungerBar;
-
-
     
-
     public override void _Ready()
     {
         base._Ready();

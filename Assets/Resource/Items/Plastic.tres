@@ -7,5 +7,5 @@
 resource_name = "Plastic"
 script = ExtResource("1_ym54k")
 _maxStack = 99
-_scenePath = ""
+_scenePath = "res://Assets/Prefabs/Ingots/Plastic.tscn"
 _inventoryIcon = ExtResource("1_oumpe")

@@ -171,7 +171,6 @@ public partial class Central : StaticBody3D, ICentral
     {
         if (UiManager.instance.isUiOpen("CentralUi"))
         {
-            if (_centralUi is CentralUi)
             {
                 _centralUi.updateProgressBar(progress);
             }

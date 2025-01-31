@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://dxy583qe2yu3p"]
 
-[ext_resource type="Texture2D" uid="uid://cgfxbb2dwqprj" path="res://Assets/Texture/healthBar/CircularProgressBar.png" id="1_1lb0b"]
+[ext_resource type="Texture2D" uid="uid://dp47jc01x8gjm" path="res://Assets/Texture/healthBar/CircularProgressBar.png" id="1_1lb0b"]
 [ext_resource type="Script" path="res://Assets/Scripts/Player/HealthBar.cs" id="1_2tskg"]
-[ext_resource type="Texture2D" uid="uid://pwifxdc7r570" path="res://Assets/Texture/healthBar/rond_noir.png" id="2_61aip"]
-[ext_resource type="Texture2D" uid="uid://b75nhujkmnqvi" path="res://Assets/Texture/healthBar/pngHunger.png" id="3_lvlu3"]
-[ext_resource type="Texture2D" uid="uid://bqgot7oy8lja" path="res://Assets/Texture/healthBar/pngHealth.png" id="4_fj60h"]
-[ext_resource type="Texture2D" uid="uid://u4v5ky5l0hwg" path="res://Assets/Texture/healthBar/pngPollution2.png" id="5_klnu4"]
+[ext_resource type="Texture2D" uid="uid://cggudi8kgkd5w" path="res://Assets/Texture/healthBar/rond_noir.png" id="2_61aip"]
+[ext_resource type="Texture2D" uid="uid://p7wkpv4ij7fn" path="res://Assets/Texture/healthBar/pngHunger.png" id="3_lvlu3"]
+[ext_resource type="Texture2D" uid="uid://c1b6yvjfoxs7c" path="res://Assets/Texture/healthBar/pngHealth.png" id="4_fj60h"]
+[ext_resource type="Texture2D" uid="uid://dei52p244ssso" path="res://Assets/Texture/healthBar/pngPollution2.png" id="5_klnu4"]
 
 [node name="CircularProgressBar" type="TextureProgressBar" node_paths=PackedStringArray("healthBar", "pollutionBar", "hungerBar")]
 anchors_preset = 2

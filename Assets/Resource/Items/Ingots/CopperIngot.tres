@@ -8,6 +8,6 @@
 resource_name = "Copper Ingot"
 script = ExtResource("3_4fl21")
 _maxStack = 99
-_scenePath = ""
+_scenePath = "res://Assets/Prefabs/Ingots/Ingot.tscn"
 _material = ExtResource("2_6itel")
 _inventoryIcon = ExtResource("1_l3cbu")

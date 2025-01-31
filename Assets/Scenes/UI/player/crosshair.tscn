@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dpgtwul4qi4kj"]
 
-[ext_resource type="Texture2D" uid="uid://duc51k3mkxhf" path="res://Assets/Texture/healthBar/Crosshair-PNG-HD-Image.png" id="1_54fv0"]
+[ext_resource type="Texture2D" uid="uid://cbghgdex5smgp" path="res://Assets/Texture/healthBar/Crosshair-PNG-HD-Image.png" id="1_54fv0"]
 
 [node name="TextureRect" type="TextureRect"]
 anchors_preset = 8

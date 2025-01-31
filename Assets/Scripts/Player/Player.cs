@@ -126,8 +126,10 @@ public partial class Player : CharacterBody3D
     /// </summary>
     public void RightClick()
     {
-        if (_isUiOpen) return; // Ignore les clics si l'UI est ouverte.
-        InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar).getResource().RightClick(this);
+        if (_isUiOpen) return;
+        StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
+        if(item is not null)
+            item.getResource().RightClick(this);
     }
 
     /// <summary>

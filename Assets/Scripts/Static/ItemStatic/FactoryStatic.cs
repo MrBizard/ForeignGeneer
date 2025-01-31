@@ -22,9 +22,8 @@ public partial class FactoryStatic : ItemStatic
     public StaticBody3D instantiateFactory(Vector3 pos)
     {
         PackedScene scene = GD.Load<PackedScene>(_scenePath);
-        if (scene == null)
+        if (scene == null || pos == Vector3.Zero)
         {
-            GD.PrintErr("Impossible de charger la scène : " + _scenePath);
             return null;
         }
 
@@ -39,9 +38,14 @@ public partial class FactoryStatic : ItemStatic
     /// <param name="player">The player who triggered the right-click action.</param>
     public override void RightClick(Player player)
     {
-        InventoryManager manager = InventoryManager.Instance;
-        manager.hotbar.removeItem(manager.currentSlotHotbar,1);
-        player.GetParent().AddChild(instantiateFactory(player.raycast.getWorldCursorPosition()));
+        StaticBody3D instance = instantiateFactory(player.raycast.getWorldCursorPosition());
+        if (instance != null)
+        {
+            InventoryManager manager = InventoryManager.Instance;
+            manager.hotbar.removeItem(manager.currentSlotHotbar,1);
+            player.GetParent().AddChild(instance);
+        }
+        
     }
     
 }

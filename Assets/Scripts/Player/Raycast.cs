@@ -7,7 +7,6 @@ public partial class Raycast : RayCast3D
     public override void _Ready()
     {
         base._Ready();
-        TargetPosition = new Vector3(0, -10 ,0);
     }
 
     /// <summary>
@@ -15,6 +14,7 @@ public partial class Raycast : RayCast3D
     /// </summary>
     public void InteractWithObject()
     {
+        TargetPosition = new Vector3(0, -2 ,0);
         if (IsColliding())
         {
             switch (GetCollider())
@@ -40,6 +40,7 @@ public partial class Raycast : RayCast3D
     /// <returns>La position mondiale du point de collision, ou Vector3.Zero si aucun objet n'est touché.</returns>
     public Vector3 getWorldCursorPosition()
     {
+        TargetPosition = new Vector3(0, -10 ,0);
         if (IsColliding())
         {
             return GetCollisionPoint();

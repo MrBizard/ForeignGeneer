@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://domk1djuxoy74"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Static/Craft/RecipeList.cs" id="1_mklen"]
+[ext_resource type="Resource" uid="uid://bodh0gddahyrc" path="res://Assets/Resource/recipe/factory/fonderie.tres" id="1_mnbve"]
+
+[resource]
+script = ExtResource("1_mklen")
+recipeList = Array[Resource]([ExtResource("1_mnbve"), ExtResource("1_mnbve"), ExtResource("1_mnbve"), ExtResource("1_mnbve")])

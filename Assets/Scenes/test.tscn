@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://0r4bxj3uot8q"]
 
-[ext_resource type="Texture2D" uid="uid://s8jnyv8qa23s" path="res://Assets/damier.png" id="1_ermdq"]
-[ext_resource type="PackedScene" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
+[ext_resource type="Texture2D" uid="uid://c3rwlqpjwta0i" path="res://Assets/damier.png" id="1_ermdq"]
+[ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
 [ext_resource type="PackedScene" uid="uid://c6xr5ux6th5oq" path="res://Assets/Prefabs/manager.tscn" id="2_kk7j7"]
 [ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="4_na8ne"]
 [ext_resource type="PackedScene" uid="uid://ceeumu8ai6jxw" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="5_phnvt"]
@@ -28,7 +28,7 @@ mesh = SubResource("PlaneMesh_wv613")
 surface_material_override/0 = SubResource("StandardMaterial3D_t7p5m")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 0.01, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.440465, 0)
 shape = SubResource("BoxShape3D_lneut")
 
 [node name="Manager" parent="." instance=ExtResource("2_kk7j7")]
