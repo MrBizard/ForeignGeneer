@@ -419,7 +419,7 @@ size = Vector3(3.41296, 4.90967, 4.87366)
 script = ExtResource("1_hma8x")
 _centralUiPackedScene = ExtResource("2_dlfhl")
 _recipeListUiPackedScene = ExtResource("3_lhj55")
-centralStatic = ExtResource("4_05svm")
+factoryStatic = ExtResource("4_05svm")
 
 [node name="Node3D" type="Node3D" parent="."]
 

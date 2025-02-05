@@ -1,30 +1,31 @@
 using Godot;
-using ForeignGeneer.Assets.Scripts.block.playerStructure.central;
+using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class Central : StaticBody3D, ICentral
+public partial class Central : StaticBody3D, IFactory
 {
     [Export] private PackedScene _centralUiPackedScene;
-    [Export] private PackedScene _recipeListUiPackedScene; 
-    [Export] public FactoryStatic centralStatic;
+    [Export] private PackedScene _recipeListUiPackedScene;
+    [Export] public FactoryStatic factoryStatic { get; set; }
     public Inventory input { get; set; }
     public Craft craft { get; set; }
     public float craftProgress { get; private set; }
     public Timer craftTimer { get; set; }
     public bool isCrafting { get; private set; } = false;
-    
-    public RecipeList recipeList 
+
+    public RecipeList recipeList
     {
-        get => centralStatic?.recipeList;
-        set 
+        get => factoryStatic?.recipeList;
+        set
         {
-            if (centralStatic != null) 
+            if (factoryStatic != null)
             {
-                centralStatic.recipeList = value;
+                factoryStatic.recipeList = value;
             }
         }
     }
+
     private CentralUi _centralUi;
     private RecetteList _recipeListUi;
 
@@ -36,7 +37,7 @@ public partial class Central : StaticBody3D, ICentral
         base._Ready();
         input = new Inventory(1);
         input.onInventoryUpdated += onInventoryUpdated;
-        centralStatic.recipeList?.init();
+        factoryStatic.recipeList?.init();
         PollutionManager.instance.addPolution(0);
     }
 
@@ -60,13 +61,14 @@ public partial class Central : StaticBody3D, ICentral
     /// </summary>
     private void onInventoryUpdated()
     {
-        if (!isCrafting && craft.compareRecipe())
+        if (!isCrafting && craft != null && craft.compareRecipe())
         {
             startCraft();
         }
-        _centralUi?.updateUi();
+        if(_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+            _centralUi?.updateUi();
     }
-    
+
     /// <summary>
     /// Sets the recipe to be used for crafting and opens the crafting UI.
     /// </summary>
@@ -84,43 +86,51 @@ public partial class Central : StaticBody3D, ICentral
     /// </summary>
     private void startCraft()
     {
-        if (isCrafting) return;
-        
+        if (isCrafting || craft == null) return;
+
         if (!craft.consumeResources()) return;
 
         if (craft.recipe.duration <= 0) return;
 
+        EnergyManager.instance.addGlobalElectricity(factoryStatic.electricalCost);
+
         isCrafting = true;
-        craftProgress = 0f; 
-        _centralUi?.updateProgressBar(craftProgress); 
-        _centralUi?.updateElectricity();
+        craftProgress = 0f;
+        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        {
+            _centralUi?.updateProgressBar(craftProgress);
+            _centralUi?.updateElectricity();    
+        }
         craftTimer = new Timer();
         craftTimer.WaitTime = craft.recipe.duration;
         craftTimer.Timeout += onCraftFinished;
-        EnergyManager.instance.addGlobalElectricity(centralStatic.electricalCost);
         AddChild(craftTimer);
         craftTimer.Start();
     }
-    
+
     /// <summary>
     /// Called when the crafting process is finished, adding the produced resources to the inventory and updating the UI.
     /// </summary>
     private void onCraftFinished()
     {
         isCrafting = false;
-        
-        EnergyManager.instance.removeGlobalElectricity(centralStatic.electricalCost);
-        _centralUi?.updateElectricity();
-        craftTimer.QueueFree(); 
+        EnergyManager.instance.removeGlobalElectricity(factoryStatic.electricalCost);
 
-        if (craft.recipe.output != null)
+        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        {
+            _centralUi.updateElectricity();
+            _centralUi.updateProgressBar(0f);
+        }
+
+        craftTimer?.QueueFree();
+
+        if (craft?.recipe.output != null)
         {
             bool outputAdded = craft.addOutput();
             if (!outputAdded) return;
         }
 
-        _centralUi?.updateProgressBar(0f); 
-        onInventoryUpdated(); 
+        onInventoryUpdated();
     }
 
     /// <summary>
@@ -132,6 +142,7 @@ public partial class Central : StaticBody3D, ICentral
         if (craft == null)
         {
             UiManager.instance.openUi("RecipeListUI", this);
+            _centralUi = null;
         }
         else
         {
@@ -146,6 +157,7 @@ public partial class Central : StaticBody3D, ICentral
     /// </summary>
     public void closeUi()
     {
+        _centralUi = null;
         UiManager.instance.closeUi();
     }
 
@@ -156,8 +168,8 @@ public partial class Central : StaticBody3D, ICentral
     {
         if (isCrafting)
         {
-            craftTimer.Stop();
-            craftTimer.QueueFree();
+            craftTimer?.Stop();
+            craftTimer?.QueueFree();
         }
         input.onInventoryUpdated -= onInventoryUpdated;
         QueueFree();
@@ -169,11 +181,9 @@ public partial class Central : StaticBody3D, ICentral
     /// <param name="progress">The current progress value (from 0 to 1).</param>
     private void updateProgressBar(float progress)
     {
-        if (UiManager.instance.isUiOpen("CentralUi"))
+        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
         {
-            {
-                _centralUi.updateProgressBar(progress);
-            }
+            _centralUi.updateProgressBar(progress);
         }
     }
 }

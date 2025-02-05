@@ -113,4 +113,9 @@ public partial class StackItem
 
         return new StackItem(_resource, splitAmount);
     }
+
+    public override String ToString()
+    {
+        return "\n item : " + _resource.ToString() + "\n stack : " + _stack;
+    }
 }

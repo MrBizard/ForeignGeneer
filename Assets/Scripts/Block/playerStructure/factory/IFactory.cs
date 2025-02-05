@@ -10,9 +10,11 @@ public interface IFactory : IPlayerStructure, IRecipeUser
 {
     Craft craft { get; set; }
     Inventory input { get; set; }
-    public void closeUi();
-    public void openUi();
-    public float craftProgress { get; }
-    public Timer craftTimer { get; set;}
-    public FactoryStatic factoryStatic { get; set; }
+    float craftProgress { get; }
+    Timer craftTimer { get; set; }
+    bool isCrafting { get; } 
+    FactoryStatic factoryStatic { get; set; } 
+
+    void closeUi();
+    void openUi();
 }

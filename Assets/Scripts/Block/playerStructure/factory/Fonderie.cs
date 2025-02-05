@@ -81,10 +81,7 @@ public partial class Fonderie : StaticBody3D, IFactory
             var outputSlotItem = output.getItem(0);
             if (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack)
             {
-                if (craft.consumeResources())
-                {
-                    startCraft();
-                }
+                startCraft();
             }
         }
         updateUi();
@@ -95,21 +92,18 @@ public partial class Fonderie : StaticBody3D, IFactory
     /// </summary>
     private void startCraft()
     {
-        if (isCrafting || !EnergyManager.instance.hasEnergy(factoryStatic.electricalCost))
+        if (isCrafting || EnergyManager.instance.isDown())
         {
             return;
         }
-
         if (!craft.consumeResources())
         {
             return;
         }
-
-        if (craft.recipe.duration <= 0)
+        if (craft.recipe.duration < 0)
         {
             return;
         }
-
         isCrafting = true;
         craftProgress = 0f;
         craftTimer = new Timer();
@@ -149,6 +143,7 @@ public partial class Fonderie : StaticBody3D, IFactory
         if (craft == null)
         {
             UiManager.instance.openUi("RecipeListUI", this);
+            _fonderieUi = null;
         }
         else
         {
@@ -162,6 +157,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     /// </summary>
     public void closeUi()
     {
+        _fonderieUi = null;
         UiManager.instance.closeUi();
     }
 
@@ -202,7 +198,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     {
         if (UiManager.instance.isUiOpen("FonderieUI"))
         {
-            _fonderieUi.updateProgressBar(progress);
+            _fonderieUi?.updateProgressBar(progress);
         }
     }
 

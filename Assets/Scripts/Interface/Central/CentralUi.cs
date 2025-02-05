@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using Godot;
 using ForeignGeneer.Assets.Scripts.Interface;
 using ForeignGeneer.Assets.Scripts.manager;
@@ -5,7 +6,7 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class CentralUi : BaseUi
 {
     [Export] private PackedScene _slotUi;
-    private Central _central;
+    private IFactory _central;
     private SlotUI _inputSlot;
     private ProgressBar _craftProgressBar;
     private HBoxContainer _inputList;
@@ -79,7 +80,7 @@ public partial class CentralUi : BaseUi
     {
         if (_electricityLabel != null && _central != null)
         {
-            _electricityLabel.Text = $"Puissance : {_central.centralStatic.electricalCost} kW/s || Électricité totale : {EnergyManager.instance.getGlobalElectricity()} kW/s";
+            _electricityLabel.Text = $"Puissance : {_central.factoryStatic.electricalCost} kW/s || Électricité totale : {EnergyManager.instance.getGlobalElectricity()} kW/s";
         }
     }
     /// <summary>

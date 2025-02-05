@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://blqmnqkdcbi7l"]
 
-[ext_resource type="Texture2D" uid="uid://cnrj6aqfhhttc" path="res://Assets/Texture/factory/icon_fonderie.png" id="1_a08mv"]
+[ext_resource type="Texture2D" uid="uid://21mcnwps5w7u" path="res://Assets/Texture/factory/icon_fonderie.png" id="1_a08mv"]
 [ext_resource type="Resource" uid="uid://domk1djuxoy74" path="res://Assets/Resource/recipe/factory/List/FonderieRecipeList.tres" id="2_tdyvs"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/FactoryStatic.cs" id="4_bewfi"]
 

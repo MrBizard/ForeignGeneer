@@ -136,5 +136,9 @@ public class Craft
             return false;
         }
      }
-    
+
+    public override string ToString()
+    {
+        return "\n recipe : " + recipe.ToString() + "\n output: " + output.ToString() + "\n input: " + input.ToString();
+    }
 }

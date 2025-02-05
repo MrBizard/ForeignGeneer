@@ -89,4 +89,10 @@ public partial class ItemStatic : Resource
     {
         GD.Print("Right clicked on ItemStatic");
     }
+
+    public override string ToString()
+    {
+        return " name : " + GetName() + "\n scenePath : " + _scenePath + "\n inventoryIcon : " 
+               + _inventoryIcon.ToString() + "\n maxStack : " + _maxStack + "\n material : " + _material.ToString();
+    }
 }

@@ -178,4 +178,8 @@ public class Inventory
 	    return item.getStack();
 	}
 
+	public override string ToString()
+	{
+		return String.Join(", ", slots.ToString());
+	}
 }
