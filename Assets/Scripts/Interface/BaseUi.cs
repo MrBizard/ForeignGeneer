@@ -6,5 +6,6 @@ public abstract partial class BaseUi : Control
 {
     public abstract void initialize(Node data);
     public abstract void updateUi();
+    public abstract void close();
 
 }

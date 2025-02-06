@@ -13,6 +13,7 @@ public partial class Central : StaticBody3D, IFactory
     public float craftProgress { get; private set; }
     public Timer craftTimer { get; set; }
     public bool isCrafting { get; private set; } = false;
+    public bool isOpen { get; private set; } = false; // Booléen pour suivre l'état de l'UI
 
     public RecipeList recipeList
     {
@@ -27,11 +28,7 @@ public partial class Central : StaticBody3D, IFactory
     }
 
     private CentralUi _centralUi;
-    private RecetteList _recipeListUi;
 
-    /// <summary>
-    /// Called when the node is added to the scene. Initializes the central UI and inventory.
-    /// </summary>
     public override void _Ready()
     {
         base._Ready();
@@ -41,10 +38,6 @@ public partial class Central : StaticBody3D, IFactory
         PollutionManager.instance.addPolution(0);
     }
 
-    /// <summary>
-    /// Called every frame to update the crafting progress if a craft is in progress.
-    /// </summary>
-    /// <param name="delta">The time elapsed since the last frame.</param>
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -55,24 +48,18 @@ public partial class Central : StaticBody3D, IFactory
         }
     }
 
-    /// <summary>
-    /// Callback for when the inventory has been updated.
-    /// If the recipe can be crafted, it starts the crafting process.
-    /// </summary>
     private void onInventoryUpdated()
     {
         if (!isCrafting && craft != null && craft.compareRecipe())
         {
             startCraft();
         }
-        if(_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        if (isOpen)
+        {
             _centralUi?.updateUi();
+        }
     }
 
-    /// <summary>
-    /// Sets the recipe to be used for crafting and opens the crafting UI.
-    /// </summary>
-    /// <param name="recipe">The recipe to use for crafting.</param>
     public void setCraft(Recipe recipe)
     {
         craft = recipe == null ? null : new Craft(recipe);
@@ -81,26 +68,23 @@ public partial class Central : StaticBody3D, IFactory
         openUi();
     }
 
-    /// <summary>
-    /// Starts the crafting process, consuming resources and initializing the timer for crafting.
-    /// </summary>
     private void startCraft()
     {
         if (isCrafting || craft == null) return;
-
         if (!craft.consumeResources()) return;
-
         if (craft.recipe.duration <= 0) return;
 
         EnergyManager.instance.addGlobalElectricity(factoryStatic.electricalCost);
 
         isCrafting = true;
         craftProgress = 0f;
-        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+
+        if (isOpen)
         {
             _centralUi?.updateProgressBar(craftProgress);
-            _centralUi?.updateElectricity();    
+            _centralUi?.updateElectricity();
         }
+
         craftTimer = new Timer();
         craftTimer.WaitTime = craft.recipe.duration;
         craftTimer.Timeout += onCraftFinished;
@@ -108,15 +92,12 @@ public partial class Central : StaticBody3D, IFactory
         craftTimer.Start();
     }
 
-    /// <summary>
-    /// Called when the crafting process is finished, adding the produced resources to the inventory and updating the UI.
-    /// </summary>
     private void onCraftFinished()
     {
         isCrafting = false;
         EnergyManager.instance.removeGlobalElectricity(factoryStatic.electricalCost);
 
-        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        if (isOpen)
         {
             _centralUi.updateElectricity();
             _centralUi.updateProgressBar(0f);
@@ -133,12 +114,13 @@ public partial class Central : StaticBody3D, IFactory
         onInventoryUpdated();
     }
 
-    /// <summary>
-    /// Opens the UI related to the central machine (either the recipe list or the crafting UI).
-    /// </summary>
     public void openUi()
     {
-        closeUi();
+        if (isOpen)
+        {
+            closeUi();
+        }
+
         if (craft == null)
         {
             UiManager.instance.openUi("RecipeListUI", this);
@@ -149,21 +131,19 @@ public partial class Central : StaticBody3D, IFactory
             UiManager.instance.openUi("CentralUi", this);
             _centralUi = (CentralUi)UiManager.instance.getUi("CentralUi");
         }
+
+        isOpen = true; // Marquer l'UI comme ouverte
         Input.MouseMode = Input.MouseModeEnum.Visible;
     }
 
-    /// <summary>
-    /// Closes the UI related to the central machine.
-    /// </summary>
     public void closeUi()
     {
+        if (!isOpen) return;
+
         _centralUi = null;
-        UiManager.instance.closeUi();
+        isOpen = false; // Marquer l'UI comme fermée
     }
 
-    /// <summary>
-    /// Dismantles the central machine, stopping the crafting process if active and freeing resources.
-    /// </summary>
     public void dismantle()
     {
         if (isCrafting)
@@ -172,18 +152,15 @@ public partial class Central : StaticBody3D, IFactory
             craftTimer?.QueueFree();
         }
         input.onInventoryUpdated -= onInventoryUpdated;
+        closeUi(); 
         QueueFree();
     }
 
-    /// <summary>
-    /// Updates the progress bar for crafting in the central UI.
-    /// </summary>
-    /// <param name="progress">The current progress value (from 0 to 1).</param>
     private void updateProgressBar(float progress)
     {
-        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        if (isOpen)
         {
-            _centralUi.updateProgressBar(progress);
+            _centralUi?.updateProgressBar(progress);
         }
     }
 }

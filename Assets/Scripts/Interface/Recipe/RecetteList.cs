@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.Interface;
 
@@ -7,7 +8,7 @@ public partial class RecetteList : BaseUi
 {
     [Export] private PackedScene _recipeUiPacked;
     private GridContainer _scrollContainer;
-    private IRecipeUser _recipeUser;
+    private IPlayerStructure _recipeUser;
 
     public override void _Ready()
     {
@@ -20,7 +21,7 @@ public partial class RecetteList : BaseUi
     /// <param name="data">L'usine associée à cette liste de recettes.</param>
     public override void initialize(Node data)
     {
-        _recipeUser = (IRecipeUser)data;
+        _recipeUser = (IPlayerStructure)data;
 
         if (_recipeUser.recipeList.recipeList == null || _recipeUser.recipeList.recipeList.Count == 0)
         {
@@ -39,6 +40,11 @@ public partial class RecetteList : BaseUi
     public override void updateUi()
     {
         throw new NotImplementedException();
+    }
+
+    public override void close()
+    {
+        _recipeUser.closeUi();
     }
 
     private void onRecipeClicked(Recipe recipe)

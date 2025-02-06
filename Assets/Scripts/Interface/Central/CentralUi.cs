@@ -61,6 +61,11 @@ public partial class CentralUi : BaseUi
         _inputSlot.updateSlot();
     }
 
+    public override void close()
+    {
+        _central.closeUi();
+    }
+
     /// <summary>
     /// Updates the progress bar of the central.
     /// </summary>

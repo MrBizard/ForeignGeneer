@@ -6,7 +6,7 @@ using Godot.Collections;
 
 namespace ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 
-public interface IFactory : IPlayerStructure, IRecipeUser
+public interface IFactory : IPlayerStructure
 {
     Craft craft { get; set; }
     Inventory input { get; set; }

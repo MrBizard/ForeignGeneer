@@ -151,6 +151,11 @@ public partial class FonderieUi : BaseUi
         }
     }
 
+    public override void close()
+    {
+        _fonderie.closeUi();
+    }
+
     /// <summary>
     /// Met à jour la barre de progression du craft.
     /// </summary>

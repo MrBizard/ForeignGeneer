@@ -75,10 +75,12 @@ public partial class UiManager : Node
     {
         if (currentOpenUi != null)
         {
+            if (currentOpenUi is BaseUi baseUi)
+                baseUi.close();
             currentOpenUi.QueueFree();
             currentOpenUi = null;
             currentOpenUiId = null;
-
+            
             Input.MouseMode = Input.MouseModeEnum.Captured;
             onUiStateChanged?.Invoke(false);
         }
@@ -92,8 +94,8 @@ public partial class UiManager : Node
     {
         if (currentOpenUi != null)
         {
-            var baseUi = currentOpenUi as BaseUi;
-            baseUi?.updateUi();
+            if(currentOpenUi is BaseUi baseUi)
+                baseUi?.updateUi();
         }
         else
         {
