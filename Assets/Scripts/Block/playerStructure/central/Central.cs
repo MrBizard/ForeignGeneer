@@ -5,9 +5,9 @@ using ForeignGeneer.Assets.Scripts.Static.Craft;
 
 public partial class Central : StaticBody3D, IFactory
 {
-    [Export] private PackedScene _centralUiPackedScene;
-    [Export] private PackedScene _recipeListUiPackedScene;
     [Export] public FactoryStatic factoryStatic { get; set; }
+    [Export] public string factoryUiName{ get; set; }
+    [Export] public string recipeUiName{ get; set; }
     public Inventory input { get; set; }
     public Craft craft { get; set; }
     public float craftProgress { get; private set; }
@@ -65,7 +65,7 @@ public partial class Central : StaticBody3D, IFactory
         {
             startCraft();
         }
-        if(_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        if(_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
             _centralUi?.updateUi();
     }
 
@@ -96,7 +96,7 @@ public partial class Central : StaticBody3D, IFactory
 
         isCrafting = true;
         craftProgress = 0f;
-        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
         {
             _centralUi?.updateProgressBar(craftProgress);
             _centralUi?.updateElectricity();    
@@ -116,7 +116,7 @@ public partial class Central : StaticBody3D, IFactory
         isCrafting = false;
         EnergyManager.instance.removeGlobalElectricity(factoryStatic.electricalCost);
 
-        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
         {
             _centralUi.updateElectricity();
             _centralUi.updateProgressBar(0f);
@@ -141,13 +141,13 @@ public partial class Central : StaticBody3D, IFactory
         closeUi();
         if (craft == null)
         {
-            UiManager.instance.openUi("RecipeListUI", this);
+            UiManager.instance.openUi(recipeUiName, this);
             _centralUi = null;
         }
         else
         {
-            UiManager.instance.openUi("CentralUi", this);
-            _centralUi = (CentralUi)UiManager.instance.getUi("CentralUi");
+            UiManager.instance.openUi(factoryUiName, this);
+            _centralUi = (CentralUi)UiManager.instance.getUi(factoryUiName);
         }
         Input.MouseMode = Input.MouseModeEnum.Visible;
     }
@@ -181,7 +181,7 @@ public partial class Central : StaticBody3D, IFactory
     /// <param name="progress">The current progress value (from 0 to 1).</param>
     private void updateProgressBar(float progress)
     {
-        if (_centralUi != null && UiManager.instance.isUiOpen("CentralUi"))
+        if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
         {
             _centralUi.updateProgressBar(progress);
         }

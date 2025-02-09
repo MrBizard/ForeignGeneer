@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.Interface.Inventory;
 using Godot;
 
 public partial class InventoryManager : Node
@@ -15,8 +16,6 @@ public partial class InventoryManager : Node
     public Inventory hotbar { get; private set; }
     public StackItem currentItemInMouse { get; private set; }
 
-    [Export] private PackedScene slotBasePackedScene;
-    private Control slotBaseInstance;
     public int currentSlotHotbar = 0;
 
     public override void _Ready()
@@ -40,57 +39,18 @@ public partial class InventoryManager : Node
         hotbar.addItemToSlot(new StackItem(testItem, 67), 1);
     }
 
-    public override void _Process(double delta)
-    {
-        if (currentItemInMouse != null && slotBaseInstance != null)
-        {
-            slotBaseInstance.Position = GetViewport().GetMousePosition();
-        }
-    }
-
     /// <summary>
     /// Sets the item currently held by the mouse.
     /// </summary>
     public void setCurrentItemInMouse(StackItem item)
     {
         currentItemInMouse = item;
-        
-        if (slotBaseInstance != null)
-        {
-            slotBaseInstance.QueueFree();
-            slotBaseInstance = null;
-        }
+
+        UiManager.instance.closeUi("itemCursorUI");
 
         if (item != null)
         {
-            if (slotBasePackedScene == null)
-            {
-                GD.PrintErr("slotBasePackedScene is not assigned!");
-                return;
-            }
-
-            slotBaseInstance = slotBasePackedScene.Instantiate<Control>();
-            AddChild(slotBaseInstance);
-
-            Sprite2D icon = slotBaseInstance.GetNode<Sprite2D>("Icon");
-            Label countLabel = slotBaseInstance.GetNode<Label>("CountLabel");
-
-            if (icon == null || countLabel == null)
-            {
-                GD.PrintErr("Missing Icon or CountLabel nodes in SlotBase!");
-                return;
-            }
-
-            icon.Texture = item.getResource().getInventoryIcon;
-            countLabel.Text = item.getStack().ToString();
-        }
-        else
-        {
-            if (slotBaseInstance != null)
-            {
-                slotBaseInstance.QueueFree();
-                slotBaseInstance = null;
-            }
+            UiManager.instance.openUi("itemCursorUi", item);
         }
     }
 

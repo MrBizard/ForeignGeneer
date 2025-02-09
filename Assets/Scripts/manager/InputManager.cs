@@ -82,7 +82,7 @@ public partial class InputManager : Node
 
     private void HandleUiToggle(string uiName)
     {
-        if (UiManager.instance.IsAnyUiOpen())
+        if (UiManager.instance.isAnyUiOpen())
         {
             UiManager.instance.closeUi();
         }

@@ -18,7 +18,7 @@ public partial class RecetteList : BaseUi
     /// Initialise la liste des recettes.
     /// </summary>
     /// <param name="data">L'usine associée à cette liste de recettes.</param>
-    public override void initialize(Node data)
+    public override void initialize(Object data)
     {
         _recipeUser = (IRecipeUser)data;
 
