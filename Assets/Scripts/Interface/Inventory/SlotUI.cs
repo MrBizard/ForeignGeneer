@@ -204,4 +204,9 @@ public partial class SlotUI : BaseUi
     {
         throw new System.NotImplementedException();
     }
+
+    public override void close()
+    {
+        throw new NotImplementedException();
+    }
 }

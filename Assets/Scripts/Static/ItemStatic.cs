@@ -61,7 +61,6 @@ public partial class ItemStatic : Resource
             return null;
         }
 
-        // Appliquer le matériau si disponible
         if (_material != null)
         {
             MeshInstance3D meshInstance = itemInstantiate.GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
@@ -78,16 +77,15 @@ public partial class ItemStatic : Resource
         itemInstantiate.GlobalPosition = pos;
         return itemInstantiate;
     }
-
-
+    
     public virtual void LeftClick()
     {
-        GD.Print("Left clicked on ItemStatic");
+        
     }
 
-    public virtual void RightClick(Player player)
+    public virtual void RightClick()
     {
-        GD.Print("Right clicked on ItemStatic");
+        
     }
 
     public override string ToString()

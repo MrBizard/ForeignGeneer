@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.Interface;
 using ForeignGeneer.Assets.Scripts.Interface.Inventory;
 using Godot;
 
@@ -38,7 +39,6 @@ public partial class InventoryManager : Node
         mainInventory.addItemToSlot(new StackItem(testItem3, 1), 2);
         hotbar.addItemToSlot(new StackItem(testItem, 67), 1);
     }
-
     /// <summary>
     /// Sets the item currently held by the mouse.
     /// </summary>
@@ -46,7 +46,7 @@ public partial class InventoryManager : Node
     {
         currentItemInMouse = item;
 
-        UiManager.instance.closeUi("itemCursorUI");
+        UiManager.instance.closeUi("itemCursorUi");
 
         if (item != null)
         {
@@ -54,6 +54,14 @@ public partial class InventoryManager : Node
         }
     }
 
+    public void drop()
+    {
+        if (currentItemInMouse != null)
+        {
+            currentItemInMouse.getResource().Instantiate();
+        }
+    }
+    
     /// <summary>
     /// Adds an item to a specific slot in the main inventory.
     /// </summary>

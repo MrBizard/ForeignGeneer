@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://clcfqi8qt4ly0"]
+[gd_scene load_steps=3 format=3 uid="uid://bt22jt7gp0bq5"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/CurrentCursorItem.cs" id="1_nkvr4"]
 

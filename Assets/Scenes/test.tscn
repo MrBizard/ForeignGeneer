@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://0r4bxj3uot8q"]
 
-[ext_resource type="Texture2D" uid="uid://c3rwlqpjwta0i" path="res://Assets/damier.png" id="1_ermdq"]
-[ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
+[ext_resource type="Texture2D" uid="uid://s8jnyv8qa23s" path="res://Assets/damier.png" id="1_ermdq"]
+[ext_resource type="PackedScene" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
 [ext_resource type="PackedScene" uid="uid://c6xr5ux6th5oq" path="res://Assets/Prefabs/manager.tscn" id="2_kk7j7"]
 [ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="4_na8ne"]
 [ext_resource type="PackedScene" uid="uid://ceeumu8ai6jxw" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="5_phnvt"]

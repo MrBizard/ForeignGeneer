@@ -12,8 +12,9 @@ public partial class ResourceStatic : ItemStatic
         GD.Print("Resource leftclick");
     }
 
-    public override void RightClick(Player player)
+    public override void RightClick()
     {
         GD.Print("Resource rightclick");
     }
+    
 }

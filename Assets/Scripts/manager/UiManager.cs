@@ -8,8 +8,8 @@ public partial class UiManager : Node
     public static UiManager instance { get; private set; }
 
     // Tableaux exportables pour les clés et les PackedScene
-    [Export] private Godot.Collections.Array<string> uiKeys = new Godot.Collections.Array<string>();
-    [Export] private Godot.Collections.Array<PackedScene> uiScenes = new Godot.Collections.Array<PackedScene>();
+    [Export] private Godot.Collections.Array<string> _uiKeys = new Godot.Collections.Array<string>();
+    [Export] private Godot.Collections.Array<PackedScene> _uiScenes = new Godot.Collections.Array<PackedScene>();
 
     // Dictionnaire pour stocker les UI ouvertes (nom de la scène -> instance)
     private Dictionary<string, Control> _openUis = new Dictionary<string, Control>();
@@ -27,15 +27,15 @@ public partial class UiManager : Node
         }
         else
         {
-            QueueFree(); // Assurez-vous qu'il n'y a qu'une seule instance
+            QueueFree(); 
         }
 
         // Convertit les tableaux exportés en dictionnaire
-        for (int i = 0; i < uiKeys.Count; i++)
+        for (int i = 0; i < _uiKeys.Count; i++)
         {
-            if (i < uiScenes.Count)
+            if (i < _uiScenes.Count)
             {
-                _loadedUiScenes[uiKeys[i]] = uiScenes[i];
+                _loadedUiScenes[_uiKeys[i]] = _uiScenes[i];
             }
         }
     }
@@ -45,11 +45,9 @@ public partial class UiManager : Node
     /// </summary>
     public void openUi(string uiName, Object data = null)
     {
-        GD.Print("Opening UI: " + uiName);
 
         if (_openUis.ContainsKey(uiName))
         {
-            GD.Print($"UI {uiName} is already open.");
             return;
         }
 
@@ -65,11 +63,6 @@ public partial class UiManager : Node
             Input.MouseMode = Input.MouseModeEnum.Visible;
             onUiStateChanged?.Invoke(true);
 
-            GD.Print("UI opened: " + uiName);
-        }
-        else
-        {
-            GD.PrintErr($"UI {uiName} is not registered.");
         }
     }
 
@@ -78,43 +71,33 @@ public partial class UiManager : Node
     /// </summary>
     public void closeUi(string uiName = null)
     {
-        GD.Print("UI: " + _openUis.Count);
-
         if (string.IsNullOrEmpty(uiName))
         {
-            // Ferme toutes les UI
             foreach (var uiEntry in _openUis)
             {
                 uiEntry.Value.QueueFree();
             }
             _openUis.Clear();
-            GD.Print("passe 3 ");
             Input.MouseMode = Input.MouseModeEnum.Captured;
+            onUiStateChanged?.Invoke(false);
         }
         else
         {
             // Ferme une UI spécifique
-            if (_openUis.TryGetValue(uiName, out var uiInstance))
+            if (_openUis.ContainsKey(uiName))
             {
-                GD.Print("passe : " + uiName);
-                uiInstance.QueueFree();
+
+                _openUis[uiName].QueueFree();
                 _openUis.Remove(uiName);
-                GD.Print("name : " + _openUis.Count);
-                GD.Print("Remaining UIs: " + string.Join(", ", _openUis.Keys));
 
                 if (_openUis.Count == 0)
                 {
                     Input.MouseMode = Input.MouseModeEnum.Captured;
                     onUiStateChanged?.Invoke(false);
-                    return;
                 }
             }
-            else
-            {
-                GD.Print($"UI {uiName} is not open.");
-            }
         }
-        onUiStateChanged?.Invoke(false);
+       
     }
 
     /// <summary>
@@ -138,15 +121,8 @@ public partial class UiManager : Node
     /// </summary>
     public Control getUi(string uiName)
     {
-        if (_openUis.TryGetValue(uiName, out var uiInstance))
-        {
-            return uiInstance;
-        }
-        else
-        {
-            GD.Print($"UI {uiName} is not open.");
-            return null;
-        }
+        return _openUis.GetValueOrDefault(uiName);
+        
     }
 
     /// <summary>
@@ -157,7 +133,6 @@ public partial class UiManager : Node
         // Si aucune UI n'est ouverte, on ne fait rien
         if (_openUis.Count == 0)
         {
-            GD.Print("No UI is currently open to refresh.");
             return;
         }
 
@@ -167,5 +142,17 @@ public partial class UiManager : Node
             var baseUi = uiEntry.Value as BaseUi;
             baseUi?.updateUi();
         }
+    }
+    /// <summary>
+    /// Actualise l'interface utilisateur donnée en paramètre
+    /// </summary>
+    public void refreshUi(string name, Node data = null)
+    {
+        if (_openUis.Count == 0 || _openUis.ContainsKey(name))
+        {
+            return;
+        }
+        BaseUi ui = _openUis[name] as BaseUi;
+        ui?.updateUi();
     }
 }
