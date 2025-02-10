@@ -7,6 +7,8 @@ public partial class Fonderie : StaticBody3D, IFactory
 {
     [Export] public int inputSlotCount { get; set; } = 2;
     [Export]public FactoryStatic factoryStatic { get; set; }
+    [Export] public string factoryUiName{ get; set; }
+    [Export] public string recipeUiName{ get; set; }
     public Craft craft { get; set; }
     public Inventory input { get; set; }
     public Inventory output { get; set; }
@@ -142,13 +144,13 @@ public partial class Fonderie : StaticBody3D, IFactory
         closeUi();
         if (craft == null)
         {
-            UiManager.instance.openUi("RecipeListUI", this);
+            UiManager.instance.openUi(recipeUiName, this);
             _fonderieUi = null;
         }
         else
         {
-            UiManager.instance.openUi("FonderieUI", this);
-            _fonderieUi = (FonderieUi)UiManager.instance.getUi("FonderieUI");
+            UiManager.instance.openUi(factoryUiName, this);
+            _fonderieUi = (FonderieUi)UiManager.instance.getUi(factoryUiName);
         }
     }
 
@@ -185,7 +187,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     /// </summary>
     private void updateUi()
     {
-        if (UiManager.instance.IsAnyUiOpen())
+        if (UiManager.instance.isAnyUiOpen())
         {
             UiManager.instance.refreshCurrentUi(this);
         }
@@ -196,7 +198,7 @@ public partial class Fonderie : StaticBody3D, IFactory
     /// </summary>
     private void updateProgressBar(float progress)
     {
-        if (UiManager.instance.isUiOpen("FonderieUI"))
+        if (UiManager.instance.isUiOpen(factoryUiName))
         {
             _fonderieUi?.updateProgressBar(progress);
         }

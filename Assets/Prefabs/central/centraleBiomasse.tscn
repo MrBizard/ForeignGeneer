@@ -1,8 +1,6 @@
-[gd_scene load_steps=24 format=4 uid="uid://bxncduxmicfgw"]
+[gd_scene load_steps=22 format=4 uid="uid://bxncduxmicfgw"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/central/Central.cs" id="1_hma8x"]
-[ext_resource type="PackedScene" uid="uid://ddp7q1ns3jgci" path="res://Assets/Scenes/UI/centrale/CentralUi.tscn" id="2_dlfhl"]
-[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="3_lhj55"]
 [ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/central.tres" id="4_05svm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqcix"]
@@ -417,9 +415,9 @@ size = Vector3(3.41296, 4.90967, 4.87366)
 
 [node name="central_biomasse" type="StaticBody3D"]
 script = ExtResource("1_hma8x")
-_centralUiPackedScene = ExtResource("2_dlfhl")
-_recipeListUiPackedScene = ExtResource("3_lhj55")
 factoryStatic = ExtResource("4_05svm")
+factoryUiName = "centralUi"
+recipeUiName = "recipeListUi"
 
 [node name="Node3D" type="Node3D" parent="."]
 

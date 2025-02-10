@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts.Interface;
 using Godot;
@@ -29,7 +30,7 @@ public partial class FonderieUi : BaseUi
     /// Initialise l'interface avec les données de la fonderie.
     /// </summary>
     /// <param name="data">La fonderie à afficher.</param>
-    public override void initialize(Node data)
+    public override void initialize(Object data)
     {
         if (data is Fonderie fonderie)
         {

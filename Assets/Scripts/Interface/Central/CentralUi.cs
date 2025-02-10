@@ -1,3 +1,4 @@
+using System;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using Godot;
 using ForeignGeneer.Assets.Scripts.Interface;
@@ -31,7 +32,7 @@ public partial class CentralUi : BaseUi
     /// Initializes the central interface. This method should be called once to initialize the UI.
     /// </summary>
     /// <param name="data">The central node associated with this interface.</param>
-    public override void initialize(Node data)
+    public override void initialize(Object data)
     {
         _central = (Central)data;
 

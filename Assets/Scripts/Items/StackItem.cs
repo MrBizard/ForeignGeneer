@@ -5,7 +5,7 @@ using System;
 /// Représente un item dans une pile.
 /// Contient des informations sur l'item et son nombre dans une pile.
 /// </summary>
-public partial class StackItem
+public class StackItem
 {
     // Champs privés
     private ItemStatic _resource;

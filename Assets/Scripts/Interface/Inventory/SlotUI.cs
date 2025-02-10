@@ -1,6 +1,8 @@
+using System;
+using ForeignGeneer.Assets.Scripts.Interface;
 using Godot;
 
-public partial class SlotUI : Control
+public partial class SlotUI : BaseUi
 {
     private TextureRect _icon;
     private Label _countLabel;
@@ -100,7 +102,7 @@ public partial class SlotUI : Control
             {
                 // Échanger les items
                 var temp = stackItem;
-                _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse,_slotIndex);
+                _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _slotIndex);
                 InventoryManager.Instance.setCurrentItemInMouse(temp); // Mettre à jour l'item dans la souris
                 _inventory.notifyInventoryUpdated();
             }
@@ -191,5 +193,15 @@ public partial class SlotUI : Control
     {
         _icon.Texture = null;
         _countLabel.Text = "";
+    }
+
+    public override void initialize(Object data)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void updateUi()
+    {
+        throw new System.NotImplementedException();
     }
 }

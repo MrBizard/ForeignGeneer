@@ -117,7 +117,7 @@ public partial class Player : CharacterBody3D
     /// </summary>
     public void LeftClick()
     {
-        if (_isUiOpen) return; // Ignore les clics si l'UI est ouverte.
+        if (_isUiOpen) return;
         InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar).getResource().LeftClick();
     }
 

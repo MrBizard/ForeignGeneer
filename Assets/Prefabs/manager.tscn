@@ -3,16 +3,16 @@
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="1_71vod"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="2_4ko3m"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/UiManager.cs" id="3_a3ua0"]
-[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Factory/RecetteList.tscn" id="4_iqjgk"]
+[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Recipe/RecipeListUi.tscn" id="4_iqjgk"]
 [ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="5_ddexw"]
-[ext_resource type="PackedScene" uid="uid://ddp7q1ns3jgci" path="res://Assets/Scenes/UI/centrale/CentralUi.tscn" id="6_pllps"]
+[ext_resource type="PackedScene" uid="uid://ddp7q1ns3jgci" path="res://Assets/Scenes/UI/Centrale/CentralUi.tscn" id="6_pllps"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="7_go5he"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InputManager.cs" id="8_a14bf"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InventoryManager.cs" id="9_tqnk7"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="10_lix3d"]
 [ext_resource type="Resource" uid="uid://blqmnqkdcbi7l" path="res://Assets/Resource/Block/factory/Fonderie.tres" id="11_2jesr"]
 [ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/central.tres" id="12_r8hvi"]
-[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/slotBase.tscn" id="13_xgmw1"]
+[ext_resource type="PackedScene" uid="uid://clcfqi8qt4ly0" path="res://Assets/Scenes/UI/Inventory/itemCursorUi.tscn" id="13_xgmw1"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/EnergyManager.cs" id="14_p8dp3"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/PollutionManager.cs" id="15_xn7js"]
 
@@ -22,8 +22,8 @@ option = ExtResource("2_4ko3m")
 
 [node name="UiManager" type="Node" parent="."]
 script = ExtResource("3_a3ua0")
-sceneKeys = ["RecipeListUI", "FonderieUI", "CentralUi", "inventoryUi", "optionUi"]
-uiScenesList = [ExtResource("4_iqjgk"), ExtResource("5_ddexw"), ExtResource("6_pllps"), ExtResource("7_go5he"), ExtResource("2_4ko3m")]
+uiKeys = ["fonderieUi", "centralUi", "recipeListUi", "inventoryUi", "optionUi", "itemCursorUi"]
+uiScenes = [ExtResource("5_ddexw"), ExtResource("6_pllps"), ExtResource("4_iqjgk"), ExtResource("7_go5he"), ExtResource("2_4ko3m"), ExtResource("13_xgmw1")]
 
 [node name="InputManager" type="Node" parent="."]
 script = ExtResource("8_a14bf")
@@ -33,7 +33,6 @@ script = ExtResource("9_tqnk7")
 testItem = ExtResource("10_lix3d")
 testItem2 = ExtResource("11_2jesr")
 testItem3 = ExtResource("12_r8hvi")
-slotBasePackedScene = ExtResource("13_xgmw1")
 
 [node name="EnergyManager" type="Node" parent="."]
 script = ExtResource("14_p8dp3")
