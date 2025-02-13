@@ -15,7 +15,7 @@ public partial class MenuManager : Control
 		PackedScene newScene = ResourceLoader.Load<PackedScene>(scenePath);
 		
 		if (newScene != null){
-			// Instantiate the new scene
+			// instantiate the new scene
 			Node newSceneInstance = newScene.Instantiate();
 			
 			// Add the new scene to the root of the scene tree

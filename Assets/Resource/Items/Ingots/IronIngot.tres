@@ -11,3 +11,4 @@ _maxStack = 99
 _scenePath = "res://Assets/Prefabs/Ingots/Ingot.tscn"
 _material = ExtResource("1_0wnc8")
 _inventoryIcon = ExtResource("1_bj65x")
+_description = "lingot de fer"

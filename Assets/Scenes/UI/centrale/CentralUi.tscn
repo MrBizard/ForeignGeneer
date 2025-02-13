@@ -106,3 +106,19 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Puissance : 0 kW/s|| Électricité totale : 0 kW/s"
 horizontal_alignment = 1
+
+[node name="close" type="Button" parent="Machine"]
+modulate = Color(0.737193, 0.737193, 0.737193, 1)
+z_index = 10
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.95
+anchor_right = 1.0
+anchor_bottom = 0.03
+offset_left = -18.0
+offset_bottom = 31.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 25
+text = "X"
+
+[connection signal="button_down" from="Machine/close" to="." method="close"]

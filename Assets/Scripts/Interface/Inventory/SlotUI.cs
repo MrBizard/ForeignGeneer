@@ -11,7 +11,18 @@ public partial class SlotUI : BaseUi
     private Panel _background;
     private bool _isOutputSlot = false;
     private int _slotIndex;
+    private Timer _hoverTimer;
+    private bool _isHovered = false;
 
+    public override void _Ready()
+    {
+        _hoverTimer = new Timer();
+        _hoverTimer.WaitTime = 0.5f; // Temps avant affichage
+        _hoverTimer.OneShot = true;
+        _hoverTimer.Connect("timeout", new Callable(this, nameof(showItemDescription)));
+        AddChild(_hoverTimer);
+    }
+    
     /// <summary>
     /// Initialise le slot avec un inventaire et un index.
     /// </summary>
@@ -25,7 +36,7 @@ public partial class SlotUI : BaseUi
         _backIcon = GetNode<TextureRect>("Background/BackIcon");
         _icon = GetNode<TextureRect>("Icon");
         _countLabel = GetNode<Label>("CountLabel");
-
+        
         updateSlot();
     }
 
@@ -185,7 +196,32 @@ public partial class SlotUI : BaseUi
             GD.PrintErr("Background TextureRect is not assigned!");
         }
     }
+    private void _on_mouse_entered()
+    {
+        _isHovered = true;
+        _hoverTimer.Start();
+    }
 
+    private void _on_mouse_exited()
+    {
+        _isHovered = false;
+        _hoverTimer.Stop();
+        hideItemDescription();
+    }
+
+    private void showItemDescription()
+    {
+        if (_isHovered && _inventory.getItem(_slotIndex) != null)
+        {
+            UiManager.instance.openUi("overlayItemInformation", _inventory.getItem(_slotIndex));
+        }
+    }
+
+    private void hideItemDescription()
+    {
+        UiManager.instance.closeUi("overlayItemInformation");
+    }
+    
     /// <summary>
     /// Vide le slot.
     /// </summary>
@@ -209,4 +245,5 @@ public partial class SlotUI : BaseUi
     {
         throw new NotImplementedException();
     }
+    
 }

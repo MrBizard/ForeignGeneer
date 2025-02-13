@@ -12,7 +12,7 @@ public partial class UiManager : Node
     [Export] private Godot.Collections.Array<PackedScene> _uiScenes = new Godot.Collections.Array<PackedScene>();
 
     // Dictionnaire pour stocker les UI ouvertes (nom de la scène -> instance)
-    private Dictionary<string, Control> _openUis = new Dictionary<string, Control>();
+    public Dictionary<string, Control> _openUis = new Dictionary<string, Control>();
 
     // Dictionnaire pour stocker les scènes UI chargées (nom de la scène -> PackedScene)
     private Dictionary<string, PackedScene> _loadedUiScenes = new Dictionary<string, PackedScene>();
@@ -54,7 +54,7 @@ public partial class UiManager : Node
         if (_loadedUiScenes.TryGetValue(uiName, out var uiScene))
         {
             var uiInstance = uiScene.Instantiate<Control>();
-            AddChild(uiInstance);
+            AddChild(uiInstance, true);
 
             var baseUi = uiInstance as BaseUi;
             baseUi?.initialize(data);
@@ -83,7 +83,6 @@ public partial class UiManager : Node
         }
         else
         {
-            // Ferme une UI spécifique
             if (_openUis.ContainsKey(uiName))
             {
 
@@ -122,7 +121,6 @@ public partial class UiManager : Node
     public Control getUi(string uiName)
     {
         return _openUis.GetValueOrDefault(uiName);
-        
     }
 
     /// <summary>

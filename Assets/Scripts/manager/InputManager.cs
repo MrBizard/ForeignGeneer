@@ -80,11 +80,13 @@ public partial class InputManager : Node
         }
     }
 
+
     private void HandleUiToggle(string uiName)
     {
         if (UiManager.instance.isAnyUiOpen())
         {
             UiManager.instance.closeUi();
+            InventoryManager.Instance.drop();
         }
         else
         {

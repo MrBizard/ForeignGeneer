@@ -6,13 +6,17 @@ public partial class ItemStatic : Resource
     [Export] public string _scenePath;
     [Export] private Material _material;
     [Export] private Texture2D _inventoryIcon;
-
+    [Export] private string _description;
     public int getMaxStack
     {
         get => _maxStack;
         set => _maxStack = value;
     }
 
+    public string getDescription()
+    {
+        return _description;
+    }
     public string getPrefab
     {
         get => _scenePath;
@@ -39,7 +43,7 @@ public partial class ItemStatic : Resource
         _inventoryIcon = inventoryIcon;
     }
 
-    public ItemAuSol Instantiate(Vector3 pos)
+    public ItemAuSol instantiate(Vector3 pos)
     {
         if (string.IsNullOrEmpty(_scenePath))
         {
