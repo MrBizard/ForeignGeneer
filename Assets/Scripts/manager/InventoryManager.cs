@@ -165,4 +165,27 @@ public partial class InventoryManager : Node
     {
         hotbar.addItemToSlot(item, slotIndex);
     }
+
+    public void addCurrentItemToHotbar()
+    {
+        if (currentSlotHotbar + 1 < hotbarSize)
+        {
+            currentSlotHotbar++;
+        }
+        else
+        {
+            currentSlotHotbar = 0;
+        }
+    }
+    public void removeCurrentItemToHotbar()
+    {
+        if (currentSlotHotbar - 1 >= 0)
+        {
+            currentSlotHotbar--;
+        }
+        else
+        {
+            currentSlotHotbar = hotbarSize-1;
+        }
+    }
 }

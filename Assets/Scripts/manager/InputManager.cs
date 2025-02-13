@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
 public partial class InputManager : Node
 {
@@ -77,6 +78,15 @@ public partial class InputManager : Node
         if (@event is InputEventMouseMotion mouseMotionEvent)
         {
             Player.Instance.RotateCamera(mouseMotionEvent.Relative);
+        }
+
+        if (@event is InputEventMouseButton mouseButtonEvent)
+        {
+            if(mouseButtonEvent.ButtonIndex == MouseButton.WheelUp && mouseButtonEvent.Pressed)
+                InventoryManager.Instance.addCurrentItemToHotbar();
+            else if (mouseButtonEvent.ButtonIndex == MouseButton.WheelDown && mouseButtonEvent.Pressed)
+                InventoryManager.Instance.removeCurrentItemToHotbar();
+            GD.Print(InventoryManager.Instance.currentSlotHotbar);
         }
     }
 
