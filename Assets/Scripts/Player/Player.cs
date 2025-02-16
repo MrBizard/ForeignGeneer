@@ -53,7 +53,17 @@ public partial class Player : CharacterBody3D
     /// Indicateur qui détermine si l'interface utilisateur est ouverte.
     /// </summary>
     private bool _isUiOpen = false;
+
+    /// <summary>
+    /// Référence au Raycast pour les interactions.
+    /// </summary>
     public Raycast raycast;
+
+    /// <summary>
+    /// Indicateur du mode de vue (FPS ou TPS).
+    /// </summary>
+    private bool _isFirstPerson = false;
+
     #endregion
 
     #region Méthodes
@@ -80,6 +90,9 @@ public partial class Player : CharacterBody3D
         raycast = GetNode<Raycast>("Pivot/SpringArm3D/Camera3D/RayCast3D");
         Input.MouseMode = Input.MouseModeEnum.Captured; // Capture le curseur de la souris.
         UiManager.instance.onUiStateChanged += OnUiStateChanged; // S'abonne aux changements d'état de l'UI.
+
+        // Initialise la caméra en mode TPS par défaut
+        SetFirstPersonMode(false);
     }
 
     /// <summary>
@@ -119,7 +132,7 @@ public partial class Player : CharacterBody3D
     {
         if (_isUiOpen) return;
         StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
-        if(item is not null)
+        if (item is not null)
             item.getResource().LeftClick();
     }
 
@@ -129,9 +142,19 @@ public partial class Player : CharacterBody3D
     public void RightClick()
     {
         if (_isUiOpen) return;
-        StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
-        if(item is not null)
-            item.getResource().RightClick();
+        if (InventoryManager.Instance.currentPreview != null)
+        {
+            InventoryManager.Instance.PlaceItem();
+        }
+        else
+        {
+            GD.Print("preview passe ");
+            StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
+            if (item != null)
+            {
+                InventoryManager.Instance.StartPreview(item);
+            }
+        }
     }
 
     /// <summary>
@@ -175,7 +198,7 @@ public partial class Player : CharacterBody3D
     {
         if (_isUiOpen) return; // Ignore la physique si l'UI est ouverte.
 
-        if (!IsOnFloor()) 
+        if (!IsOnFloor())
         {
             Velocity += GetGravity() * (float)delta; // Applique la gravité si le joueur n'est pas au sol.
         }
@@ -220,6 +243,34 @@ public partial class Player : CharacterBody3D
     public override void _ExitTree()
     {
         UiManager.instance.onUiStateChanged -= OnUiStateChanged;
+    }
+
+    /// <summary>
+    /// Bascule entre le mode FPS et TPS.
+    /// </summary>
+    public void ToggleViewMode()
+    {
+        SetFirstPersonMode(!_isFirstPerson);
+    }
+
+    /// <summary>
+    /// Définit le mode de vue (FPS ou TPS).
+    /// </summary>
+    /// <param name="isFirstPerson">True pour le mode FPS, False pour le mode TPS.</param>
+    private void SetFirstPersonMode(bool isFirstPerson)
+    {
+        _isFirstPerson = isFirstPerson;
+        
+        if (_isFirstPerson)
+        {
+            Visible = false;
+            _springArm.SpringLength = -0.5f;
+        }
+        else
+        {
+            Visible = true;
+            _springArm.SpringLength = 1.5f; 
+        }
     }
 
     #endregion

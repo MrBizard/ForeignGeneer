@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.Interface;
 using ForeignGeneer.Assets.Scripts.Interface.Inventory;
 using Godot;
@@ -18,6 +19,7 @@ public partial class InventoryManager : Node
     public StackItem currentItemInMouse { get; private set; }
 
     public int currentSlotHotbar = 0;
+    public PreviewObject currentPreview;
 
     public override void _Ready()
     {
@@ -56,80 +58,55 @@ public partial class InventoryManager : Node
 
     public void drop()
     {
-        if (currentItemInMouse != null)
-        {
-            ItemStatic itemToDrop = currentItemInMouse.getResource();
-            Vector3 dropPosition = FindDropPosition();
-        
-            if (dropPosition != Vector3.Zero)
-            {
-                ItemAuSol droppedItem = itemToDrop.instantiate(dropPosition);
-                GetTree().CurrentScene.AddChild(droppedItem);
-            }
-        }
+    if (currentItemInMouse != null)
+    {
+        Vector3 dropPosition = FindDropPosition();
+
+        StaticBody3D itemDrop = currentItemInMouse.getResource().instantiate(dropPosition);
+        itemDrop.Position = FindDropPosition();
+        GetTree().CurrentScene.GetNode("worldStructure").AddChild(itemDrop);
     }
+}
+
     private Vector3 FindDropPosition()
     {
-        Node3D player = GetTree().CurrentScene.GetNode<Node3D>("Player");
+        Node3D player = Player.Instance;
         if (player == null)
         {
-            GD.PrintErr("Player not found!");
+            GD.PrintErr("Player not found!", player);
             return Vector3.Zero;
         }
 
-        Vector3 start = player.GlobalPosition + new Vector3(0, 1, 0); // Position de départ du raycast
-        Vector3 direction = -player.GlobalTransform.Basis.Z.Normalized() * 2; // Devant le joueur
-
-        PhysicsDirectSpaceState3D spaceState = player.GetWorld3D().DirectSpaceState;
-        PhysicsRayQueryParameters3D query = PhysicsRayQueryParameters3D.Create(start, start + direction);
-        query.CollideWithAreas = false;
-
-        var result = spaceState.IntersectRay(query);
-
-        if (result.Count == 0) // Si pas d'obstacle, on place l'item ici
+        RayCast3D playerRaycast = Player.Instance.raycast; 
+        if (playerRaycast == null)
         {
-            return start + direction;
+            GD.PrintErr("RayCast3D non trouvé dans le joueur !");
+            return Vector3.Zero;
         }
-        else // Sinon, essayer autour
-        {
-            return FindNearestFreeSpot(player.GlobalPosition);   
-        }
+
+        Vector3 dropPosition = new Vector3();
+        return FindNearestFreeSpot(dropPosition);
     }
+
     private Vector3 FindNearestFreeSpot(Vector3 origin)
     {
-        Node3D player = GetTree().CurrentScene.GetNode<Node3D>("Player"); // Assurez-vous que le chemin est correct
+        Node3D player = Player.Instance; // Assurez-vous que le chemin est correct
         if (player == null)
         {
-            GD.PrintErr("Player not found!");
+            GD.PrintErr("Player not found!", player);
             return origin;
         }
 
         PhysicsDirectSpaceState3D spaceState = player.GetWorld3D().DirectSpaceState; // Récupération correcte
 
-        float radius = 2.0f;
-        int angleStep = 30;  
-
-        for (int angle = 0; angle < 360; angle += angleStep)
-        {
-            float rad = Mathf.DegToRad(angle);
-            Vector3 offset = new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad)) * radius;
-            Vector3 checkPos = origin + offset + new Vector3(0, 1, 0);
-
-            PhysicsRayQueryParameters3D query = PhysicsRayQueryParameters3D.Create(checkPos, checkPos - new Vector3(0, 2, 0));
-            var result = spaceState.IntersectRay(query);
-
-            if (result.Count > 0)
-            {
-                return (Vector3)result["position"];
-            }
-        }
+       
     
         return origin; 
     }
 
     private Vector3 AdjustHeightToGround(Vector3 position)
     {
-        Node3D player = GetTree().CurrentScene.GetNode<Node3D>("Player"); 
+        Node3D player = Player.Instance; 
         if (player == null)
         {
             GD.PrintErr("Player not found!");
@@ -176,6 +153,8 @@ public partial class InventoryManager : Node
         {
             currentSlotHotbar = 0;
         }
+
+        StopPreview();
     }
     public void removeCurrentItemToHotbar()
     {
@@ -186,6 +165,63 @@ public partial class InventoryManager : Node
         else
         {
             currentSlotHotbar = hotbarSize-1;
+        }
+
+        StopPreview();
+    }
+    
+    private bool isItemAuSol(string path)
+    {
+        PackedScene scene = GD.Load<PackedScene>(path);
+        if (scene == null)
+        {
+            return false;
+        }
+
+        var instance = scene.Instantiate();
+        bool isItemAuSol = instance is ItemAuSol;
+        instance.QueueFree();
+        return isItemAuSol;
+    }
+    
+    /// <summary>
+    /// Active la prévisualisation pour un objet sélectionné.
+    /// </summary>
+    /// <param name="item">L'objet sélectionné.</param>
+    public void StartPreview(StackItem item)
+    {
+        if (currentPreview != null)
+        {
+            currentPreview.Destroy();
+        }
+        
+        currentPreview = new PreviewObject();
+        currentPreview.initialize(item.getResource());
+        Player.Instance.GetParent().AddChild(currentPreview);
+    }
+
+    /// <summary>
+    /// Désactive la prévisualisation.
+    /// </summary>
+    public void StopPreview()
+    {
+        if (currentPreview != null)
+        {
+            currentPreview.Destroy();
+            currentPreview = null;
+        }
+    }
+
+    /// <summary>
+    /// Place l'objet définitivement à la position actuelle de la prévisualisation.
+    /// </summary>
+    public void PlaceItem()
+    {
+        GD.Print("current : ", currentPreview, " place : ", currentPreview.canPlace());
+        if (currentPreview != null && currentPreview.canPlace())
+        {
+            hotbar.getItem(currentSlotHotbar).getResource().RightClick();
+            StopPreview();
         }
     }
 }

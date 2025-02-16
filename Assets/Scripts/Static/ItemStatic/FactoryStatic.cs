@@ -26,9 +26,17 @@ public partial class FactoryStatic : ItemStatic
         {
             return null;
         }
-
         var itemInstantiate = scene.Instantiate<StaticBody3D>();
         itemInstantiate.GlobalPosition = pos;
+        if (getMaterial != null)
+        {
+            MeshInstance3D meshInstance = itemInstantiate.GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
+            if (meshInstance != null)
+            {
+                meshInstance.MaterialOverride = getMaterial;
+            }
+        }
+        
         return itemInstantiate;
     }
 
@@ -38,6 +46,7 @@ public partial class FactoryStatic : ItemStatic
     /// <param name="player">The player who triggered the right-click action.</param>
     public override void RightClick()
     {
+        
         StaticBody3D instance = instantiateFactory(Player.Instance.raycast.getWorldCursorPosition());
         if (instance != null)
         {

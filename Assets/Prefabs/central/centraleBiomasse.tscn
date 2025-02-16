@@ -411,31 +411,33 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_hq5io")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_orm28"]
-size = Vector3(3.41296, 4.90967, 4.87366)
+size = Vector3(3.41296, 4.70483, 4.87366)
 
 [node name="central_biomasse" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.174682, 0)
 script = ExtResource("1_hma8x")
 factoryStatic = ExtResource("4_05svm")
 factoryUiName = "centralUi"
 recipeUiName = "recipeListUi"
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 
-[node name="broyeuse" type="MeshInstance3D" parent="Node3D"]
+[node name="broyeuse" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_o8eom")
 skeleton = NodePath("")
 
-[node name="broyeuse_001" type="MeshInstance3D" parent="Node3D"]
+[node name="broyeuse_001" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_1gh4d")
 skeleton = NodePath("")
 
-[node name="central" type="MeshInstance3D" parent="Node3D"]
+[node name="central" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
 mesh = SubResource("ArrayMesh_a6mk4")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.365295, 2.38843, -0.378601)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.365295, 2.49085, -0.378601)
 shape = SubResource("BoxShape3D_orm28")

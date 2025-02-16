@@ -586,46 +586,47 @@ shadow_mesh = SubResource("ArrayMesh_ewvum")
 size = Vector3(5.07861, 4.48822, 4.69952)
 
 [node name="Fonderie" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.101346, 0)
 script = ExtResource("1_6n8xl")
 factoryStatic = ExtResource("2_r2dqx")
 factoryUiName = "fonderieUi"
 recipeUiName = "recipeListUi"
 
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 2.5)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.037697, 2.5)
 
-[node name="fonderie" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(2.05344, 0, 0, 0, 1.02672, 0, 0, 0, 2.05344, 0.0607144, 1.50482, -2.87094)
+[node name="fonderie" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(2.05344, 0, 0, 0, 1.02672, 0, 0, 0, 2.05344, 0.0607144, 1.1, -2.87094)
 mesh = SubResource("ArrayMesh_7d1sd")
 skeleton = NodePath("")
 
-[node name="rail_fonderie" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(2.23599, 0, 0, 0, 1.118, 0, 0, 0, 30.9996, 0.0607144, 1.28738, -2.92042)
+[node name="rail_fonderie" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(2.23599, 0, 0, 0, 1.118, 0, 0, 0, 30.9996, 0.0607144, 1.1, -2.92042)
 mesh = SubResource("ArrayMesh_wjeck")
 skeleton = NodePath("")
 
-[node name="barre latéral" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(0.0367892, 0, 0, 0, 0.333756, 0, 0, 0, 0.130079, 2.12455, 1.25282, -1.50229)
+[node name="barre latéral" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(0.0367892, 0, 0, 0, 0.333756, 0, 0, 0, 0.130079, 2.12455, 1.1, -1.50229)
 mesh = SubResource("ArrayMesh_onhv6")
 skeleton = NodePath("")
 
-[node name="Cube" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(0.153548, 0, 0, 0, 0.605515, 0, 0, 0, 0.413535, -1.99558, 2.0941, -1.85425)
+[node name="Cube" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(0.153548, 0, 0, 0, 0.605515, 0, 0, 0, 0.413535, -1.99558, 1.1, -1.85425)
 mesh = SubResource("ArrayMesh_g1b2b")
 skeleton = NodePath("")
 
-[node name="Cube_001" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(1.06003, 0, 0, 0, 0.684479, 0, 0, 0, 1.37872, 0.135606, 1.32855, -3.0543)
+[node name="Cube_001" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1.06003, 0, 0, 0, 0.684479, 0, 0, 0, 1.37872, 0.135606, 1.1, -3.0543)
 mesh = SubResource("ArrayMesh_ocnr2")
 skeleton = NodePath("")
 
-[node name="ne pas jeter" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(-0.331936, -5.40792e-08, -5.40792e-08, 5.40792e-08, 0, -0.331936, 5.40792e-08, -0.331936, 8.81063e-15, 0.892439, 2.3002, -0.807869)
+[node name="ne pas jeter" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(-0.331936, -5.40792e-08, -5.40792e-08, 5.40792e-08, 0, -0.331936, 5.40792e-08, -0.331936, 8.81063e-15, 0.892439, 1.1, -0.807869)
 mesh = SubResource("ArrayMesh_em8gx")
 skeleton = NodePath("")
 
-[node name="fonderie_001" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(2.05344, 0, 0, 0, 1.02672, 0, 0, 0, 2.05344, 0.0685347, 2.22134, -0.826741)
+[node name="fonderie_001" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(2.05344, 0, 0, 0, 1.02672, 0, 0, 0, 2.05344, 0.0685347, 1.1, -0.826741)
 mesh = SubResource("ArrayMesh_f3j4d")
 skeleton = NodePath("")
 

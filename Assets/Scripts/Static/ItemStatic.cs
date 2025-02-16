@@ -43,25 +43,22 @@ public partial class ItemStatic : Resource
         _inventoryIcon = inventoryIcon;
     }
 
-    public ItemAuSol instantiate(Vector3 pos)
+    public StaticBody3D instantiate(Vector3 pos = new Vector3())
     {
         if (string.IsNullOrEmpty(_scenePath))
         {
-            GD.PrintErr("scenePath is not set for this item.");
             return null;
         }
 
         PackedScene scene = GD.Load<PackedScene>(_scenePath);
         if (scene == null)
         {
-            GD.PrintErr($"Failed to load scene at path: {_scenePath}");
             return null;
         }
 
-        ItemAuSol itemInstantiate = scene.Instantiate<ItemAuSol>();
+        var itemInstantiate = scene.Instantiate<StaticBody3D>();
         if (itemInstantiate == null)
         {
-            GD.PrintErr("Failed to instantiate ItemAuSol.");
             return null;
         }
 
@@ -71,10 +68,6 @@ public partial class ItemStatic : Resource
             if (meshInstance != null)
             {
                 meshInstance.MaterialOverride = _material;
-            }
-            else
-            {
-                GD.Print("No MeshInstance3D found in the prefab to apply the material.");
             }
         }
 

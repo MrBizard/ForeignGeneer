@@ -32,7 +32,8 @@ public partial class InputManager : Node
         {
             HandleUiToggle("optionUi");
         }
-
+        if(UiManager.instance.isAnyUiOpen())
+            return;
         if (Input.IsActionJustPressed("sprint"))
         {
             Player.Instance.SetSprinting(true);
@@ -55,6 +56,8 @@ public partial class InputManager : Node
         if (Input.IsActionJustPressed("rightClick"))
         {
             Player.Instance.RightClick();
+            if(UiManager.instance.isAnyUiOpen())
+                InventoryManager.Instance.drop();
         }
 
         Vector2 inputDir = Input.GetVector("left", "right", "forward", "backward");
@@ -71,6 +74,11 @@ public partial class InputManager : Node
         {
             HandleInteraction();
         }
+
+        if (Input.IsActionJustPressed("camera"))
+        {
+            Player.Instance.ToggleViewMode();
+        }
     }
 
     public override void _Input(InputEvent @event)
@@ -86,11 +94,9 @@ public partial class InputManager : Node
                 InventoryManager.Instance.addCurrentItemToHotbar();
             else if (mouseButtonEvent.ButtonIndex == MouseButton.WheelDown && mouseButtonEvent.Pressed)
                 InventoryManager.Instance.removeCurrentItemToHotbar();
-            GD.Print(InventoryManager.Instance.currentSlotHotbar);
         }
     }
-
-
+    
     private void HandleUiToggle(string uiName)
     {
         if (UiManager.instance.isAnyUiOpen())
