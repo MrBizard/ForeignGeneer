@@ -601,12 +601,12 @@ mesh = SubResource("ArrayMesh_7d1sd")
 skeleton = NodePath("")
 
 [node name="rail_fonderie" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(2.23599, 0, 0, 0, 1.118, 0, 0, 0, 30.9996, 0.0607144, 1.1, -2.92042)
+transform = Transform3D(2.23599, 0.00120979, 0, -0.00241957, 1.118, 0, 0, 0, 30.9996, 0.0607144, 0.91877, -2.92042)
 mesh = SubResource("ArrayMesh_wjeck")
 skeleton = NodePath("")
 
 [node name="barre latéral" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(0.0367892, 0, 0, 0, 0.333756, 0, 0, 0, 0.130079, 2.12455, 1.1, -1.50229)
+transform = Transform3D(0.0367892, 0, 0, 0, 0.333756, 0, 0, 0, 0.130079, 2.12455, 0.874917, -1.50229)
 mesh = SubResource("ArrayMesh_onhv6")
 skeleton = NodePath("")
 
@@ -621,12 +621,12 @@ mesh = SubResource("ArrayMesh_ocnr2")
 skeleton = NodePath("")
 
 [node name="ne pas jeter" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(-0.331936, -5.40792e-08, -5.40792e-08, 5.40792e-08, 0, -0.331936, 5.40792e-08, -0.331936, 8.81063e-15, 0.892439, 1.1, -0.807869)
+transform = Transform3D(-0.331936, -5.40792e-08, -5.40792e-08, 5.40792e-08, 0, -0.331936, 5.40792e-08, -0.331936, 8.81063e-15, 1.09726, 1.85999, -0.807869)
 mesh = SubResource("ArrayMesh_em8gx")
 skeleton = NodePath("")
 
 [node name="fonderie_001" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(2.05344, 0, 0, 0, 1.02672, 0, 0, 0, 2.05344, 0.0685347, 1.1, -0.826741)
+transform = Transform3D(2.05344, 0, 0, 0, 1.02672, 0, 0, 0, 2.05344, 0.0685347, 1.82369, -0.826741)
 mesh = SubResource("ArrayMesh_f3j4d")
 skeleton = NodePath("")
 

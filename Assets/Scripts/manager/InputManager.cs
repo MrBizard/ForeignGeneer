@@ -107,9 +107,10 @@ public partial class InputManager : Node
         else
         {
             UiManager.instance.openUi(uiName);
+            InventoryManager.Instance.StopPreview();
         }
     }
-
+    
     private void HandleInteraction()
     {
         if (raycast != null)

@@ -196,7 +196,7 @@ public partial class InventoryManager : Node
         }
         
         currentPreview = new PreviewObject();
-        currentPreview.initialize(item.getResource());
+        currentPreview.Initialize(item.getResource());
         Player.Instance.GetParent().AddChild(currentPreview);
     }
 
@@ -217,8 +217,8 @@ public partial class InventoryManager : Node
     /// </summary>
     public void PlaceItem()
     {
-        GD.Print("current : ", currentPreview, " place : ", currentPreview.canPlace());
-        if (currentPreview != null && currentPreview.canPlace())
+        GD.Print("current : ", currentPreview, " place : ", currentPreview.CanPlace());
+        if (currentPreview != null && currentPreview.CanPlace())
         {
             hotbar.getItem(currentSlotHotbar).getResource().RightClick();
             StopPreview();
