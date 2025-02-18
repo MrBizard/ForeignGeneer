@@ -128,53 +128,32 @@ public partial class SlotUI : BaseUi
     private void handleRightClick()
     {
         var stackItem = _inventory.getItem(_slotIndex);
-        if (stackItem != null && stackItem.getStack() > 1) // Vérifie qu'il y a un item et qu'il peut être divisé
+        if (stackItem != null && stackItem.getStack() > 0)
         {
-            // Diviser le stack en deux
-            int halfStack = stackItem.getStack() / 2;
-            int remainingStack = stackItem.getStack() - halfStack;
-
-            // Créer un nouvel item avec la moitié divisée
-            StackItem splitItem = new StackItem(stackItem.getResource(), halfStack);
-
-            // Mettre à jour la quantité dans le slot actuel
-            stackItem.setStack(remainingStack);
-
-            // Gérer l'item porté par la souris
+            StackItem splitItem = stackItem.split();
+            
             StackItem currentMouseItem = InventoryManager.Instance.currentItemInMouse;
             if (currentMouseItem == null)
             {
-                // Si la souris ne porte rien, définir l'item divisé comme item actuel
                 InventoryManager.Instance.setCurrentItemInMouse(splitItem);
             }
             else if (currentMouseItem.getResource() == splitItem.getResource())
             {
-                // Si la souris porte le même type d'item, ajouter la moitié divisée
-                int excess = currentMouseItem.add(splitItem.getStack()); // Ajoute et récupère l'excédent
+                int excess = currentMouseItem.add(splitItem.getStack()); 
 
                 if (excess > 0)
                 {
-                    // S'il y a un excédent, le remettre dans le slot d'origine
                     stackItem.setStack(stackItem.getStack() + excess);
                 }
 
-                // Mettre à jour l'item porté par la souris
                 InventoryManager.Instance.setCurrentItemInMouse(currentMouseItem);
-            }
-            else
-            {
-                // Annuler la division et remettre la quantité originale dans le slot
-                stackItem.setStack(stackItem.getStack() + splitItem.getStack());
-                return;
-            }
+            } 
 
-            // Mettre à jour l'affichage et notifier le changement
             _inventory.notifyInventoryUpdated();
             updateSlot();
         }
         else if (stackItem != null && stackItem.getStack() == 1)
         {
-            // Si le stack est de 1, simplement déplacer l'item vers la souris
             InventoryManager.Instance.setCurrentItemInMouse(stackItem);
             _inventory.deleteItem(_slotIndex);
             _inventory.notifyInventoryUpdated();
