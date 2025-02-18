@@ -106,9 +106,10 @@ public class Inventory
 		return slots[slotIndex];
 	}
 
-	public int addItem(StackItem item)
+	public int? addItem(StackItem item)
 	{
-		// recherche si l'item existe n'existe pas encore dans l'inventaire
+		if (item == null)
+			return null;
 		for (int i = 0; i < slots.Count; i++)
 		{
 			if (slots[i] != null && slots[i].getResource() == item.getResource())
@@ -116,11 +117,11 @@ public class Inventory
 				int remaining = slots[i].add(item.getStack());
 				if (remaining == 0)
 				{
-					return 0; // All items were added successfully
+					return 0; 
 				}
 				else
 				{
-					item.setStack(remaining); // Update the remaining items to add
+					item.setStack(remaining); 
 				}
 			}
 		}
@@ -138,6 +139,7 @@ public class Inventory
 		// If no space is available, return the remaining items
 		return item.getStack();
 	}
+	
 	public void notifyInventoryUpdated()
 	{
 		onInventoryUpdated?.Invoke();

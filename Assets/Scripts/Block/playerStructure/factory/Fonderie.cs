@@ -3,40 +3,40 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class Fonderie : StaticBody3D, IFactory
+public partial class Fonderie : StaticBody3D, IInputFactory, IOutputFactory
 {
     [Export] public int inputSlotCount { get; set; } = 2;
-    [Export]public FactoryStatic factoryStatic { get; set; }
-    [Export] public string factoryUiName{ get; set; }
-    [Export] public string recipeUiName{ get; set; }
+    [Export] public FactoryStatic factoryStatic { get; set; }
+    [Export] public string factoryUiName { get; set; }
+    [Export] public string recipeUiName { get; set; }
     public Craft craft { get; set; }
     public Inventory input { get; set; }
     public Inventory output { get; set; }
-    public float craftProgress { get; private set; }
-    public Timer craftTimer { get; set; }
-    public bool isCrafting { get; private set; } = false;
-    public RecipeList recipeList 
+    public RecipeList recipeList
     {
         get => factoryStatic?.recipeList;
-        set 
+        set
         {
-            if (factoryStatic != null) 
+            if (factoryStatic != null)
             {
                 factoryStatic.recipeList = value;
             }
         }
     }
 
+    private Timer _craftTimer;
     private FonderieUi _fonderieUi;
+
     public override void _Ready()
     {
         base._Ready();
         init();
+
+        _craftTimer = new Timer();
+        _craftTimer.Name = "CraftTimer";
+        AddChild(_craftTimer);
     }
 
-    /// <summary>
-    /// Initialise la fonderie avec les inventaires d'entrée et de sortie et la liste des recettes.
-    /// </summary>
     public void init()
     {
         input = new Inventory(inputSlotCount);
@@ -48,18 +48,13 @@ public partial class Fonderie : StaticBody3D, IFactory
 
     public override void _Process(double delta)
     {
-        if (isCrafting)
+        if (craft != null && craft.isCrafting)
         {
-            craftProgress += (float)delta / craft.recipe.duration;
-            updateProgressBar(craftProgress);
+            craft.updateCraftProgress(delta);
+            updateProgressBar();
         }
     }
-    
 
-    /// <summary>
-    /// Définit la recette à utiliser pour le craft.
-    /// </summary>
-    /// <param name="recipe">La recette à utiliser pour le craft.</param>
     public void setCraft(Recipe recipe)
     {
         if (recipe == null)
@@ -68,77 +63,42 @@ public partial class Fonderie : StaticBody3D, IFactory
             return;
         }
 
-        craft = new Craft(recipe);
-        craft.init(input, output);
+        craft = new Craft(recipe, input, output);
+        craft.craftTimer = _craftTimer;
+        craft.startCraft(onCraftFinished);
         openUi();
     }
 
-    /// <summary>
-    /// Mise à jour de l'inventaire. Démarre le craft si les conditions sont remplies.
-    /// </summary>
     private void onInventoryUpdated()
     {
-        if (!isCrafting && craft != null && craft.compareRecipe())
-        {
-            var outputSlotItem = output.getItem(0);
-            if (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack)
-            {
-                startCraft();
-            }
-        }
-        updateUi();
-    }
-
-    /// <summary>
-    /// Démarre le processus de fabrication si les ressources et les conditions sont valides.
-    /// </summary>
-    private void startCraft()
-    {
-        if (isCrafting || EnergyManager.instance.isDown())
-        {
-            return;
-        }
-        if (!craft.consumeResources())
-        {
-            return;
-        }
-        if (craft.recipe.duration < 0)
-        {
-            return;
-        }
-        isCrafting = true;
-        craftProgress = 0f;
-        craftTimer = new Timer();
-        craftTimer.WaitTime = craft.recipe.duration;
-        craftTimer.Timeout += onCraftFinished;
-        AddChild(craftTimer);
-        craftTimer.Start();
-        updateProgressBar(0f);
-        updateUi();
-    }
-
-    /// <summary>
-    /// Lorsque le processus de fabrication est terminé, ajoute l'item au slot de sortie et redémarre si nécessaire.
-    /// </summary>
-    private void onCraftFinished()
-    {
-        isCrafting = false;
-        craftTimer.QueueFree();
-
-        bool outputAdded = craft.addOutput();
-
-        var outputSlotItem = output.getItem(0);
-        if (outputAdded && (outputSlotItem == null || outputSlotItem.getStack() < outputSlotItem.getResource().getMaxStack))
+        if (craft != null && craft.canContinue())
         {
             startCraft();
         }
-
         updateUi();
     }
 
-    /// <summary>
-    /// Ouvre l'interface utilisateur de la fonderie.
-    /// </summary>
+    private void startCraft()
+    {
+        if (EnergyManager.instance.isDown() || craft.isCrafting)
+        {
+            return;
+        }
+        craft.startCraft(onCraftFinished);
+        updateProgressBar();
+        updateUi();
+    }
+
+    private void onCraftFinished()
+    {
+        craft.stopCraft();
+        craft.addOutput();
+        updateProgressBar();
+        if (craft.canContinue())
+            startCraft();
+        updateUi();
+    }
+
     public void openUi()
     {
         closeUi();
@@ -154,37 +114,20 @@ public partial class Fonderie : StaticBody3D, IFactory
         }
     }
 
-    /// <summary>
-    /// Ferme l'interface utilisateur de la fonderie.
-    /// </summary>
     public void closeUi()
     {
         _fonderieUi = null;
         UiManager.instance.closeUi();
     }
 
-    /// <summary>
-    /// Détruit la fonderie et libère les ressources.
-    /// </summary>
     public void dismantle()
     {
-        if (isCrafting)
-        {
-            craftTimer.Stop();
-            craftTimer.QueueFree();
-        }
-
+        craft?.stopCraft();
         input.onInventoryUpdated -= onInventoryUpdated;
         output.onInventoryUpdated -= onInventoryUpdated;
-
         QueueFree();
     }
 
-    public float pollutionInd { get; set; }
-
-    /// <summary>
-    /// Met à jour l'interface utilisateur si elle est ouverte.
-    /// </summary>
     private void updateUi()
     {
         if (UiManager.instance.isAnyUiOpen())
@@ -193,15 +136,11 @@ public partial class Fonderie : StaticBody3D, IFactory
         }
     }
 
-    /// <summary>
-    /// Met à jour la barre de progression de la fonderie si l'UI est ouverte.
-    /// </summary>
-    private void updateProgressBar(float progress)
+    private void updateProgressBar()
     {
         if (UiManager.instance.isUiOpen(factoryUiName))
         {
-            _fonderieUi?.updateProgressBar(progress);
+            _fonderieUi?.updateProgressBar(craft.craftProgress);
         }
     }
-
 }

@@ -78,6 +78,10 @@ public class StackItem
         
     }
 
+    public bool canAdd(StackItem item)
+    {
+        return _stack + item.getStack() <= _resource.getMaxStack;
+    }
     /// <summary>
     /// Soustrait un certain nombre d'items de la pile.
     /// </summary>
@@ -113,7 +117,7 @@ public class StackItem
 
         return new StackItem(_resource, splitAmount);
     }
-
+    
     public override String ToString()
     {
         return "\n item : " + _resource.ToString() + "\n stack : " + _stack;

@@ -7,27 +7,12 @@ public partial class Central : StaticBody3D, IFactory
 {
     [Export] public FactoryStatic factoryStatic { get; set; }
     [Export] public string factoryUiName{ get; set; }
-    [Export] public string recipeUiName{ get; set; }
-    public Inventory input { get; set; }
     public Craft craft { get; set; }
     public float craftProgress { get; private set; }
     public Timer craftTimer { get; set; }
     public bool isCrafting { get; private set; } = false;
 
-    public RecipeList recipeList
-    {
-        get => factoryStatic?.recipeList;
-        set
-        {
-            if (factoryStatic != null)
-            {
-                factoryStatic.recipeList = value;
-            }
-        }
-    }
-
     private CentralUi _centralUi;
-    private RecetteList _recipeListUi;
 
     /// <summary>
     /// Called when the node is added to the scene. Initializes the central UI and inventory.
@@ -35,8 +20,6 @@ public partial class Central : StaticBody3D, IFactory
     public override void _Ready()
     {
         base._Ready();
-        input = new Inventory(1);
-        input.onInventoryUpdated += onInventoryUpdated;
         factoryStatic.recipeList?.init();
         PollutionManager.instance.addPolution(0);
     }
@@ -54,32 +37,7 @@ public partial class Central : StaticBody3D, IFactory
             updateProgressBar(craftProgress);
         }
     }
-
-    /// <summary>
-    /// Callback for when the inventory has been updated.
-    /// If the recipe can be crafted, it starts the crafting process.
-    /// </summary>
-    private void onInventoryUpdated()
-    {
-        if (!isCrafting && craft != null && craft.compareRecipe())
-        {
-            startCraft();
-        }
-        if(_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
-            _centralUi?.updateUi();
-    }
-
-    /// <summary>
-    /// Sets the recipe to be used for crafting and opens the crafting UI.
-    /// </summary>
-    /// <param name="recipe">The recipe to use for crafting.</param>
-    public void setCraft(Recipe recipe)
-    {
-        craft = recipe == null ? null : new Craft(recipe);
-        if (craft != null)
-            craft.init(input, null);
-        openUi();
-    }
+    
 
     /// <summary>
     /// Starts the crafting process, consuming resources and initializing the timer for crafting.
@@ -129,8 +87,6 @@ public partial class Central : StaticBody3D, IFactory
             bool outputAdded = craft.addOutput();
             if (!outputAdded) return;
         }
-
-        onInventoryUpdated();
     }
 
     /// <summary>
@@ -139,16 +95,9 @@ public partial class Central : StaticBody3D, IFactory
     public void openUi()
     {
         closeUi();
-        if (craft == null)
-        {
-            UiManager.instance.openUi(recipeUiName, this);
-            _centralUi = null;
-        }
-        else
-        {
-            UiManager.instance.openUi(factoryUiName, this);
-            _centralUi = (CentralUi)UiManager.instance.getUi(factoryUiName);
-        }
+        UiManager.instance.openUi(factoryUiName, this);
+        _centralUi = (CentralUi)UiManager.instance.getUi(factoryUiName);
+        
         Input.MouseMode = Input.MouseModeEnum.Visible;
     }
 
@@ -171,7 +120,6 @@ public partial class Central : StaticBody3D, IFactory
             craftTimer?.Stop();
             craftTimer?.QueueFree();
         }
-        input.onInventoryUpdated -= onInventoryUpdated;
         QueueFree();
     }
 

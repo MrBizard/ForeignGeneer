@@ -8,7 +8,7 @@ public partial class RecetteList : BaseUi
 {
     [Export] private PackedScene _recipeUiPacked;
     private GridContainer _scrollContainer;
-    private IPlayerStructure _recipeUser;
+    private IInputFactory _recipeUser;
 
     public override void _Ready()
     {
@@ -21,7 +21,7 @@ public partial class RecetteList : BaseUi
     /// <param name="data">L'usine associée à cette liste de recettes.</param>
     public override void initialize(Object data)
     {
-        _recipeUser = (IPlayerStructure)data;
+        _recipeUser = (IInputFactory)data;
 
         if (_recipeUser.recipeList.recipeList == null || _recipeUser.recipeList.recipeList.Count == 0)
         {

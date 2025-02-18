@@ -13,3 +13,4 @@ recipeList = ExtResource("2_tdyvs")
 _maxStack = 1
 _scenePath = "res://Assets/Prefabs/Factory/Fonderie.tscn"
 _inventoryIcon = ExtResource("1_a08mv")
+_description = ""

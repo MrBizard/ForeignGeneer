@@ -11,7 +11,7 @@ public partial class EnergyManager : Node
         instance = this;
     }
     
-    private float _globalElectricity = 0;
+    private float _globalElectricity = 100;
     
     public float getGlobalElectricity()
     {

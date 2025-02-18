@@ -1,54 +1,65 @@
+using System;
 using Godot;
 
-/// <summary>
-/// Représente un processus de craft, comprenant une recette, un inventaire d'entrée et un inventaire de sortie.
-/// </summary>
 public class Craft
 {
-    /// <summary>
-    /// La recette utilisée pour ce craft.
-    /// </summary>
-    public Recipe recipe;
+    public Recipe recipe { get; private set; }
 
-    private Inventory input;
-    private Inventory output;
+    private Inventory _input;
+    private Inventory _output;
+    public Timer craftTimer { get; set; }
+    public float craftProgress { get; private set; } = 0;
+    public bool isCrafting { get; private set; } = false;
+    private Action _onCraftFinished;
 
-    /// <summary>
-    /// Initialise une nouvelle instance de la classe Craft avec la recette spécifiée.
-    /// </summary>
-    /// <param name="recipe">La recette à utiliser pour ce craft.</param>
-    public Craft(Recipe recipe)
+    public Craft(Recipe recipe, Inventory input, Inventory output = null)
     {
         this.recipe = recipe;
+        _input = input;
+        _output = output;
     }
 
-    /// <summary>
-    /// Initialise les inventaires d'entrée et de sortie pour ce craft.
-    /// </summary>
-    /// <param name="input">L'inventaire d'entrée.</param>
-    /// <param name="output">L'inventaire de sortie.</param>
-    public void init(Inventory input, Inventory output)
+    public bool startCraft(Action onCraftFinished)
     {
-        this.input = input;
-        this.output = output;
+        if (compareRecipe())
+        {
+            isCrafting = true;
+            _onCraftFinished = onCraftFinished;
+
+            craftTimer.OneShot = true;
+            craftTimer.WaitTime = recipe.duration;
+            craftTimer.Timeout += onCraftFinished;
+            craftTimer.Start();
+            resetCraftProgress();
+            consumeResources();
+            return true;
+        }
+        return false;
     }
 
-    /// <summary>
-    /// Vérifie si l'inventaire d'entrée correspond aux exigences de la recette.
-    /// </summary>
-    /// <returns>True si l'inventaire correspond à la recette, sinon False.</returns>
+    public void stopCraft()
+    {
+        isCrafting = false;
+        if (craftTimer != null)
+        {
+            craftTimer.Stop();
+            craftTimer.Timeout -= _onCraftFinished;
+            resetCraftProgress();
+        }
+    }
+
     public bool compareRecipe()
     {
-        if (recipe == null || recipe.input == null || input == null)
+        if (recipe == null || recipe.input == null || _input == null)
         {
-            GD.PrintErr("Recette ou inventaire invalide.");
+            GD.PrintErr("Recette ou inventaire invalide.", recipe, recipe.input, _input);
             return false;
         }
 
         for (int i = 0; i < recipe.input.Count; i++)
         {
             var requiredItem = recipe.input[i];
-            var slotItem = input.getItem(i);
+            var slotItem = _input.getItem(i);
 
             if (slotItem == null || slotItem.getResource() != requiredItem.getResource() || slotItem.getStack() < requiredItem.getStack())
             {
@@ -59,60 +70,47 @@ public class Craft
         return true;
     }
 
-    /// <summary>
-    /// Consomme les ressources nécessaires pour le craft.
-    /// </summary>
-    /// <returns>True si les ressources ont été consommées avec succès, sinon False.</returns>
     public bool consumeResources()
     {
-        if (!compareRecipe())
+        if (_output != null && _output.getItem(0) != null && _output.getItem(0).canAdd(recipe.output))
         {
-            return false;
-        }
-
-        for (int i = 0; i < recipe.input.Count; i++)
-        {
-            var requiredItem = recipe.input[i];
-            var slotItem = input.getItem(i);
-
-            if (slotItem != null && slotItem.getResource() == requiredItem.getResource())
+            for (int i = 0; i < recipe.input.Count; i++)
             {
-                slotItem.subtract(requiredItem.getStack());
+                var requiredItem = recipe.input[i];
+                var slotItem = _input.getItem(i);
 
-                if (slotItem.isEmpty())
+                if (slotItem != null && slotItem.getResource() == requiredItem.getResource())
                 {
-                    input.deleteItem(i);
+                    slotItem.subtract(requiredItem.getStack());
+
+                    if (slotItem.isEmpty())
+                    {
+                        _input.deleteItem(i);
+                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
-            else
-            {
-                GD.PrintErr($"Erreur : Le slot {i} ne contient pas l'item requis.");
-                return false;
-            }
         }
-
         return true;
     }
 
-    /// <summary>
-    /// Ajoute l'item de sortie dans l'inventaire de sortie, en respectant la limite de stack.
-    /// </summary>
-    /// <returns>True si l'output a été ajouté avec succès, sinon False.</returns>
     public bool addOutput()
     {
-        if (recipe == null || recipe.output == null || output == null)
+        if (recipe == null || recipe.output == null || _output == null)
         {
-            GD.Print("Aucun output à ajouter (output est null).");
-            return true; // Retourne true car il n'y a pas d'output à gérer
+            return true;
         }
 
         var recipeItem = recipe.output;
-        var outputSlotItem = output.getItem(0);
+        var outputSlotItem = _output.getItem(0);
 
         if (outputSlotItem == null)
         {
             GD.Print("Ajout d'un nouvel item dans le slot de sortie.");
-            output.addItemToSlot(new StackItem(recipeItem.getResource(), recipeItem.getStack()), 0);
+            _output.addItemToSlot(new StackItem(recipeItem.getResource(), recipeItem.getStack()), 0);
             return true;
         }
         else if (outputSlotItem.getResource() == recipeItem.getResource())
@@ -120,13 +118,13 @@ public class Craft
             int remainingSpace = outputSlotItem.getResource().getMaxStack - outputSlotItem.getStack();
             if (remainingSpace >= recipeItem.getStack())
             {
-                GD.Print("Ajout de l'output dans le slot existant.");
+                GD.Print("Ajout de l'item dans le slot existant.");
                 outputSlotItem.add(recipeItem.getStack());
                 return true;
             }
             else
             {
-                GD.Print("Le slot de sortie est plein. Impossible d'ajouter l'output.");
+                GD.Print("Le slot de sortie est plein. Impossible d'ajouter l'item.");
                 return false;
             }
         }
@@ -135,10 +133,30 @@ public class Craft
             GD.Print("Le slot de sortie contient un item différent.");
             return false;
         }
-     }
+    }
+
+    public void resetCraftProgress()
+    {
+        craftProgress = 0;
+    }
+
+    public void updateCraftProgress(double delta)
+    {
+        craftProgress += (float)delta / recipe.duration;
+    }
+
+    public bool canContinue()
+    {
+        if (_output == null)
+            return true;
+        var outputSlotItem = _output.getItem(0);
+        return !isCrafting && (outputSlotItem == null || 
+                               outputSlotItem.getStack() + recipe.output.getStack() 
+                               < outputSlotItem.getResource().getMaxStack);
+    }
 
     public override string ToString()
     {
-        return "\n recipe : " + recipe.ToString() + "\n output: " + output.ToString() + "\n input: " + input.ToString();
+        return "\n recipe : " + recipe.ToString() + "\n _output: " + _output.ToString() + "\n _input: " + _input.ToString();
     }
 }
