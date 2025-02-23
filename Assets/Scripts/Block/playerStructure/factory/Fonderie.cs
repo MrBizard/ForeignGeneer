@@ -31,7 +31,7 @@ public partial class Fonderie : StaticBody3D, IInputFactory, IOutputFactory
     {
         base._Ready();
         init();
-
+        
         _craftTimer = new Timer();
         _craftTimer.Name = "CraftTimer";
         AddChild(_craftTimer);
@@ -54,7 +54,14 @@ public partial class Fonderie : StaticBody3D, IInputFactory, IOutputFactory
             updateProgressBar();
         }
     }
-
+    private void onInventoryUpdated()
+    {
+        if (craft != null && craft.canContinue())
+        {
+            startCraft();
+        }
+        updateUi();
+    }
     public void setCraft(Recipe recipe)
     {
         if (recipe == null)
@@ -67,15 +74,6 @@ public partial class Fonderie : StaticBody3D, IInputFactory, IOutputFactory
         craft.craftTimer = _craftTimer;
         craft.startCraft(onCraftFinished);
         openUi();
-    }
-
-    private void onInventoryUpdated()
-    {
-        if (craft != null && craft.canContinue())
-        {
-            startCraft();
-        }
-        updateUi();
     }
 
     private void startCraft()
@@ -91,11 +89,15 @@ public partial class Fonderie : StaticBody3D, IInputFactory, IOutputFactory
 
     private void onCraftFinished()
     {
-        craft.stopCraft();
-        craft.addOutput();
-        updateProgressBar();
-        if (craft.canContinue())
-            startCraft();
+        if (craft != null)
+        {
+            craft.stopCraft();
+            craft.addOutput();
+            updateProgressBar();
+            if (craft.canContinue())
+                startCraft();
+        }
+        
         updateUi();
     }
 

@@ -80,6 +80,9 @@ public class StackItem
 
     public bool canAdd(StackItem item)
     {
+        if (item == null)
+            return false;
+        
         return _stack + item.getStack() <= _resource.getMaxStack;
     }
     /// <summary>

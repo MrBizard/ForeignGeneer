@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts.Interface;
 using Godot;
 
-public partial class FonderieUi : BaseUi
+public partial class FonderieUi : Control ,BaseUi
 {
     private Fonderie _fonderie;
     [Export] private PackedScene _slotUi;
@@ -30,7 +30,7 @@ public partial class FonderieUi : BaseUi
     /// Initialise l'interface avec les données de la fonderie.
     /// </summary>
     /// <param name="data">La fonderie à afficher.</param>
-    public override void initialize(Object data)
+    public void initialize(Object data)
     {
         if (data is Fonderie fonderie)
         {
@@ -117,7 +117,7 @@ public partial class FonderieUi : BaseUi
     /// <summary>
     /// Met à jour l'interface utilisateur.
     /// </summary>
-    public override void updateUi()
+    public void updateUi(int updateType = 0)
     {
         if (_fonderie == null)
             return;
@@ -129,7 +129,7 @@ public partial class FonderieUi : BaseUi
                 var slotItem = _fonderie.input.getItem(i);
                 if (slotItem != null)
                 {
-                    _inputSlots[i].updateSlot();  
+                    _inputSlots[i].updateUi();  
                 }
                 else
                 {
@@ -143,7 +143,7 @@ public partial class FonderieUi : BaseUi
             var outputItem = _fonderie.output.getItem(0);
             if (outputItem != null)
             {
-                _outputSlot.updateSlot();  
+                _outputSlot.updateUi();  
             }
             else
             {
@@ -152,7 +152,7 @@ public partial class FonderieUi : BaseUi
         }
     }
 
-    public override void close()
+    public void close()
     {
         _fonderie.closeUi();
     }
@@ -165,7 +165,7 @@ public partial class FonderieUi : BaseUi
     {
         _progressBar.Value = progress * 100;
     }
-
+    
     public override void _ExitTree()
     {
         if (_fonderie != null)
@@ -173,12 +173,11 @@ public partial class FonderieUi : BaseUi
             _fonderie.input.onInventoryUpdated -= onInventoryUpdated;
             _fonderie.output.onInventoryUpdated -= onInventoryUpdated;
         }
-        base._ExitTree();
     }
 
     private void onButtonBack()
     {
         _fonderie.setCraft(null);
-        UiManager.instance.openUi("RecipeListUI", _fonderie);
+        _fonderie.openUi();
     }
 }

@@ -4,7 +4,7 @@ using Godot;
 using ForeignGeneer.Assets.Scripts.Interface;
 using ForeignGeneer.Assets.Scripts.manager;
 
-public partial class CentralUi : BaseUi
+public partial class CentralUi : Control,BaseUi
 {
     [Export] private PackedScene _slotUi;
     private IInputFactory _central;
@@ -32,7 +32,7 @@ public partial class CentralUi : BaseUi
     /// Initializes the central interface. This method should be called once to initialize the UI.
     /// </summary>
     /// <param name="data">The central node associated with this interface.</param>
-    public override void initialize(Object data)
+    public void initialize(Object data)
     {
         _central = (IInputFactory)data;
 
@@ -56,13 +56,14 @@ public partial class CentralUi : BaseUi
     /// <summary>
     /// Updates the central interface UI. This method is called on each UI update.
     /// </summary>
-    public override void updateUi()
+    public void updateUi(int updateType = 0)
     {
-        var inputStackItem = _central.input.getItem(0);
-        _inputSlot.updateSlot();
+        updateProgressBar(_central.craft.craftProgress);
+        updateElectricity();
+        _inputSlot.updateUi();
     }
 
-    public override void close()
+    public  void close()
     {
         _central.closeUi();
     }
@@ -95,6 +96,6 @@ public partial class CentralUi : BaseUi
     private void onResetCraftButtonPressed()
     {
         _central.setCraft(null);
-        updateUi();
+        _central.openUi();
     }
 }

@@ -2,11 +2,11 @@ using Godot;
 
 namespace ForeignGeneer.Assets.Scripts.Interface.Inventory;
 
-public partial class CurrentCursorItem :BaseUi
+public partial class CurrentCursorItem :Control,BaseUi
 {
     public StackItem item { get; set; }
     
-    public override void initialize(object data)
+    public void initialize(object data)
     {
         item = (StackItem)data;
         Sprite2D icon = GetNode<Sprite2D>("Icon");
@@ -19,6 +19,11 @@ public partial class CurrentCursorItem :BaseUi
         }
     }
 
+    public void updateUi(int updateType = 0)
+    {
+        Position = GetViewport().GetMousePosition();
+    }
+
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -27,12 +32,8 @@ public partial class CurrentCursorItem :BaseUi
             updateUi();
         }
     }
-    public override void updateUi()
-    {
-        Position = GetViewport().GetMousePosition();
-    }
 
-    public override void close()
+    public void close()
     {
         InventoryManager.Instance.setCurrentItemInMouse(null);
     }

@@ -2,7 +2,7 @@ using System;
 using ForeignGeneer.Assets.Scripts.Interface;
 using Godot;
 
-public partial class SlotUI : BaseUi
+public partial class SlotUI : Control
 {
     private TextureRect _icon;
     private Label _countLabel;
@@ -37,13 +37,13 @@ public partial class SlotUI : BaseUi
         _icon = GetNode<TextureRect>("Icon");
         _countLabel = GetNode<Label>("CountLabel");
         
-        updateSlot();
+        updateUi();
     }
 
     /// <summary>
     /// Met à jour l'affichage du slot en fonction de son contenu.
     /// </summary>
-    public void updateSlot()
+    public void updateUi(int updateType = 0)
     {
         var stackItem = _inventory.getItem(_slotIndex);
 
@@ -119,7 +119,7 @@ public partial class SlotUI : BaseUi
             }
         }
     }
-    updateSlot();
+    updateUi();
     // Met à jour l'affichage de l'item dans la souris après chaque interaction
     InventoryManager.Instance.setCurrentItemInMouse(InventoryManager.Instance.currentItemInMouse);
 }
@@ -150,14 +150,14 @@ public partial class SlotUI : BaseUi
             } 
 
             _inventory.notifyInventoryUpdated();
-            updateSlot();
+            updateUi();
         }
         else if (stackItem != null && stackItem.getStack() == 1)
         {
             InventoryManager.Instance.setCurrentItemInMouse(stackItem);
             _inventory.deleteItem(_slotIndex);
             _inventory.notifyInventoryUpdated();
-            updateSlot();
+            updateUi();
         }
     }
 
@@ -208,21 +208,6 @@ public partial class SlotUI : BaseUi
     {
         _icon.Texture = null;
         _countLabel.Text = "";
-    }
-
-    public override void initialize(Object data)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void updateUi()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void close()
-    {
-        throw new NotImplementedException();
     }
     
 }

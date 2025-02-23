@@ -416,6 +416,7 @@ size = Vector3(3.41296, 4.70483, 4.87366)
 [node name="central_biomasse" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.174682, 0)
 script = ExtResource("1_5fm3h")
+inputSlotCount = 1
 factoryStatic = ExtResource("4_05svm")
 factoryUiName = "centralUi"
 recipeUiName = "recipeListUi"

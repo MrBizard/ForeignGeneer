@@ -23,6 +23,7 @@ public class Craft
     {
         if (compareRecipe())
         {
+            GD.Print("passe");
             isCrafting = true;
             _onCraftFinished = onCraftFinished;
 
@@ -43,7 +44,12 @@ public class Craft
         if (craftTimer != null)
         {
             craftTimer.Stop();
-            craftTimer.Timeout -= _onCraftFinished;
+            if (_onCraftFinished != null)
+            {
+                craftTimer.Timeout -= _onCraftFinished;
+                _onCraftFinished = null;
+            }
+
             resetCraftProgress();
         }
     }
@@ -52,28 +58,31 @@ public class Craft
     {
         if (recipe == null || recipe.input == null || _input == null)
         {
-            GD.PrintErr("Recette ou inventaire invalide.", recipe, recipe.input, _input);
             return false;
         }
-
-        for (int i = 0; i < recipe.input.Count; i++)
+        if (_output == null || _output.getItem(0) == null && 
+            (_output.getItem(0) != null && _output.getItem(0).canAdd(recipe.output)) 
+            )
         {
-            var requiredItem = recipe.input[i];
-            var slotItem = _input.getItem(i);
-
-            if (slotItem == null || slotItem.getResource() != requiredItem.getResource() || slotItem.getStack() < requiredItem.getStack())
+            for (int i = 0; i < recipe.input.Count; i++)
             {
-                return false;
+                var requiredItem = recipe.input[i];
+                var slotItem = _input.getItem(i);
+
+                if (slotItem == null || slotItem.getResource() != requiredItem.getResource() || slotItem.getStack() < requiredItem.getStack())
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public bool consumeResources()
     {
-        if (_output != null && _output.getItem(0) != null && _output.getItem(0).canAdd(recipe.output))
-        {
             for (int i = 0; i < recipe.input.Count; i++)
             {
                 var requiredItem = recipe.input[i];
@@ -92,7 +101,6 @@ public class Craft
                 {
                     return false;
                 }
-            }
         }
         return true;
     }

@@ -4,7 +4,7 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.Interface;
 
-public partial class RecetteList : BaseUi
+public partial class RecetteList : Control,BaseUi
 {
     [Export] private PackedScene _recipeUiPacked;
     private GridContainer _scrollContainer;
@@ -19,7 +19,7 @@ public partial class RecetteList : BaseUi
     /// Initialise la liste des recettes.
     /// </summary>
     /// <param name="data">L'usine associée à cette liste de recettes.</param>
-    public override void initialize(Object data)
+    public void initialize(Object data)
     {
         _recipeUser = (IInputFactory)data;
 
@@ -37,12 +37,12 @@ public partial class RecetteList : BaseUi
         }
     }
 
-    public override void updateUi()
+    public void updateUi(int updateType = 0)
     {
-        throw new NotImplementedException();
+        
     }
 
-    public override void close()
+    public void close()
     {
         _recipeUser.closeUi();
     }
