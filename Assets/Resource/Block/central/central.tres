@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://ojkf6c4xovdt"]
 
-[ext_resource type="Texture2D" uid="uid://cnrj6aqfhhttc" path="res://Assets/Texture/factory/icon_fonderie.png" id="1_gewrd"]
+[ext_resource type="Texture2D" uid="uid://codn4feauuoym" path="res://Assets/Texture/block/factory/icon_biomass_generator.png" id="1_jbtxo"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/FactoryStatic.cs" id="2_d0xjl"]
 [ext_resource type="Resource" uid="uid://4vnmveuqnmq3" path="res://Assets/Resource/recipe/central/List/BiomassList.tres" id="3_laubt"]
 
@@ -12,4 +12,5 @@ tier = 1
 recipeList = ExtResource("3_laubt")
 _maxStack = 1
 _scenePath = "res://Assets/Prefabs/central/centraleBiomasse.tscn"
-_inventoryIcon = ExtResource("1_gewrd")
+_inventoryIcon = ExtResource("1_jbtxo")
+_description = ""

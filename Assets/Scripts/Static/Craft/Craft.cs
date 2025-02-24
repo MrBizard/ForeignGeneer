@@ -60,9 +60,7 @@ public class Craft
         {
             return false;
         }
-        if (_output == null || _output.getItem(0) == null && 
-            (_output.getItem(0) != null && _output.getItem(0).canAdd(recipe.output)) 
-            )
+        if (_output == null || _output.getItem(0) == null || _output.getItem(0).canAdd(recipe.output))
         {
             for (int i = 0; i < recipe.input.Count; i++)
             {
