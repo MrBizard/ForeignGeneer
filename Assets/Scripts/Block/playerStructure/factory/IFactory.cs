@@ -8,9 +8,7 @@ namespace ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 
 public interface IFactory : IPlayerStructure
 {
-    Craft craft { get; set; }
     FactoryStatic factoryStatic { get; set; } 
-
     void closeUi();
     void openUi();
 }

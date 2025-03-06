@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=4 uid="uid://bxncduxmicfgw"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/CentralInput.cs" id="1_5fm3h"]
+[ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/central/CentralInput.cs" id="1_5fm3h"]
 [ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/central.tres" id="4_05svm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqcix"]
