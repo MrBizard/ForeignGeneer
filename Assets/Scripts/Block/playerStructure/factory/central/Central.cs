@@ -3,11 +3,10 @@ using Godot;
 using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class Central : StaticBody3D, IFactory
+public partial class Central : StaticBody3D, IFactory<FactoryStatic>
 {
     [Export] public string factoryUiName { get; set; }
     [Export] public float productionInterval { get; set; } = 2.0f;
-    [Export] public int electricityProductionAmount { get; set; } = 10; 
     [Export] public FactoryStatic factoryStatic { get; set; } 
 
     private CentralUi _centralUi;
@@ -35,7 +34,7 @@ public partial class Central : StaticBody3D, IFactory
 
     private void onProductionTimerTimeout()
     {
-        EnergyManager.instance.addGlobalElectricity(electricityProductionAmount);
+        EnergyManager.instance.addGlobalElectricity(factoryStatic.electricalCost);
 
         _productionProgress = 0f;
         EmitSignal(nameof(ProgressUpdated), _productionProgress);
@@ -47,7 +46,7 @@ public partial class Central : StaticBody3D, IFactory
         closeUi();
         UiManager.instance.openUi(factoryUiName, this);
         _centralUi = (CentralUi)UiManager.instance.getUi(factoryUiName);
-        EmitSignal(nameof(ProgressUpdated), _productionProgress); 
+        EmitSignal(nameof(ProgressUpdated), _productionProgress);
     }
 
     public void closeUi()

@@ -7,7 +7,7 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class CentralUi : Control,BaseUi
 {
     [Export] private PackedScene _slotUi;
-    private IInputFactory _central;
+    private IInputFactory<CraftingFactoryStatic> _central;
     private SlotUI _inputSlot;
     private ProgressBar _craftProgressBar;
     private HBoxContainer _inputList;
@@ -34,7 +34,7 @@ public partial class CentralUi : Control,BaseUi
     /// <param name="data">The central node associated with this interface.</param>
     public void initialize(Object data)
     {
-        _central = (IInputFactory)data;
+        _central = (IInputFactory<CraftingFactoryStatic>)data;
 
         if (_inputSlot == null)
         {

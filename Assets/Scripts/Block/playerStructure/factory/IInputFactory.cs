@@ -2,7 +2,8 @@
 
 namespace ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 
-public interface IInputFactory : IFactory
+public interface IInputFactory<TFactory> : IFactory<TFactory>
+    where TFactory : FactoryStatic
 {
     public Craft craft { get; set; }
     void setCraft(Recipe recipe);

@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bvoaib2hksqyq" path="res://Assets/Scenes/UI/Inventory/overlayItemInformation.tscn" id="10_h7g1s"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="10_lix3d"]
 [ext_resource type="Resource" uid="uid://blqmnqkdcbi7l" path="res://Assets/Resource/Block/factory/Fonderie.tres" id="11_2jesr"]
-[ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/central.tres" id="12_r8hvi"]
+[ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/BiomasCentral.tres" id="12_r8hvi"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/EnergyManager.cs" id="14_p8dp3"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/PollutionManager.cs" id="15_xn7js"]
 

@@ -3,10 +3,10 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class CentralInput : StaticBody3D, IInputFactory
+public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryStatic>
 {
     [Export] public int inputSlotCount { get; set; } = 2;
-    [Export] public FactoryStatic factoryStatic { get; set; }
+    [Export] public CraftingFactoryStatic factoryStatic { get; set; }
     [Export] public string factoryUiName { get; set; }
     [Export] public string recipeUiName { get; set; }
     public Inventory input { get; set; }

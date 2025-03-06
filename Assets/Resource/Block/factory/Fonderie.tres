@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://blqmnqkdcbi7l"]
 
 [ext_resource type="Texture2D" uid="uid://21mcnwps5w7u" path="res://Assets/Texture/block/factory/icon_fonderie.png" id="1_uem7o"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/CraftingFactoryStatic.cs" id="2_ohyel"]
 [ext_resource type="Resource" uid="uid://domk1djuxoy74" path="res://Assets/Resource/recipe/factory/List/FonderieRecipeList.tres" id="2_tdyvs"]
-[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/FactoryStatic.cs" id="4_bewfi"]
 
 [resource]
-script = ExtResource("4_bewfi")
+script = ExtResource("2_ohyel")
+recipeList = ExtResource("2_tdyvs")
 electricalCost = 10
 pollutionIndex = 10
 tier = 1
-recipeList = ExtResource("2_tdyvs")
 _maxStack = 1
 _scenePath = "res://Assets/Prefabs/Factory/Fonderie.tscn"
 _inventoryIcon = ExtResource("1_uem7o")

@@ -50,7 +50,6 @@ public partial class UiManager : Node
         {
             return;
         }
-
         if (_loadedUiScenes.TryGetValue(uiName, out var uiScene))
         {
             var uiInstance = uiScene.Instantiate<Control>();
@@ -91,7 +90,6 @@ public partial class UiManager : Node
 
                 if (_openUis.Count == 0)
                 {
-                    Input.MouseMode = Input.MouseModeEnum.Captured;
                     onUiStateChanged?.Invoke(false);
                 }
             }
