@@ -8,7 +8,6 @@ public partial class FactoryStatic : ItemStatic
     [Export] public int electricalCost { get; set; }
     [Export] public int pollutionIndex { get; set; }
     [Export] public int tier { get; set; }
-    [Export] public RecipeList recipeList { get; set; }
     public override void LeftClick()
     {
         GD.Print("Factory Left Clicked");

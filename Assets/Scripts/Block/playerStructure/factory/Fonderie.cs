@@ -6,7 +6,7 @@ using ForeignGeneer.Assets.Scripts.Static.Craft;
 public partial class Fonderie : StaticBody3D, IInputFactory, IOutputFactory
 {
     [Export] public int inputSlotCount { get; set; } = 2;
-    [Export] public FactoryStatic factoryStatic { get; set; }
+    [Export] public CraftingFactoryStatic factoryStatic { get; set; }
     [Export] public string factoryUiName { get; set; }
     [Export] public string recipeUiName { get; set; }
     public Craft craft { get; set; }
@@ -115,6 +115,7 @@ public partial class Fonderie : StaticBody3D, IInputFactory, IOutputFactory
             _fonderieUi = (FonderieUi)UiManager.instance.getUi(factoryUiName);
         }
     }
+    
 
     public void closeUi()
     {
