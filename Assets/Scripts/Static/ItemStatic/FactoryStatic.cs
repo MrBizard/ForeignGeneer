@@ -1,4 +1,3 @@
-using ForeignGeneer.Assets.Scripts.Static.Craft;
 using Godot;
 using MonoCustomResourceRegistry;
 
@@ -18,7 +17,7 @@ public partial class FactoryStatic : ItemStatic
 	/// </summary>
 	/// <param name="pos">The position where the Fonderie will be instantiated.</param>
 	/// <returns>The instantiated Fonderie object.</returns>
-	public StaticBody3D instantiateFactory(Vector3 pos)
+	public StaticBody3D instantiateFactory(Vector3 pos, Vector3 rot = new Vector3())
 	{
 		PackedScene scene = GD.Load<PackedScene>(_scenePath);
 		if (scene == null || pos == Vector3.Zero)
@@ -35,17 +34,17 @@ public partial class FactoryStatic : ItemStatic
 				meshInstance.MaterialOverride = getMaterial;
 			}
 		}
-		
+		if(rot != new Vector3())
+			itemInstantiate.Rotation = rot;
 		return itemInstantiate;
 	}
-
+	
 	/// <summary>
 	/// Handles the right-click action. Instantiates a new Fonderie at the player's position.
 	/// </summary>
 	/// <param name="player">The player who triggered the right-click action.</param>
 	public override void RightClick()
 	{
-		
 		StaticBody3D instance = instantiateFactory(Player.Instance.raycast.getWorldCursorPosition());
 		if (instance != null)
 		{
@@ -53,7 +52,6 @@ public partial class FactoryStatic : ItemStatic
 			manager.hotbar.removeItem(manager.currentSlotHotbar,1);
 			Player.Instance.GetParent().AddChild(instance);
 		}
-		
 	}
 	
 }

@@ -158,6 +158,11 @@ public partial class PreviewObject : StaticBody3D
         return _isValidPos;
     }
 
+    public void rotate(float angle)
+    {
+        Rotate(new Vector3(0, 1, 0), angle);
+    }
+
     /// <summary>
     /// Destroys the preview object.
     /// </summary>

@@ -79,6 +79,11 @@ public partial class InputManager : Node
         {
             Player.Instance.ToggleViewMode();
         }
+
+        if (Input.IsActionPressed("rotation"))
+        {
+            InventoryManager.Instance.rotatePreview(0.1f);
+        }
     }
 
     public override void _Input(InputEvent @event)

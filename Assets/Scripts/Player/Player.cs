@@ -148,7 +148,6 @@ public partial class Player : CharacterBody3D
         }
         else
         {
-            GD.Print("preview passe ");
             StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
             if (item != null)
             {
