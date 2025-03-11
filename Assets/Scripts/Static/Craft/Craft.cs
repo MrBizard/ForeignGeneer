@@ -21,6 +21,8 @@ public class Craft
 
     public bool startCraft(Action onCraftFinished)
     {
+        if (!canContinue())
+            return false;
         if (compareRecipe())
         {
             isCrafting = true;
@@ -148,14 +150,16 @@ public class Craft
 
     public bool canContinue()
     {
+        if (isCrafting)
+            return false;
         if (_output == null)
             return true;
         var outputSlotItem = _output.getItem(0);
-        return !isCrafting && (outputSlotItem == null || 
-                               outputSlotItem.getStack() + recipe.output.getStack() 
-                               < outputSlotItem.getResource().getMaxStack);
+        return outputSlotItem == null ||
+               outputSlotItem.getStack() + recipe.output.getStack()
+               < outputSlotItem.getResource().getMaxStack;
     }
-
+     
     public override string ToString()
     {
         return "\n recipe : " + recipe.ToString() + "\n _output: " + _output.ToString() + "\n _input: " + _input.ToString();

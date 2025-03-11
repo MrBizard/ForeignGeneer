@@ -195,11 +195,11 @@ public partial class Player : CharacterBody3D
     /// </summary>
     public override void _PhysicsProcess(double delta)
     {
-        if (_isUiOpen) return; // Ignore la physique si l'UI est ouverte.
+        if (_isUiOpen) return; 
 
         if (!IsOnFloor())
         {
-            Velocity += GetGravity() * (float)delta; // Applique la gravité si le joueur n'est pas au sol.
+            Velocity += GetGravity() * (float)delta; 
         }
 
         if (_movementDirection != Vector3.Zero)

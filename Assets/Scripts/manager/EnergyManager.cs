@@ -20,11 +20,11 @@ public partial class EnergyManager : Node
 
     public void addGlobalElectricity(float value)
     {
-        _globalElectricity = _globalElectricity + value;
+        _globalElectricity += value;
     }
     public void removeGlobalElectricity(float value)
     {
-        _globalElectricity = _globalElectricity - value;
+        _globalElectricity -= value;
     }
 
     public bool hasEnergy(float value)

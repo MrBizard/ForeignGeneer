@@ -45,7 +45,6 @@ public partial class UiManager : Node
     /// </summary>
     public void openUi(string uiName, Object data = null)
     {
-
         if (_openUis.ContainsKey(uiName))
         {
             return;
@@ -55,7 +54,7 @@ public partial class UiManager : Node
             var uiInstance = uiScene.Instantiate<Control>();
             AddChild(uiInstance, true);
 
-            var baseUi = uiInstance as BaseUi;
+            BaseUi baseUi = uiInstance as BaseUi;
             baseUi?.initialize(data);
 
             _openUis[uiName] = uiInstance;

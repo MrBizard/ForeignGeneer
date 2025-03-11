@@ -58,19 +58,15 @@ public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryS
 
         craft = new Craft(recipe, input);
         craft.craftTimer = _craftTimer;
-        craft.startCraft(onCraftFinished);
         openUi();
     }
 
     private void startCraft()
     {
-        if (EnergyManager.instance.isDown() || craft.isCrafting)
+        if (craft.startCraft(onCraftFinished))
         {
-            return;
-        }
-        if(craft.startCraft(onCraftFinished))
             EnergyManager.instance.addGlobalElectricity(factoryStatic.electricalCost);
-        
+        }
         updateProgressBar();
         if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
         {
@@ -83,11 +79,8 @@ public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryS
         if (craft != null)
         {
             craft.stopCraft();
-            EnergyManager.instance.removeGlobalElectricity(factoryStatic.electricalCost);
-            if (craft.canContinue())
-            {
-                startCraft();
-            }
+            EnergyManager.instance.removeGlobalElectricity(factoryStatic.electricalCost); 
+            startCraft();
         }
         updateUi();
     }

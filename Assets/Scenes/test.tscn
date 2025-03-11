@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://0r4bxj3uot8q"]
+[gd_scene load_steps=14 format=3 uid="uid://0r4bxj3uot8q"]
 
 [ext_resource type="Texture2D" uid="uid://s8jnyv8qa23s" path="res://Assets/Texture/environnement/damier.png" id="1_ermdq"]
 [ext_resource type="PackedScene" uid="uid://pmk1ja4lcf6d" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
 [ext_resource type="PackedScene" uid="uid://c6xr5ux6th5oq" path="res://Assets/Prefabs/manager.tscn" id="2_kk7j7"]
 [ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="4_na8ne"]
 [ext_resource type="PackedScene" uid="uid://ceeumu8ai6jxw" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="5_phnvt"]
+[ext_resource type="PackedScene" uid="uid://hrehdr5te668" path="res://Assets/Prefabs/central/windTurbine.tscn" id="6_612tm"]
+[ext_resource type="Resource" uid="uid://ccae2734dq4jv" path="res://Assets/Resource/Block/central/windTurbine.tres" id="7_nijl3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4ot5o"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -61,3 +63,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.61066)
 
 [node name="Fonderie" parent="worldStructure/static" instance=ExtResource("5_phnvt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.98275, 0, -8.61066)
+
+[node name="wind_turbine" parent="worldStructure/static" instance=ExtResource("6_612tm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.824, 4, -7.826)
+factoryStatic = ExtResource("7_nijl3")
