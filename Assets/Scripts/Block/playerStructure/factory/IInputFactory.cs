@@ -2,7 +2,7 @@
 
 namespace ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 
-public interface IInputFactory<TFactory> : IFactory<TFactory>
+public interface IInputFactory<TFactory> : IPlayerStructure<TFactory>
     where TFactory : FactoryStatic
 {
     public Craft craft { get; set; }

@@ -2,7 +2,7 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 using ForeignGeneer.Assets.Scripts.manager;
 
-public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<FactoryStatic>
+public partial class SolarCentral : PlayerBaseStructure, IPlayerStructure<FactoryStatic>
 {
     [Export] public string factoryUiName { get; set; }
     [Export] public FactoryStatic itemStatic { get; set; } 
@@ -19,7 +19,7 @@ public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<Factory
         EnergyManager.instance.addGlobalElectricity(powerGenerated);
     }
 
-    public void dismantle()
+    public override void dismantle()
     {
         
     }
@@ -31,7 +31,7 @@ public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<Factory
         _centralUi = (WindUi)UiManager.instance.getUi(factoryUiName);
     }
 
-    public override void closeUi()
+    public void closeUi()
     {
         _centralUi = null;
         UiManager.instance.closeUi();

@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=4 uid="uid://dceehbl3tddf2"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/central/Central.cs" id="1_1gih7"]
+[ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/central/SolarCentral.cs" id="1_nyyy2"]
 [ext_resource type="Texture2D" uid="uid://dsl8hgsg4vxfu" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Color.jpg" id="1_rj650"]
 [ext_resource type="Resource" uid="uid://dx1y26rvwbf8o" path="res://Assets/Resource/Block/central/solarPanel.tres" id="2_2jeqy"]
 [ext_resource type="Texture2D" uid="uid://b81svkcs22oa" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Color_2.png" id="2_besgx"]
@@ -245,9 +245,9 @@ shadow_mesh = SubResource("ArrayMesh_gvp8m")
 size = Vector3(1, 1.24109, 1.13892)
 
 [node name="solar_panel" type="StaticBody3D"]
-script = ExtResource("1_1gih7")
+script = ExtResource("1_nyyy2")
 factoryUiName = "solarUi"
-factoryStatic = ExtResource("2_2jeqy")
+itemStatic = ExtResource("2_2jeqy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 

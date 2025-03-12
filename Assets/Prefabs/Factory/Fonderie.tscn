@@ -588,9 +588,9 @@ size = Vector3(5.07861, 4.48822, 4.69952)
 [node name="Fonderie" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.101346, 0)
 script = ExtResource("1_6n8xl")
-factoryStatic = ExtResource("2_r2dqx")
 factoryUiName = "fonderieUi"
 recipeUiName = "recipeListUi"
+itemStatic = ExtResource("2_r2dqx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.037697, 2.5)

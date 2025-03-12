@@ -1,25 +1,28 @@
+using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class Fonderie : StaticBody3D, IInputFactory<CraftingFactoryStatic>, IOutputFactory<CraftingFactoryStatic>
+public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>, IOutputFactory<CraftingFactoryStatic>
 {
 	[Export] public int inputSlotCount { get; set; } = 2;
-	[Export] public CraftingFactoryStatic factoryStatic { get; set; }
 	[Export] public string factoryUiName { get; set; }
 	[Export] public string recipeUiName { get; set; }
+	[Export] public CraftingFactoryStatic itemStatic { get; set; }
+
 	public Craft craft { get; set; }
 	public Inventory input { get; set; }
 	public Inventory output { get; set; }
+
 	public RecipeList recipeList
 	{
-		get => factoryStatic?.recipeList;
+		get => itemStatic?.recipeList;
 		set
 		{
-			if (factoryStatic != null)
+			if (itemStatic != null)
 			{
-				factoryStatic.recipeList = value;
+				itemStatic.recipeList = value;
 			}
 		}
 	}
@@ -41,7 +44,7 @@ public partial class Fonderie : StaticBody3D, IInputFactory<CraftingFactoryStati
 	{
 		input = new Inventory(inputSlotCount);
 		output = new Inventory(1);
-		factoryStatic.recipeList?.init();
+		itemStatic.recipeList?.init();
 		input.onInventoryUpdated += onInventoryUpdated;
 		output.onInventoryUpdated += onInventoryUpdated;
 	}
@@ -101,7 +104,7 @@ public partial class Fonderie : StaticBody3D, IInputFactory<CraftingFactoryStati
 		updateUi();
 	}
 
-	public void openUi()
+	public override void openUi()
 	{
 		closeUi();
 		if (craft == null)
@@ -115,13 +118,13 @@ public partial class Fonderie : StaticBody3D, IInputFactory<CraftingFactoryStati
 			_fonderieUi = (FonderieUi)UiManager.instance.getUi(factoryUiName);
 		}
 	}
-	
 
-	public void closeUi()
+	public override void closeUi()
 	{
 		_fonderieUi = null;
 		UiManager.instance.closeUi();
 	}
+
 
 	public void dismantle()
 	{

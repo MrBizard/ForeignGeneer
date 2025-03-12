@@ -87,7 +87,7 @@ public partial class CentralUi : Control,BaseUi
 	{
 		if (_electricityLabel != null && _central != null)
 		{
-			_electricityLabel.Text = $"Puissance : {_central.factoryStatic.electricalCost} kW/s || Électricité totale : {EnergyManager.instance.getGlobalElectricity()} kW/s";
+			_electricityLabel.Text = $"Puissance : {_central.itemStatic.electricalCost} kW/s || Électricité totale : {EnergyManager.instance.getGlobalElectricity()} kW/s";
 		}
 	}
 	/// <summary>

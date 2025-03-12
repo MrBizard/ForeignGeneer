@@ -23,12 +23,12 @@ public partial class RecetteList : Control,BaseUi
 	{
 		_recipeUser = (IInputFactory<CraftingFactoryStatic>)data;
 
-		if (_recipeUser.factoryStatic.recipeList == null || _recipeUser.factoryStatic.recipeList.recipeList.Count == 0)
+		if (_recipeUser.itemStatic.recipeList == null || _recipeUser.itemStatic.recipeList.recipeList.Count == 0)
 		{
 			return;
 		}
 
-		foreach (Recipe recipe in _recipeUser.factoryStatic.recipeList.recipeList)
+		foreach (Recipe recipe in _recipeUser.itemStatic.recipeList.recipeList)
 		{
 			RecipeChoiceUi recipeUi = _recipeUiPacked.Instantiate<RecipeChoiceUi>();
 			recipeUi.init(recipe);

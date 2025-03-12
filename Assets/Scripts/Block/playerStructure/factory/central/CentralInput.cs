@@ -1,12 +1,13 @@
+using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 
-public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryStatic>
+public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>
 {
     [Export] public int inputSlotCount { get; set; } = 2;
-    [Export] public CraftingFactoryStatic factoryStatic { get; set; }
+    [Export] public CraftingFactoryStatic itemStatic { get; set; }
     [Export] public string factoryUiName { get; set; }
     [Export] public string recipeUiName { get; set; }
     public Inventory input { get; set; }
@@ -20,7 +21,7 @@ public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryS
         base._Ready();
         input = new Inventory(inputSlotCount);
         input.onInventoryUpdated += onInventoryUpdated;
-        factoryStatic.recipeList?.init();
+        itemStatic.recipeList?.init();
         PollutionManager.instance.addPolution(0);
 
         _craftTimer = new Timer();
@@ -65,7 +66,7 @@ public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryS
     {
         if (craft.startCraft(onCraftFinished))
         {
-            EnergyManager.instance.addGlobalElectricity(factoryStatic.electricalCost);
+            EnergyManager.instance.addGlobalElectricity(itemStatic.electricalCost);
         }
         updateProgressBar();
         if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
@@ -79,13 +80,13 @@ public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryS
         if (craft != null)
         {
             craft.stopCraft();
-            EnergyManager.instance.removeGlobalElectricity(factoryStatic.electricalCost); 
+            EnergyManager.instance.removeGlobalElectricity(itemStatic.electricalCost); 
             startCraft();
         }
         updateUi();
     }
 
-    public void openUi()
+    public override void openUi()
     {
         closeUi();
         if (craft == null)
@@ -100,7 +101,7 @@ public partial class CentralInput : StaticBody3D, IInputFactory<CraftingFactoryS
         }
     }
 
-    public void closeUi()
+    public override void closeUi()
     {
         _centralUi = null;
         UiManager.instance.closeUi();

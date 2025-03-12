@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=4 uid="uid://hrehdr5te668"]
+[gd_scene load_steps=12 format=4 uid="uid://hrehdr5te668"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/central/WindCentral.cs" id="1_akfmc"]
+[ext_resource type="Resource" uid="uid://ccae2734dq4jv" path="res://Assets/Resource/Block/central/windTurbine.tres" id="2_olub3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_negq0"]
 resource_name = "white"
@@ -124,6 +125,7 @@ size = Vector3(0.649918, 8.57318, 0.722656)
 [node name="wind_turbine" type="StaticBody3D"]
 script = ExtResource("1_akfmc")
 factoryUiName = "windUi"
+itemStatic = ExtResource("2_olub3")
 
 [node name="MeshInstance3D" type="Node3D" parent="."]
 
