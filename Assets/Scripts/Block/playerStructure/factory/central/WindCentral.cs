@@ -5,7 +5,12 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<FactoryStatic>
 {
     [Export] public string factoryUiName { get; set; }
-    [Export] public FactoryStatic itemStatic { get; set; } 
+    [Export]
+    public FactoryStatic itemStatic
+    {
+        get => base.itemStatic as CraftingFactoryStatic;
+        set => SetItemStatic(value);
+    }
 
     private WindUi _centralUi;
     private float coef = 0.2f;
@@ -17,11 +22,6 @@ public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<Factory
                          (1 + coef * Mathf.Log(1 + GlobalPosition.Y));
         powerGenerated = Mathf.Round(powerGenerated * 10)/10;
         EnergyManager.instance.addGlobalElectricity(powerGenerated);
-    }
-
-    public void dismantle()
-    {
-        
     }
 
     public override void openUi()

@@ -106,10 +106,10 @@ public class Inventory
 		return slots[slotIndex];
 	}
 
-	public int? addItem(StackItem item)
+	public int addItem(StackItem item)
 	{
 		if (item == null)
-			return null;
+			return 0;
 		for (int i = 0; i < slots.Count; i++)
 		{
 			if (slots[i] != null && slots[i].getResource() == item.getResource())

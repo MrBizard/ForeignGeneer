@@ -47,9 +47,10 @@ public partial class SlotUI : Control
     {
         var stackItem = _inventory.getItem(_slotIndex);
 
-        if (stackItem != null && stackItem.getStack() > 0)
+        if (stackItem != null && stackItem.getStack() > 0 && stackItem.getResource() != null)
         {
-            _icon.Texture = stackItem.getResource().getInventoryIcon;
+            if(stackItem.getResource().getInventoryIcon!=null)
+                _icon.Texture = stackItem.getResource().getInventoryIcon;
             _countLabel.Text = stackItem.getStack() > 1 ? stackItem.getStack().ToString() : "";
         }
         else

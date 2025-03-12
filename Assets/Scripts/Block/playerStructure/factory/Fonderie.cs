@@ -9,7 +9,12 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
 	[Export] public int inputSlotCount { get; set; } = 2;
 	[Export] public string factoryUiName { get; set; }
 	[Export] public string recipeUiName { get; set; }
-	[Export] public CraftingFactoryStatic itemStatic { get; set; }
+	[Export]
+	public CraftingFactoryStatic itemStatic
+	{
+		get => base.itemStatic as CraftingFactoryStatic;
+		set => SetItemStatic(value);
+	}
 
 	public Craft craft { get; set; }
 	public Inventory input { get; set; }
@@ -131,7 +136,7 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
 		craft?.stopCraft();
 		input.onInventoryUpdated -= onInventoryUpdated;
 		output.onInventoryUpdated -= onInventoryUpdated;
-		QueueFree();
+		base.dismantle();
 	}
 
 	private void updateUi()

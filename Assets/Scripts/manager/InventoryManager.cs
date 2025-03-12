@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.Interface;
 using ForeignGeneer.Assets.Scripts.Interface.Inventory;
 using Godot;
+using Godot.Collections;
 
 public partial class InventoryManager : Node
 {
@@ -20,6 +22,7 @@ public partial class InventoryManager : Node
 
     public int currentSlotHotbar = 0;
     public PreviewObject currentPreview;
+    public List<Inventory> inventory = new List<Inventory>();
 
     public override void _Ready()
     {
@@ -31,10 +34,12 @@ public partial class InventoryManager : Node
         {
             QueueFree();
         }
-
         mainInventory = new Inventory(mainInventorySize);
         hotbar = new Inventory(hotbarSize);
-
+        
+        inventory.Add(mainInventory);
+        inventory.Add(hotbar);
+        
         mainInventory.addItemToSlot(new StackItem(testItem, 50), 10);
         mainInventory.addItemToSlot(new StackItem(testItem, 67), 7);
         mainInventory.addItemToSlot(new StackItem(testItem2, 1), 1);
@@ -143,6 +148,18 @@ public partial class InventoryManager : Node
         hotbar.addItemToSlot(item, slotIndex);
     }
 
+    public int addItemToInventory(StackItem stack)
+    {
+        int looseItem = 0;
+        foreach (Inventory inv in inventory)
+        { 
+            looseItem = inv.addItem(stack);
+            if (looseItem <= 0)
+                return 0;
+        }
+        return looseItem;
+    }
+    
     public void addCurrentItemToHotbar()
     {
         if (currentSlotHotbar + 1 < hotbarSize)

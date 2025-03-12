@@ -7,7 +7,12 @@ using ForeignGeneer.Assets.Scripts.Static.Craft;
 public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>
 {
     [Export] public int inputSlotCount { get; set; } = 2;
-    [Export] public CraftingFactoryStatic itemStatic { get; set; }
+    [Export]
+    public CraftingFactoryStatic itemStatic
+    {
+        get => base.itemStatic as CraftingFactoryStatic;
+        set => SetItemStatic(value);
+    }
     [Export] public string factoryUiName { get; set; }
     [Export] public string recipeUiName { get; set; }
     public Inventory input { get; set; }
@@ -28,7 +33,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         _craftTimer.Name = "CraftTimer";
         AddChild(_craftTimer);
     }
-
+    
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -106,14 +111,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         _centralUi = null;
         UiManager.instance.closeUi();
     }
-
-    public void dismantle()
-    {
-        craft?.stopCraft();
-        input.onInventoryUpdated -= onInventoryUpdated;
-        QueueFree();
-    }
-
+    
     private void updateUi()
     {
         if (UiManager.instance.isAnyUiOpen())
