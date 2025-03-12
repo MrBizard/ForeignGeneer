@@ -8,7 +8,7 @@ public partial class SolarCentral : PlayerBaseStructure, IPlayerStructure<Factor
     [Export]
     public FactoryStatic itemStatic
     {
-        get => base.itemStatic as CraftingFactoryStatic;
+        get => base.itemStatic as FactoryStatic;
         set => SetItemStatic(value);
     }
 

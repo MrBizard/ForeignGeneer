@@ -1,7 +1,8 @@
+using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 
-public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructure<ItemStatic>
+public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructure<ItemStatic>, IInteractable
 {
     private ItemStatic _itemStatic;
 
@@ -28,4 +29,16 @@ public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructu
     public virtual void openUi() { }
 
     public virtual void closeUi() { }
+    public virtual void interact(InteractType interactType)
+    {
+        switch (interactType)
+        {
+            case InteractType.Dismantle:
+                dismantle();
+                break;
+            case InteractType.Interact:
+                openUi();
+                break;
+        }
+    }
 }

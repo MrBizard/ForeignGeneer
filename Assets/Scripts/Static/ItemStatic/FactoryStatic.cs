@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
 using MonoCustomResourceRegistry;
 
@@ -45,7 +46,7 @@ public partial class FactoryStatic : ItemStatic
 	/// <param name="player">The player who triggered the right-click action.</param>
 	public override void RightClick()
 	{
-		StaticBody3D instance = instantiateFactory(Player.Instance.raycast.getWorldCursorPosition());
+		StaticBody3D instance = instantiateFactory(InterractionManager.instance.getWorldCursorPosition());
 		if (instance != null)
 		{
 			InventoryManager manager = InventoryManager.Instance;

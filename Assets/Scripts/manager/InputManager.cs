@@ -1,19 +1,18 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using ForeignGeneer.Assets.Scripts.Block;
+using ForeignGeneer.Assets.Scripts.manager;
 
 public partial class InputManager : Node
 {
     public static InputManager Instance { get; private set; }
-
-    private Raycast raycast;
-
+    
     public override void _Ready()
     {
         if (Instance == null)
         {
             Instance = this;
-            raycast = GetNode<Raycast>("/root/Main/Personnage/Pivot/SpringArm3D/Camera3D/RayCast3D");
         }
         else
         {
@@ -72,7 +71,7 @@ public partial class InputManager : Node
 
         if (Input.IsActionJustPressed("interragir"))
         {
-            HandleInteraction();
+            InterractionManager.instance.Interact(InteractType.Interact);
         }
 
         if (Input.IsActionJustPressed("camera"))
@@ -115,12 +114,5 @@ public partial class InputManager : Node
             InventoryManager.Instance.StopPreview();
         }
     }
-    
-    private void HandleInteraction()
-    {
-        if (raycast != null)
-        {
-            raycast.InteractWithObject();
-        }
-    }
+
 }

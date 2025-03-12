@@ -1,3 +1,5 @@
+using ForeignGeneer.Assets.Scripts.Block;
+using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
 
 public partial class Player : CharacterBody3D
@@ -57,7 +59,7 @@ public partial class Player : CharacterBody3D
     /// <summary>
     /// Référence au Raycast pour les interactions.
     /// </summary>
-    public Raycast raycast;
+    public RayCast3D raycast;
 
     /// <summary>
     /// Indicateur du mode de vue (FPS ou TPS).
@@ -87,7 +89,7 @@ public partial class Player : CharacterBody3D
         _pivot = GetNode<Node3D>("Pivot");
         _springArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
         _animTree = GetNode<AnimationTree>("AnimationTree");
-        raycast = GetNode<Raycast>("Pivot/SpringArm3D/Camera3D/RayCast3D");
+        raycast = GetNode<RayCast3D>("Pivot/SpringArm3D/Camera3D/RayCast3D");
         Input.MouseMode = Input.MouseModeEnum.Captured; // Capture le curseur de la souris.
         UiManager.instance.onUiStateChanged += OnUiStateChanged; // S'abonne aux changements d'état de l'UI.
 
@@ -131,6 +133,7 @@ public partial class Player : CharacterBody3D
     public void LeftClick()
     {
         if (_isUiOpen) return;
+        InterractionManager.instance.Interact(InteractType.Dismantle);
         StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
         if (item is not null)
             item.getResource().LeftClick();

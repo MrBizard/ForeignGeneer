@@ -5,10 +5,9 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<FactoryStatic>
 {
     [Export] public string factoryUiName { get; set; }
-    [Export]
-    public FactoryStatic itemStatic
+    [Export] public FactoryStatic itemStatic
     {
-        get => base.itemStatic as CraftingFactoryStatic;
+        get => base.itemStatic as FactoryStatic;
         set => SetItemStatic(value);
     }
 

@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using ForeignGeneer.Assets.Scripts.manager;
+using Godot;
 
 namespace ForeignGeneer.Assets.Scripts.Block;
 
@@ -62,9 +63,9 @@ public partial class PreviewObject : StaticBody3D
             return;
         }
 
-        if (Player.Instance?.raycast != null && Player.Instance.raycast.getWorldCursorPosition() != GlobalPosition)
+        if (Player.Instance?.raycast != null && InterractionManager.instance.getWorldCursorPosition() != GlobalPosition)
         {
-            UpdatePosition(Player.Instance.raycast.getWorldCursorPosition());
+            UpdatePosition(InterractionManager.instance.getWorldCursorPosition());
         }
     }
 
