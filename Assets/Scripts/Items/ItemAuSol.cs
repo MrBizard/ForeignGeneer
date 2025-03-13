@@ -1,7 +1,8 @@
 using Godot;
 using System;
+using ForeignGeneer.Assets.Scripts.Block;
 
-public partial class ItemAuSol : StaticBody3D
+public partial class ItemAuSol : StaticBody3D, IInteractable
 {
     public StackItem stackItem { get; set; }
 
@@ -25,5 +26,16 @@ public partial class ItemAuSol : StaticBody3D
     public void Initialize(StackItem item)
     {
         stackItem = item;
+    }
+
+    public void interact(InteractType interactType)
+    {
+        switch (interactType)
+        {
+            case InteractType.Interact:
+                InventoryManager.Instance.addItemToInventory(stackItem);
+                QueueFree();
+                break;
+        }
     }
 }

@@ -1,7 +1,8 @@
 using Godot;
 using System;
+using ForeignGeneer.Assets.Scripts.Block;
 
-public partial class BreakableResource : StaticBody3D
+public partial class BreakableResource : StaticBody3D, IInteractable
 {
 	public StackItem item {get;set;}
 	[Export] public ResourceStatic resourceStatic {get;set;}
@@ -38,5 +39,16 @@ public partial class BreakableResource : StaticBody3D
 		return item.getResource();
 	}
 
-	
+
+	public void interact(InteractType interactType)
+	{
+		switch (interactType)
+		{
+			case InteractType.Interact:
+				IsActive = true;
+				InventoryManager.Instance.addItemToInventory(item);
+				item.getResource().LeftClick();
+				break;
+		}
+	}
 }
