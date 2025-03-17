@@ -1,6 +1,5 @@
-using Godot;
+	using Godot;
 using System;
-using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.Interface;
 

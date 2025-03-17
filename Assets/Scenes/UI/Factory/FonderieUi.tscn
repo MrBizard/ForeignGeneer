@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cu77v5jkyswnn"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Interface/Factory/FonderieUi.cs" id="1_vtnb6"]
-[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="2_o6ue4"]
+[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="2_o6ue4"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="3_v6afh"]
 
 [node name="FonderieUi" type="Control"]

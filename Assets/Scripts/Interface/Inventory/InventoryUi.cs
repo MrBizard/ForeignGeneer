@@ -14,7 +14,7 @@ public partial class InventoryUi : Control
         InitializeInventoryUi();
         UpdateUi();
     }
-
+    
     /// <summary>
     /// Initialise l'UI de l'inventaire.
     /// </summary>

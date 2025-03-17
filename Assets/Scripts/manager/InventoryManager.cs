@@ -170,7 +170,7 @@ public partial class InventoryManager : Node
         {
             currentSlotHotbar = 0;
         }
-
+        
         StopPreview();
     }
     public void removeCurrentItemToHotbar()

@@ -140,7 +140,7 @@ public partial class PreviewObject : StaticBody3D
     {
         ValidatePos();
     }
-
+    
     /// <summary>
     /// Called when a body exits the Area3D.
     /// </summary>

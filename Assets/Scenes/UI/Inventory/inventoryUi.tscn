@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://pvecjgib4vbr"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/InventoryUi.cs" id="1_apyf5"]
-[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="2_p7rih"]
+[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="2_p7rih"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihirb"]
 bg_color = Color(0.140447, 0.140447, 0.140447, 1)

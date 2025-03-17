@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ddp7q1ns3jgci"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Interface/Central/CentralUi.cs" id="1_cojqr"]
-[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="2_724ab"]
+[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="2_724ab"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="3_n332v"]
 
 [node name="CentralUi" type="Control"]
