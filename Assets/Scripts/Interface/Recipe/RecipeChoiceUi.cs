@@ -1,6 +1,4 @@
 using Godot;
-using ForeignGeneer.Assets.Scripts.Static.Craft;
-
 public partial class RecipeChoiceUi : Control
 {
     [Signal]

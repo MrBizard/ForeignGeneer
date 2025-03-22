@@ -1,10 +1,13 @@
 public class FixedInputCraft : BaseCraft
 {
-    public FixedInputCraft(Recipe recipe, Inventory input) : base(recipe, input) { }
-
-    protected override bool compareRecipe()
+    public FixedInputCraft(Recipe recipe, Inventory input)
+        : base(recipe, input, null) // Pas de output
     {
-        if (recipe == null || recipe.input == null || _input == null)
+    }
+
+    public override bool compareRecipe()
+    {
+        if (recipe == null || recipe.input == null || input == null)
         {
             return false;
         }
@@ -12,7 +15,7 @@ public class FixedInputCraft : BaseCraft
         for (int i = 0; i < recipe.input.Count; i++)
         {
             var requiredItem = recipe.input[i];
-            var slotItem = _input.getItem(i);
+            var slotItem = input.getItem(i);
 
             if (slotItem == null || slotItem.getResource() != requiredItem.getResource() || slotItem.getStack() < requiredItem.getStack())
             {
@@ -23,12 +26,12 @@ public class FixedInputCraft : BaseCraft
         return true;
     }
 
-    protected override bool consumeResources()
+    public override bool consumeResources()
     {
         for (int i = 0; i < recipe.input.Count; i++)
         {
             var requiredItem = recipe.input[i];
-            var slotItem = _input.getItem(i);
+            var slotItem = input.getItem(i);
 
             if (slotItem != null && slotItem.getResource() == requiredItem.getResource())
             {
@@ -36,7 +39,7 @@ public class FixedInputCraft : BaseCraft
 
                 if (slotItem.isEmpty())
                 {
-                    _input.deleteItem(i);
+                    input.deleteItem(i);
                 }
             }
             else
@@ -44,11 +47,15 @@ public class FixedInputCraft : BaseCraft
                 return false;
             }
         }
+
         return true;
     }
 
-    public override bool addOutput()
+    public override bool canContinue()
     {
-        return true;
+        if (isCrafting)
+            return false;
+
+        return true; // Pas de vérification d'output
     }
 }

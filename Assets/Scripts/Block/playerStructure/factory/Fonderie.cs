@@ -1,8 +1,6 @@
-using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
-using ForeignGeneer.Assets.Scripts.Static.Craft;
 
 public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>, IOutputFactory<CraftingFactoryStatic>
 {
@@ -66,7 +64,6 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
             return;
         }
 
-        // Utilisation de FixedInputOutputCraft au lieu de Craft
         craft = new FixedInputOutputCraft(recipe, input, output);
         craft.craftTimer = _craftTimer;
         craft.startCraft(onCraftFinished);

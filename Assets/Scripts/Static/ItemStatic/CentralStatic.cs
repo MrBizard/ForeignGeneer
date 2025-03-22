@@ -1,4 +1,3 @@
-using ForeignGeneer.Assets.Scripts.Static.Craft;
 using Godot;
 using MonoCustomResourceRegistry;
 

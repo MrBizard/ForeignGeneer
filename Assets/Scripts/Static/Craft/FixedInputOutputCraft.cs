@@ -1,34 +1,42 @@
 public class FixedInputOutputCraft : BaseCraft
 {
-    public FixedInputOutputCraft(Recipe recipe, Inventory input, Inventory output) : base(recipe, input, output) { }
-
-    protected override bool compareRecipe()
+    public FixedInputOutputCraft(Recipe recipe, Inventory input, Inventory output = null)
+        : base(recipe, input, output)
     {
-        if (recipe == null || recipe.input == null || _input == null)
+    }
+
+    public override bool compareRecipe()
+    {
+        if (recipe == null || recipe.input == null || input == null)
         {
             return false;
         }
 
-        for (int i = 0; i < recipe.input.Count; i++)
+        if (output == null || output.getItem(0) == null || output.getItem(0).canAdd(recipe.output))
         {
-            var requiredItem = recipe.input[i];
-            var slotItem = _input.getItem(i);
-
-            if (slotItem == null || slotItem.getResource() != requiredItem.getResource() || slotItem.getStack() < requiredItem.getStack())
+            for (int i = 0; i < recipe.input.Count; i++)
             {
-                return false;
+                var requiredItem = recipe.input[i];
+                var slotItem = input.getItem(i);
+
+                if (slotItem == null || slotItem.getResource() != requiredItem.getResource() || slotItem.getStack() < requiredItem.getStack())
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
-    protected override bool consumeResources()
+    public override bool consumeResources()
     {
         for (int i = 0; i < recipe.input.Count; i++)
         {
             var requiredItem = recipe.input[i];
-            var slotItem = _input.getItem(i);
+            var slotItem = input.getItem(i);
 
             if (slotItem != null && slotItem.getResource() == requiredItem.getResource())
             {
@@ -36,7 +44,7 @@ public class FixedInputOutputCraft : BaseCraft
 
                 if (slotItem.isEmpty())
                 {
-                    _input.deleteItem(i);
+                    input.deleteItem(i);
                 }
             }
             else
@@ -44,40 +52,7 @@ public class FixedInputOutputCraft : BaseCraft
                 return false;
             }
         }
+
         return true;
-    }
-
-    public override bool addOutput()
-    {
-        if (recipe == null || recipe.output == null || _output == null)
-        {
-            return true;
-        }
-
-        var recipeItem = recipe.output;
-        var outputSlotItem = _output.getItem(0);
-
-        if (outputSlotItem == null)
-        {
-            _output.addItemToSlot(new StackItem(recipeItem.getResource(), recipeItem.getStack()), 0);
-            return true;
-        }
-        else if (outputSlotItem.getResource() == recipeItem.getResource())
-        {
-            int remainingSpace = outputSlotItem.getResource().getMaxStack - outputSlotItem.getStack();
-            if (remainingSpace >= recipeItem.getStack())
-            {
-                outputSlotItem.add(recipeItem.getStack());
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
     }
 }

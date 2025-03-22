@@ -1,6 +1,4 @@
-﻿using ForeignGeneer.Assets.Scripts.Static.Craft;
-
-namespace ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
+﻿namespace ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 
 public interface IInputFactory<TFactory> : IPlayerStructure<TFactory>
     where TFactory : FactoryStatic

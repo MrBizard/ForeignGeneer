@@ -4,30 +4,21 @@ using Godot;
 public abstract class BaseCraft
 {
     public Recipe recipe { get; private set; }
-    protected Inventory _input;
-    protected Inventory _output;
-    public Timer craftTimer { get;  set; }
+    public Inventory input { get; private set; }
+    public Inventory output { get; private set; }
+    public Timer craftTimer { get; set; }
     public float craftProgress { get; protected set; } = 0;
     public bool isCrafting { get; protected set; } = false;
-    protected Action _onCraftFinished;
+    private Action _onCraftFinished;
 
     public BaseCraft(Recipe recipe, Inventory input, Inventory output = null)
     {
         this.recipe = recipe;
-        _input = input;
-        _output = output;
-
-        // Initialisation du timer
-        craftTimer = new Timer();
-        craftTimer.OneShot = true;
-        craftTimer.Autostart = false;
-        craftTimer.Timeout += onCraftFinished;
+        this.input = input;
+        this.output = output;
     }
 
-    /// <summary>
-    /// Démarre le craft.
-    /// </summary>
-    public virtual bool startCraft(Action onCraftFinished)
+    public bool startCraft(Action onCraftFinished)
     {
         if (!canContinue())
             return false;
@@ -37,83 +28,98 @@ public abstract class BaseCraft
             isCrafting = true;
             _onCraftFinished = onCraftFinished;
 
+            craftTimer.OneShot = true;
             craftTimer.WaitTime = recipe.duration;
+            craftTimer.Timeout += onCraftFinished;
             craftTimer.Start();
             resetCraftProgress();
             consumeResources();
             return true;
         }
+
         return false;
     }
 
-    /// <summary>
-    /// Arrête le craft.
-    /// </summary>
     public void stopCraft()
     {
         isCrafting = false;
-        craftTimer.Stop();
-        resetCraftProgress();
-    }
-
-    /// <summary>
-    /// Met à jour la progression du craft.
-    /// </summary>
-    public void updateCraftProgress(double delta)
-    {
-        if (isCrafting)
+        if (craftTimer != null)
         {
-            craftProgress += (float)delta / recipe.duration;
-            if (craftProgress >= 1.0f)
+            craftTimer.Stop();
+            if (_onCraftFinished != null)
             {
-                craftProgress = 1.0f;
+                craftTimer.Timeout -= _onCraftFinished;
+                _onCraftFinished = null;
             }
+
+            resetCraftProgress();
         }
     }
 
-    /// <summary>
-    /// Vérifie si le craft peut continuer.
-    /// </summary>
+    public abstract bool compareRecipe();
+
+    public abstract bool consumeResources();
+
+    public bool addOutput()
+    {
+        if (recipe == null || recipe.output == null || output == null)
+        {
+            return true;
+        }
+
+        var recipeItem = recipe.output;
+        var outputSlotItem = output.getItem(0);
+
+        if (outputSlotItem == null)
+        {
+            output.addItemToSlot(new StackItem(recipeItem.getResource(), recipeItem.getStack()), 0);
+            return true;
+        }
+        else if (outputSlotItem.getResource() == recipeItem.getResource())
+        {
+            int remainingSpace = outputSlotItem.getResource().getMaxStack - outputSlotItem.getStack();
+            if (remainingSpace >= recipeItem.getStack())
+            {
+                outputSlotItem.add(recipeItem.getStack());
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void resetCraftProgress()
+    {
+        craftProgress = 0;
+    }
+
+    public void updateCraftProgress(double delta)
+    {
+        craftProgress += (float)delta / recipe.duration;
+    }
+
     public virtual bool canContinue()
     {
         if (isCrafting)
             return false;
 
-        if (_output == null)
+        if (output == null)
             return true;
 
-        var outputSlotItem = _output.getItem(0);
+        var outputSlotItem = output.getItem(0);
         return outputSlotItem == null ||
-               outputSlotItem.getStack() + recipe.output.getStack() <= outputSlotItem.getResource().getMaxStack;
+               outputSlotItem.getStack() + recipe.output.getStack()
+               < outputSlotItem.getResource().getMaxStack;
     }
-
-    /// <summary>
-    /// Réinitialise la progression du craft.
-    /// </summary>
-    protected void resetCraftProgress()
-    {
-        craftProgress = 0;
-    }
-
-    /// <summary>
-    /// Appelé lorsque le timer de craft est terminé.
-    /// </summary>
-    protected void onCraftFinished()
-    {
-        if (addOutput())
-        {
-            _onCraftFinished?.Invoke();
-        }
-        isCrafting = false;
-    }
-
-    // Méthodes abstraites à implémenter par les classes dérivées
-    protected abstract bool compareRecipe();
-    protected abstract bool consumeResources();
-    public abstract bool addOutput();
 
     public override string ToString()
     {
-        return "\n recipe : " + recipe.ToString() + "\n _output: " + _output.ToString() + "\n _input: " + _input.ToString();
+        return $"\nrecipe: {recipe}\noutput: {output}\ninput: {input}";
     }
 }

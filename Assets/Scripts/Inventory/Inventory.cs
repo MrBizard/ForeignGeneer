@@ -144,41 +144,7 @@ public class Inventory
 	{
 		onInventoryUpdated?.Invoke();
 	}
-
-    /// <summary>
-    /// Ajoute un seul item à l'inventaire.
-    /// </summary>
-    public int addOneItem(StackItem item)
-	{
-	    // Recherche si l'item existe déjà dans l'inventaire
-	    for (int i = 0; i < slots.Count; i++)
-	    {
-	        if (slots[i] != null && slots[i].getResource() == item.getResource())
-	        {
-	            // Si le slot actuel a de la place, ajoute l'item
-	            if (slots[i].getStack() < slots[i].getResource().getMaxStack)
-	            {
-	                int remaining = slots[i].add(1);
-	                return 0;
-	            }
-	        }
-	    }
-
-	    // Si l'item n'existe pas encore dans l'inventaire
-	    for (int i = 0; i < slots.Count; i++)
-	    {
-	        if (slots[i] == null)
-	        {
-	            // Crée une nouvelle instance de StackItem pour éviter de modifier la référence originale
-	            slots[i] = new StackItem(item.getResource());
-	            slots[i].setStack(1); // Initialise le slot avec 1 item
-	            return 0; // L'item a été ajouté avec succès
-	        }
-	    }
-
-	    // Si aucun espace n'est disponible, retourne le nombre d'items restants
-	    return item.getStack();
-	}
+	
 	/// <summary>
 	/// Recherche un item spécifique dans l'inventaire.
 	/// </summary>
