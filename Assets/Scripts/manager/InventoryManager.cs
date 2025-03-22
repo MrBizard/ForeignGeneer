@@ -172,6 +172,7 @@ public partial class InventoryManager : Node
         }
 
         StopPreview();
+        updateHandItem();
     }
     public void removeCurrentItemToHotbar()
     {
@@ -185,6 +186,17 @@ public partial class InventoryManager : Node
         }
 
         StopPreview();
+        updateHandItem();
+    }
+
+    private void updateHandItem()
+    {
+        // Trouver le noeud de la main et appeler AttachObjectToHand
+        Hand hand = GetNode<Hand>("../../Personnage/Armature_001/Skeleton3D/BoneAttachment3D");
+        if (hand != null)
+        {
+            hand.AttachObjectToHand();
+        }
     }
     
     private bool isItemAuSol(string path)
