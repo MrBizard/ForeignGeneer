@@ -6,152 +6,154 @@ using ForeignGeneer.Assets.Scripts.Static.Craft;
 
 public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>, IOutputFactory<CraftingFactoryStatic>
 {
-	[Export] public int inputSlotCount { get; set; } = 2;
-	[Export] public string factoryUiName { get; set; }
-	[Export] public string recipeUiName { get; set; }
-	[Export]
-	public CraftingFactoryStatic itemStatic
-	{
-		get => base.itemStatic as CraftingFactoryStatic;
-		set => SetItemStatic(value);
-	}
+    [Export] public int inputSlotCount { get; set; } = 2;
+    [Export] public string factoryUiName { get; set; }
+    [Export] public string recipeUiName { get; set; }
+    [Export]
+    public CraftingFactoryStatic itemStatic
+    {
+        get => base.itemStatic as CraftingFactoryStatic;
+        set => SetItemStatic(value);
+    }
 
-	public Craft craft { get; set; }
-	public Inventory input { get; set; }
-	public Inventory output { get; set; }
+    public BaseCraft craft { get; set; } // Changé pour utiliser FixedInputOutputCraft
+    public Inventory input { get; set; }
+    public Inventory output { get; set; }
 
-	public RecipeList recipeList
-	{
-		get => itemStatic?.recipeList;
-		set
-		{
-			if (itemStatic != null)
-			{
-				itemStatic.recipeList = value;
-			}
-		}
-	}
+    public RecipeList recipeList
+    {
+        get => itemStatic?.recipeList;
+        set
+        {
+            if (itemStatic != null)
+            {
+                itemStatic.recipeList = value;
+            }
+        }
+    }
 
-	private Timer _craftTimer;
-	private FonderieUi _fonderieUi;
+    private Timer _craftTimer;
+    private FonderieUi _fonderieUi;
 
-	public override void _Ready()
-	{
-		base._Ready();
-		init();
-		
-		_craftTimer = new Timer();
-		_craftTimer.Name = "CraftTimer";
-		AddChild(_craftTimer);
-	}
+    public override void _Ready()
+    {
+        base._Ready();
+        init();
 
-	public void init()
-	{
-		input = new Inventory(inputSlotCount);
-		output = new Inventory(1);
-		itemStatic.recipeList?.init();
-		input.onInventoryUpdated += onInventoryUpdated;
-		output.onInventoryUpdated += onInventoryUpdated;
-	}
+        _craftTimer = new Timer();
+        _craftTimer.Name = "CraftTimer";
+        AddChild(_craftTimer);
+    }
 
-	public override void _Process(double delta)
-	{
-		if (craft != null && craft.isCrafting)
-		{
-			craft.updateCraftProgress(delta);
-			updateProgressBar();
-		}
-	}
-	private void onInventoryUpdated()
-	{
-		if (craft != null && craft.canContinue())
-		{
-			startCraft();
-		}
-		updateUi();
-	}
-	public void setCraft(Recipe recipe)
-	{
-		if (recipe == null)
-		{
-			craft = null;
-			return;
-		}
+    public void init()
+    {
+        input = new Inventory(inputSlotCount);
+        output = new Inventory(1);
+        itemStatic.recipeList?.init();
+        input.onInventoryUpdated += onInventoryUpdated;
+        output.onInventoryUpdated += onInventoryUpdated;
+    }
 
-		craft = new Craft(recipe, input, output);
-		craft.craftTimer = _craftTimer;
-		craft.startCraft(onCraftFinished);
-		openUi();
-	}
+    public override void _Process(double delta)
+    {
+        if (craft != null && craft.isCrafting)
+        {
+            craft.updateCraftProgress(delta);
+            updateProgressBar();
+        }
+    }
 
-	private void startCraft()
-	{
-		if (EnergyManager.instance.isDown() || craft.isCrafting)
-		{
-			return;
-		}
-		craft.startCraft(onCraftFinished);
-		updateProgressBar();
-		updateUi();
-	}
+    private void onInventoryUpdated()
+    {
+        if (craft != null && craft.canContinue())
+        {
+            startCraft();
+        }
+        updateUi();
+    }
 
-	private void onCraftFinished()
-	{
-		if (craft != null)
-		{
-			craft.stopCraft();
-			craft.addOutput();
-			updateProgressBar();
-			if (craft.canContinue())
-				startCraft();
-		}
-		
-		updateUi();
-	}
+    public void setCraft(Recipe recipe)
+    {
+        if (recipe == null)
+        {
+            craft = null;
+            return;
+        }
 
-	public override void openUi()
-	{
-		closeUi();
-		if (craft == null)
-		{
-			UiManager.instance.openUi(recipeUiName, this);
-			_fonderieUi = null;
-		}
-		else
-		{
-			UiManager.instance.openUi(factoryUiName, this);
-			_fonderieUi = (FonderieUi)UiManager.instance.getUi(factoryUiName);
-		}
-	}
+        // Utilisation de FixedInputOutputCraft au lieu de Craft
+        craft = new FixedInputOutputCraft(recipe, input, output);
+        craft.craftTimer = _craftTimer;
+        craft.startCraft(onCraftFinished);
+        openUi();
+    }
 
-	public override void closeUi()
-	{
-		_fonderieUi = null;
-		UiManager.instance.closeUi();
-	}
+    private void startCraft()
+    {
+        if (EnergyManager.instance.isDown() || craft.isCrafting)
+        {
+            return;
+        }
+        craft.startCraft(onCraftFinished);
+        updateProgressBar();
+        updateUi();
+    }
 
+    private void onCraftFinished()
+    {
+        if (craft != null)
+        {
+            craft.stopCraft();
+            craft.addOutput();
+            updateProgressBar();
+            if (craft.canContinue())
+                startCraft();
+        }
 
-	public void dismantle()
-	{
-		craft?.stopCraft();
-		input.onInventoryUpdated -= onInventoryUpdated;
-		output.onInventoryUpdated -= onInventoryUpdated;
-		base.dismantle();
-	}
+        updateUi();
+    }
 
-	private void updateUi()
-	{
-		if (UiManager.instance.isAnyUiOpen())
-		{
-			UiManager.instance.refreshCurrentUi(this);
-		}
-	}
+    public override void openUi()
+    {
+        closeUi();
+        if (craft == null)
+        {
+            UiManager.instance.openUi(recipeUiName, this);
+            _fonderieUi = null;
+        }
+        else
+        {
+            UiManager.instance.openUi(factoryUiName, this);
+            _fonderieUi = (FonderieUi)UiManager.instance.getUi(factoryUiName);
+        }
+    }
 
-	private void updateProgressBar()
-	{
-		if (UiManager.instance.isUiOpen(factoryUiName))
-		{
-			_fonderieUi?.updateProgressBar(craft.craftProgress);
-		}
-	}
+    public override void closeUi()
+    {
+        _fonderieUi = null;
+        UiManager.instance.closeUi();
+    }
+
+    public void dismantle()
+    {
+        craft?.stopCraft();
+        input.onInventoryUpdated -= onInventoryUpdated;
+        output.onInventoryUpdated -= onInventoryUpdated;
+        base.dismantle();
+    }
+
+    private void updateUi()
+    {
+        if (UiManager.instance.isAnyUiOpen())
+        {
+            UiManager.instance.refreshCurrentUi(this);
+        }
+    }
+
+    private void updateProgressBar()
+    {
+        if (UiManager.instance.isUiOpen(factoryUiName))
+        {
+            _fonderieUi?.updateProgressBar(craft.craftProgress);
+        }
+    }
 }

@@ -63,15 +63,15 @@ public partial class InventoryManager : Node
 
     public void drop()
     {
-    if (currentItemInMouse != null)
-    {
-        Vector3 dropPosition = FindDropPosition();
+        if (currentItemInMouse != null)
+        {
+            Vector3 dropPosition = FindDropPosition();
 
-        StaticBody3D itemDrop = currentItemInMouse.getResource().instantiate(dropPosition);
-        itemDrop.Position = FindDropPosition();
-        GetTree().CurrentScene.GetNode("worldStructure").AddChild(itemDrop);
+            StaticBody3D itemDrop = currentItemInMouse.getResource().instantiate(dropPosition);
+            itemDrop.Position = FindDropPosition();
+            GetTree().CurrentScene.GetNode("worldStructure").AddChild(itemDrop);
+        }
     }
-}
 
     private Vector3 FindDropPosition()
     {
@@ -95,17 +95,12 @@ public partial class InventoryManager : Node
 
     private Vector3 FindNearestFreeSpot(Vector3 origin)
     {
-        Node3D player = Player.Instance; // Assurez-vous que le chemin est correct
+        Node3D player = Player.Instance;
         if (player == null)
         {
             GD.PrintErr("Player not found!", player);
             return origin;
         }
-
-        PhysicsDirectSpaceState3D spaceState = player.GetWorld3D().DirectSpaceState; // Récupération correcte
-
-       
-    
         return origin; 
     }
 
@@ -129,23 +124,7 @@ public partial class InventoryManager : Node
             return (Vector3)result["position"];
         }
     
-        return position; // Si aucun sol trouvé, garde la position initiale
-    }
-
-    /// <summary>
-    /// Adds an item to a specific slot in the main inventory.
-    /// </summary>
-    public void addItemToMainInventory(StackItem item, int slotIndex)
-    {
-        mainInventory.addItemToSlot(item, slotIndex);
-    }
-
-    /// <summary>
-    /// Adds an item to a specific slot in the hotbar.
-    /// </summary>
-    public void addItemToHotbar(StackItem item, int slotIndex)
-    {
-        hotbar.addItemToSlot(item, slotIndex);
+        return position;
     }
 
     public int addItemToInventory(StackItem stack)
@@ -159,7 +138,18 @@ public partial class InventoryManager : Node
         }
         return looseItem;
     }
-    
+    public StackItem FindItem(ItemStatic item)
+    {
+        foreach (Inventory inv in inventory)
+        {
+            StackItem foundItem = inv.FindItem(item);
+            if (foundItem != null)
+            {
+                return foundItem;
+            }
+        }
+        return null;
+    }
     public void addCurrentItemToHotbar()
     {
         if (currentSlotHotbar + 1 < hotbarSize)

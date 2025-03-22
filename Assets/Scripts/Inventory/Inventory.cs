@@ -179,7 +179,29 @@ public class Inventory
 	    // Si aucun espace n'est disponible, retourne le nombre d'items restants
 	    return item.getStack();
 	}
+	/// <summary>
+	/// Recherche un item spécifique dans l'inventaire.
+	/// </summary>
+	/// <param name="item">L'item à rechercher.</param>
+	/// <returns>L'item trouvé, ou null si l'item n'existe pas dans l'inventaire.</returns>
+	public StackItem FindItem(ItemStatic item)
+	{
+		if (item == null)
+		{
+			return null;
+		}
 
+		// Parcours de tous les slots de l'inventaire
+		foreach (var slot in slots)
+		{
+			if (slot != null && slot.getResource() == item)
+			{
+				return slot; // Retourne l'item trouvé
+			}
+		}
+
+		return null; // Aucun item correspondant trouvé
+	}
 	public override string ToString()
 	{
 		return String.Join(", ", slots.ToString());

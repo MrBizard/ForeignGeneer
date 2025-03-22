@@ -1,4 +1,5 @@
 using System;
+using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using Godot;
 using ForeignGeneer.Assets.Scripts.Interface;
@@ -65,7 +66,7 @@ public partial class CentralUi : Control,BaseUi
 
 	public  void close()
 	{
-		_central.closeUi();
+		_central.interact(InteractType.Close);
 	}
 
 	/// <summary>
@@ -96,6 +97,5 @@ public partial class CentralUi : Control,BaseUi
 	private void onResetCraftButtonPressed()
 	{
 		_central.setCraft(null);
-		_central.openUi();
 	}
 }

@@ -2,7 +2,6 @@ using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
-using ForeignGeneer.Assets.Scripts.Static.Craft;
 
 public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>
 {
@@ -16,7 +15,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
     [Export] public string factoryUiName { get; set; }
     [Export] public string recipeUiName { get; set; }
     public Inventory input { get; set; }
-    public Craft craft { get; set; }
+    public BaseCraft craft { get; set; }
 
     private CentralUi _centralUi;
     private Timer _craftTimer;
@@ -27,13 +26,12 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         input = new Inventory(inputSlotCount);
         input.onInventoryUpdated += onInventoryUpdated;
         itemStatic.recipeList?.init();
-        PollutionManager.instance.addPolution(0);
 
         _craftTimer = new Timer();
         _craftTimer.Name = "CraftTimer";
         AddChild(_craftTimer);
     }
-    
+
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -62,7 +60,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
             return;
         }
 
-        craft = new Craft(recipe, input);
+        craft = new FixedInputCraft(recipe, input);
         craft.craftTimer = _craftTimer;
         openUi();
     }
@@ -82,10 +80,11 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
 
     private void onCraftFinished()
     {
+        GD.Print("craft finish");
         if (craft != null)
         {
             craft.stopCraft();
-            EnergyManager.instance.removeGlobalElectricity(itemStatic.electricalCost); 
+            EnergyManager.instance.removeGlobalElectricity(itemStatic.electricalCost);
             startCraft();
         }
         updateUi();
@@ -111,7 +110,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         _centralUi = null;
         UiManager.instance.closeUi();
     }
-    
+
     private void updateUi()
     {
         if (UiManager.instance.isAnyUiOpen())
@@ -119,6 +118,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
             UiManager.instance.refreshCurrentUi(this);
         }
     }
+
     private void updateProgressBar()
     {
         if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))

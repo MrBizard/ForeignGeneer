@@ -1,5 +1,6 @@
 	using Godot;
 using System;
+using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.Interface;
 
@@ -43,7 +44,7 @@ public partial class RecetteList : Control,BaseUi
 
 	public void close()
 	{
-		_recipeUser.closeUi();
+		_recipeUser.interact(InteractType.Close);
 	}
 
 	private void onRecipeClicked(Recipe recipe)

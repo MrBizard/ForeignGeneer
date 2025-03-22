@@ -4,4 +4,6 @@ public enum InteractType
 {
     Dismantle,
     Interact,
+    Open,
+    Close,
 }

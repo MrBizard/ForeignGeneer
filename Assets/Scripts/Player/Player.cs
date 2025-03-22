@@ -133,7 +133,8 @@ public partial class Player : CharacterBody3D
     public void LeftClick()
     {
         if (_isUiOpen) return;
-        InterractionManager.instance.Interact(InteractType.Dismantle);
+        if(!UiManager.instance.isAnyUiOpen())
+            InterractionManager.instance.Interact(InteractType.Dismantle);
         StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
         if (item is not null)
             item.getResource().LeftClick();

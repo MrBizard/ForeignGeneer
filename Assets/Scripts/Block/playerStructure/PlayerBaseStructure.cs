@@ -2,7 +2,7 @@ using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 
-public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructure<ItemStatic>, IInteractable
+public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructure<ItemStatic>
 {
     private ItemStatic _itemStatic;
 
@@ -38,6 +38,12 @@ public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructu
                 break;
             case InteractType.Interact:
                 openUi();
+                break;
+            case InteractType.Open:
+                openUi();
+                break;
+            case InteractType.Close:
+                closeUi();
                 break;
         }
     }
