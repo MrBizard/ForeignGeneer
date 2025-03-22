@@ -1,11 +1,12 @@
 using ForeignGeneer.Assets.Scripts.Static.Craft;
 using Godot;
+using Godot.Collections;
 using MonoCustomResourceRegistry;
 
 [RegisteredType(nameof(CraftingFactoryStatic), "", nameof(FactoryStatic))]
 public partial class CraftingFactoryStatic : FactoryStatic
 {
-    [Export] public RecipeList recipeList { get; set; } // Liste de recettes
+    [Export] public Array<Recipe> recipeList { get; set; }
 
     /// <summary>
     /// Starts the crafting process.

@@ -1,10 +1,10 @@
 [gd_scene load_steps=18 format=4 uid="uid://dceehbl3tddf2"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/factory/central/SolarCentral.cs" id="1_nyyy2"]
-[ext_resource type="Texture2D" uid="uid://dsl8hgsg4vxfu" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Color.jpg" id="1_rj650"]
+[ext_resource type="Texture2D" uid="uid://41r7g8rw5p3e" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Color.jpg" id="1_rj650"]
 [ext_resource type="Resource" uid="uid://dx1y26rvwbf8o" path="res://Assets/Resource/Block/central/solarPanel.tres" id="2_2jeqy"]
-[ext_resource type="Texture2D" uid="uid://b81svkcs22oa" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Color_2.png" id="2_besgx"]
-[ext_resource type="Texture2D" uid="uid://cxsvk8jjupi7k" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Normal.jpg" id="3_ntiyn"]
+[ext_resource type="Texture2D" uid="uid://bemnrcr7t8oqn" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Color_2.png" id="2_besgx"]
+[ext_resource type="Texture2D" uid="uid://b0f2xmc7djs1b" path="res://Assets/Model/block/factory/solaire_v2_Metal019_4K_Normal.jpg" id="3_ntiyn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2da7d"]
 resource_name = "chrome"

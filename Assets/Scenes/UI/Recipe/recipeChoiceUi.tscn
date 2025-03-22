@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bmdblhyw736ph"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Static/Craft/RecipeChoiceUi.cs" id="1_i80sb"]
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/Recipe/RecipeChoiceUi.cs" id="1_i80sb"]
 
 [node name="Recipe" type="Control" node_paths=PackedStringArray("_itemIcon", "_itemNameLabel")]
 custom_minimum_size = Vector2(200, 80)

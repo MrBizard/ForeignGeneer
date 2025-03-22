@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=8 format=3 uid="uid://dp78nkhu6r1qv"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Static/recipe/Recipe.cs" id="1_0c31u"]
+[ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="1_u1otg"]
+[ext_resource type="Script" path="res://Assets/Scripts/Items/StackItem.cs" id="2_tuksk"]
+[ext_resource type="Resource" uid="uid://c4304nu2rd20a" path="res://Assets/Resource/Items/Ingots/GoldIngot.tres" id="3_xnclt"]
+
+[sub_resource type="Resource" id="Resource_k8ypa"]
+script = ExtResource("2_tuksk")
+Resource = ExtResource("1_u1otg")
+Stack = 3
+
+[sub_resource type="Resource" id="Resource_ksj0y"]
+script = ExtResource("2_tuksk")
+Resource = ExtResource("1_u1otg")
+Stack = 2
+
+[sub_resource type="Resource" id="Resource_50mnx"]
+script = ExtResource("2_tuksk")
+Resource = ExtResource("3_xnclt")
+Stack = 5
+
+[resource]
+script = ExtResource("1_0c31u")
+input = [SubResource("Resource_k8ypa"), SubResource("Resource_ksj0y")]
+output = SubResource("Resource_50mnx")
+duration = 3.0

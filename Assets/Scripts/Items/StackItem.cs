@@ -5,12 +5,30 @@ using System;
 /// Représente un item dans une pile.
 /// Contient des informations sur l'item et son nombre dans une pile.
 /// </summary>
-public class StackItem
+[GlobalClass] 
+public partial class StackItem: Resource
 {
     // Champs privés
     private ItemStatic _resource;
     private int _stack=0;
 
+    [Export]
+    public ItemStatic Resource
+    {
+        get => _resource;
+        set => _resource = value;
+    }
+
+    /// <summary>
+    /// Obtient ou définit le nombre d'items dans la pile.
+    /// </summary>
+    [Export]
+    public int Stack
+    {
+        get => _stack;
+        set => _stack = value;
+    }
+    
     /// <summary>
     /// Obtient la ressource associée à cet item.
     /// </summary>

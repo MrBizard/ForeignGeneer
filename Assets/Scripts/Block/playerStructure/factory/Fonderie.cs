@@ -6,7 +6,6 @@ using ForeignGeneer.Assets.Scripts.Static.Craft;
 
 public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>, IOutputFactory<CraftingFactoryStatic>
 {
-    [Export] public int inputSlotCount { get; set; } = 2;
     [Export] public string factoryUiName { get; set; }
     [Export] public string recipeUiName { get; set; }
     [Export]
@@ -16,21 +15,9 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
         set => SetItemStatic(value);
     }
 
-    public BaseCraft craft { get; set; } // Changé pour utiliser FixedInputOutputCraft
+    public BaseCraft craft { get; set; }
     public Inventory input { get; set; }
     public Inventory output { get; set; }
-
-    public RecipeList recipeList
-    {
-        get => itemStatic?.recipeList;
-        set
-        {
-            if (itemStatic != null)
-            {
-                itemStatic.recipeList = value;
-            }
-        }
-    }
 
     private Timer _craftTimer;
     private FonderieUi _fonderieUi;
@@ -47,9 +34,8 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
 
     public void init()
     {
-        input = new Inventory(inputSlotCount);
+        input = new Inventory(itemStatic.recipeList.Count);
         output = new Inventory(1);
-        itemStatic.recipeList?.init();
         input.onInventoryUpdated += onInventoryUpdated;
         output.onInventoryUpdated += onInventoryUpdated;
     }

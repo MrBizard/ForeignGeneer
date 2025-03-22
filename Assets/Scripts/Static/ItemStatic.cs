@@ -1,5 +1,5 @@
 using Godot;
-
+[GlobalClass]
 public partial class ItemStatic : Resource
 {
     [Export] private int _maxStack;

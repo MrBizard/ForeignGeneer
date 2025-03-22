@@ -5,7 +5,6 @@ using ForeignGeneer.Assets.Scripts.manager;
 
 public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingFactoryStatic>
 {
-    [Export] public int inputSlotCount { get; set; } = 2;
     [Export]
     public CraftingFactoryStatic itemStatic
     {
@@ -23,10 +22,8 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
     public override void _Ready()
     {
         base._Ready();
-        input = new Inventory(inputSlotCount);
+        input = new Inventory(itemStatic.recipeList.Count);
         input.onInventoryUpdated += onInventoryUpdated;
-        itemStatic.recipeList?.init();
-
         _craftTimer = new Timer();
         _craftTimer.Name = "CraftTimer";
         AddChild(_craftTimer);

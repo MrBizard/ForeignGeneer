@@ -1,12 +1,12 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://ojkf6c4xovdt"]
 
-[ext_resource type="Texture2D" uid="uid://codn4feauuoym" path="res://Assets/Texture/block/factory/icon_biomass_generator.png" id="1_jbtxo"]
+[ext_resource type="Texture2D" uid="uid://gleruu1qvdls" path="res://Assets/Texture/block/factory/icon_biomass_generator.png" id="1_jbtxo"]
+[ext_resource type="Resource" uid="uid://hutnnbj2n8yj" path="res://Assets/Resource/recipe/central/biomass/woodElec.tres" id="2_xfitj"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/CraftingFactoryStatic.cs" id="3_4wrlc"]
-[ext_resource type="Resource" uid="uid://4vnmveuqnmq3" path="res://Assets/Resource/recipe/central/List/BiomassList.tres" id="3_laubt"]
 
 [resource]
 script = ExtResource("3_4wrlc")
-recipeList = ExtResource("3_laubt")
+recipeList = Array[Object]([ExtResource("2_xfitj")])
 electricalCost = 10
 pollutionIndex = 5
 tier = 1
