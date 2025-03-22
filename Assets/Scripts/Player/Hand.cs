@@ -41,6 +41,11 @@ public partial class Hand : BoneAttachment3D
 		}
  
 		int actuelSlot=inv.currentSlotHotbar; // slot actuel
+
+		/*var itemResource = inv.hotbar.getItem(actuelSlot).getResource();
+		if(itemResource==null){
+			return;
+		}*/
 		objectInstance=inv.hotbar.getItem(actuelSlot).getResource().instantiate();//  l'objet du slot actuel
 
         //objectInstance = (StaticBody3D)objectToAttach.Instantiate();
