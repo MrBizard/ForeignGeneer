@@ -24,7 +24,6 @@ public class BulkCraftWithOutput : BaseCraft
             {
                 bool found = false;
 
-                // Parcourir tous les inventaires de la liste
                 foreach (var inventory in _inputs)
                 {
                     foreach (var slotItem in inventory.slots)
@@ -58,7 +57,6 @@ public class BulkCraftWithOutput : BaseCraft
         {
             bool consumed = false;
 
-            // Parcourir tous les inventaires de la liste
             foreach (var inventory in _inputs)
             {
                 for (int i = 0; i < inventory.slots.Count; i++)

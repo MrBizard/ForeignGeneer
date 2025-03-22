@@ -32,6 +32,7 @@ public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<Factory
 
     public override void closeUi()
     {
+        detach(_centralUi);
         _centralUi = null;
         UiManager.instance.closeUi();
     }

@@ -19,7 +19,7 @@ public partial class CurrentCursorItem :Control,BaseUi
         }
     }
 
-    public void updateUi(int updateType = 0)
+    public void updateUi()
     {
         Position = GetViewport().GetMousePosition();
     }
@@ -36,5 +36,9 @@ public partial class CurrentCursorItem :Control,BaseUi
     public void close()
     {
         InventoryManager.Instance.setCurrentItemInMouse(null);
+    }
+
+    public void update(InterfaceType? interfaceType)
+    {
     }
 }

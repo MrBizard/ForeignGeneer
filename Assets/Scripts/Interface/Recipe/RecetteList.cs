@@ -1,5 +1,6 @@
 	using Godot;
 using System;
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.Interface;
@@ -37,7 +38,7 @@ public partial class RecetteList : Control,BaseUi
 		}
 	}
 
-	public void updateUi(int updateType = 0)
+	public void updateUi()
 	{
 		
 	}
@@ -50,5 +51,10 @@ public partial class RecetteList : Control,BaseUi
 	private void onRecipeClicked(Recipe recipe)
 	{
 		_recipeUser.setCraft(recipe);
+	}
+
+	public void update(InterfaceType? interfaceType)
+	{
+		
 	}
 }

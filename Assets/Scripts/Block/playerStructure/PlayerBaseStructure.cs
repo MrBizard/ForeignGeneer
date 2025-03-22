@@ -1,11 +1,14 @@
+using System.Collections.Generic;
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.block.playerStructure;
+using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
 
-public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructure<ItemStatic>
+public partial class PlayerBaseStructure : StaticBody3D,IObservable, IPlayerStructure<ItemStatic>
 {
     private ItemStatic _itemStatic;
-
+    private List<IObserver> _observers = new List<IObserver>();
     public virtual ItemStatic itemStatic => _itemStatic;
 
     protected void SetItemStatic(ItemStatic value)
@@ -19,10 +22,6 @@ public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructu
         {
             InventoryManager.Instance.addItemToInventory(new StackItem(_itemStatic, 1));
             QueueFree();
-        }
-        else
-        {
-            GD.PrintErr("ItemStatic is null in dismantle.");
         }
     }
 
@@ -45,6 +44,29 @@ public abstract partial class PlayerBaseStructure : StaticBody3D, IPlayerStructu
             case InteractType.Close:
                 closeUi();
                 break;
+        }
+    }
+
+    public void attach(IObserver observer)
+    {
+        if (!_observers.Contains(observer))
+        {
+            _observers.Add(observer);
+            EnergyManager.instance.attach(observer);
+        }
+    }
+
+    public void detach(IObserver observer)
+    {
+        _observers.Remove(observer);
+        EnergyManager.instance.detach(observer);
+    }
+    
+    public void notify(InterfaceType? interfaceType = null)
+    {
+        foreach (var observer in _observers)
+        {
+            observer.update(interfaceType);
         }
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using ForeignGeneer.Assets.Scripts;
+using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.Interface;
 using Godot;
 
@@ -38,26 +40,14 @@ public partial class FonderieUi : Control ,BaseUi
 
             if (_fonderie.input != null && _fonderie.output != null)
             {
-                _fonderie.input.onInventoryUpdated += onInventoryUpdated;
-                _fonderie.output.onInventoryUpdated += onInventoryUpdated;
+                _fonderie.input.onInventoryUpdated += updateInputSlot;
+                _fonderie.output.onInventoryUpdated += updateOutputSlot;
             }
 
-            initializeInputSlots();  
-            initializeOutputSlot();  
-            updateCraftText();       
-            updateUi();              
+            initializeInputSlots();
+            initializeOutputSlot();
+            updateUi();
         }
-        else
-        {
-            GD.PrintErr("FonderieUi: Data is not of type Fonderie.");
-        }
-    }
-
-    private void onInventoryUpdated()
-    {
-        updateUi();  
-        updateCraftText();  
-        updateOutputSlotBackground(); 
     }
 
     private void initializeInputSlots()
@@ -100,10 +90,6 @@ public partial class FonderieUi : Control ,BaseUi
                 _craftText.Text += $"\n - {stack.getStack()} x {stack.getResource().GetName()}";
             }
         }
-        else
-        {
-            _craftText.Text = "Aucune recette en cours.";
-        }
     }
 
     private void updateOutputSlotBackground()
@@ -117,11 +103,19 @@ public partial class FonderieUi : Control ,BaseUi
     /// <summary>
     /// Met à jour l'interface utilisateur.
     /// </summary>
-    public void updateUi(int updateType = 0)
+    public void updateUi()
     {
         if (_fonderie == null)
             return;
+        updateInputSlot();
+        updateOutputSlot();
+        updateProgressBar();
+        updateCraftText();  
+        updateOutputSlotBackground();
+    }
 
+    private void updateInputSlot()
+    {
         for (int i = 0; i < _fonderie.input.slots.Count; i++)
         {
             if (_inputSlots[i] != null)
@@ -137,7 +131,10 @@ public partial class FonderieUi : Control ,BaseUi
                 }
             }
         }
+    }
 
+    private void updateOutputSlot()
+    {
         if (_outputSlot != null)
         {
             var outputItem = _fonderie.output.getItem(0);
@@ -151,33 +148,45 @@ public partial class FonderieUi : Control ,BaseUi
             }
         }
     }
-
     public void close()
     {
-        _fonderie.closeUi();
+        _fonderie.interact(InteractType.Close);
     }
 
     /// <summary>
     /// Met à jour la barre de progression du craft.
     /// </summary>
     /// <param name="progress">La progression actuelle (entre 0 et 1).</param>
-    public void updateProgressBar(float progress)
+    public void updateProgressBar()
     {
-        _progressBar.Value = progress * 100;
+        _progressBar.Value = _fonderie.craft.craftProgress * 100;
     }
     
     public override void _ExitTree()
     {
         if (_fonderie != null)
         {
-            _fonderie.input.onInventoryUpdated -= onInventoryUpdated;
-            _fonderie.output.onInventoryUpdated -= onInventoryUpdated;
+            _fonderie.input.onInventoryUpdated -= updateInputSlot;
+            _fonderie.output.onInventoryUpdated -= updateOutputSlot;
         }
     }
 
     private void onButtonBack()
     {
         _fonderie.setCraft(null);
-        _fonderie.openUi();
+        close();
+    }
+
+    public void update(InterfaceType? interfaceType)
+    {
+        switch (interfaceType)
+        {
+            case InterfaceType.Progress:
+                updateProgressBar();
+                break;
+            default:
+                updateUi();
+                break;
+        }
     }
 }

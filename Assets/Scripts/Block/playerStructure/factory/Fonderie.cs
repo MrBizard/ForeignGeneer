@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts;
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using ForeignGeneer.Assets.Scripts.manager;
@@ -43,7 +44,7 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
         if (craft != null && craft.isCrafting)
         {
             craft.updateCraftProgress(delta);
-            updateProgressBar();
+            notify(InterfaceType.Progress);
         }
     }
 
@@ -53,7 +54,7 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
         {
             startCraft();
         }
-        updateUi();
+        notify();
     }
 
     public void setCraft(Recipe recipe)
@@ -77,8 +78,7 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
             return;
         }
         craft.startCraft(onCraftFinished);
-        updateProgressBar();
-        updateUi();
+        notify();
     }
 
     private void onCraftFinished()
@@ -87,12 +87,10 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
         {
             craft.stopCraft();
             craft.addOutput();
-            updateProgressBar();
             if (craft.canContinue())
                 startCraft();
         }
-
-        updateUi();
+        notify();
     }
 
     public override void openUi()
@@ -107,36 +105,23 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
         {
             UiManager.instance.openUi(factoryUiName, this);
             _fonderieUi = (FonderieUi)UiManager.instance.getUi(factoryUiName);
+            attach(_fonderieUi);
         }
     }
 
     public override void closeUi()
     {
+        detach(_fonderieUi);
         _fonderieUi = null;
         UiManager.instance.closeUi();
     }
 
-    public void dismantle()
+    public override void dismantle()
     {
         craft?.stopCraft();
         input.onInventoryUpdated -= onInventoryUpdated;
         output.onInventoryUpdated -= onInventoryUpdated;
         base.dismantle();
     }
-
-    private void updateUi()
-    {
-        if (UiManager.instance.isAnyUiOpen())
-        {
-            UiManager.instance.refreshCurrentUi(this);
-        }
-    }
-
-    private void updateProgressBar()
-    {
-        if (UiManager.instance.isUiOpen(factoryUiName))
-        {
-            _fonderieUi?.updateProgressBar(craft.craftProgress);
-        }
-    }
+    
 }

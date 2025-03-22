@@ -1,4 +1,5 @@
 using System;
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using Godot;
 using ForeignGeneer.Assets.Scripts.Interface;
@@ -30,28 +31,16 @@ public partial class WindUi : Control,BaseUi
     /// <summary>
     /// Updates the central interface UI. This method is called on each UI update.
     /// </summary>
-    public void updateUi(int updateType = 0)
+    public void updateUi()
     {
         updateElectricity();
     }
 
-    public  void close()
+    public void close()
     {
         _central.closeUi();
     }
-
-    /// <summary>
-    /// Updates the progress bar of the central.
-    /// </summary>
-    /// <param name="progress">The current progress (between 0 and 1).</param>
-    public void updateProgressBar(float progress)
-    {
-        if (_craftProgressBar != null)
-        {
-            _craftProgressBar.Value = progress * 100;
-        }
-    }
-
+    
     /// <summary>
     /// Updates the electricity display.
     /// </summary>
@@ -63,4 +52,16 @@ public partial class WindUi : Control,BaseUi
         }
     }
 
+    public void update(InterfaceType? interfaceType)
+    {
+        switch (interfaceType)
+        {
+            case InterfaceType.Energy:
+                updateElectricity();
+                break;
+            default:
+                updateUi();
+                break;
+        }
+    }
 }

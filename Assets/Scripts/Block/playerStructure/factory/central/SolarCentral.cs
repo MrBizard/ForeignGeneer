@@ -13,16 +13,26 @@ public partial class SolarCentral : PlayerBaseStructure, IPlayerStructure<Factor
     }
 
     private WindUi _centralUi;
-    private float coef = 0.2f;
-    public float powerGenerated;
+
+    [Export] public float SunlightIntensity { get; set; } = 1.0f;
+    [Export] public float PanelEfficiency { get; set; } = 0.2f;
+    [Export] public float PanelSurfaceArea { get; set; } = 1.0f;
+    [Export] public float TimeExposure { get; set; } = 1.0f;
+
+    public float PowerGenerated { get; private set; }
+
     public override void _Ready()
     {
         base._Ready();
-        powerGenerated = itemStatic.electricalCost *
-                         (1 + coef * Mathf.Log(1 + GlobalPosition.Y));
-        powerGenerated = Mathf.Round(powerGenerated * 10)/10;
-        EnergyManager.instance.addGlobalElectricity(powerGenerated);
+        CalculatePowerGenerated(); 
+        EnergyManager.instance.addGlobalElectricity(PowerGenerated); 
     }
+
+    private void CalculatePowerGenerated()
+    {
+        PowerGenerated = SunlightIntensity * PanelEfficiency * PanelSurfaceArea * TimeExposure;
+    }
+
     public override void openUi()
     {
         closeUi();
@@ -32,8 +42,8 @@ public partial class SolarCentral : PlayerBaseStructure, IPlayerStructure<Factor
 
     public void closeUi()
     {
+        detach(_centralUi);
         _centralUi = null;
         UiManager.instance.closeUi();
     }
-    
 }

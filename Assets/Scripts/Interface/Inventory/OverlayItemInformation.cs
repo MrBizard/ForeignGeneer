@@ -19,12 +19,17 @@ public partial class OverlayItemInformation: Control,BaseUi
         Position = GetViewport().GetMousePosition();
     }
 
-    public void updateUi(int updateType = 0)
+    public void updateUi()
     {
        
     }
 
     public void close()
+    {
+        
+    }
+
+    public void update(InterfaceType? interfaceType)
     {
         
     }

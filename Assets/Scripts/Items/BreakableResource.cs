@@ -16,8 +16,7 @@ public partial class BreakableResource : StaticBody3D, IInteractable
 	{
 		item= new StackItem(resourceStatic);
 		collisionShape = GetNode<CollisionShape3D>("CollisionShape3D");
-        
-			
+		
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

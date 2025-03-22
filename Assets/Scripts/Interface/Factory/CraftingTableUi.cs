@@ -7,7 +7,7 @@ public class CraftingTableUi : BaseUi
         
     }
 
-    public void updateUi(int updateType = 0)
+    public void updateUi()
     {
         
     }
@@ -15,5 +15,10 @@ public class CraftingTableUi : BaseUi
     public void close()
     {
         
+    }
+
+    public void update(InterfaceType? interfaceType)
+    {
+        throw new System.NotImplementedException();
     }
 }

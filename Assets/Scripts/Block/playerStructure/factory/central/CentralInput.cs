@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.block.playerStructure;
 using Godot;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
@@ -35,7 +36,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         if (craft != null && craft.isCrafting)
         {
             craft.updateCraftProgress(delta);
-            updateProgressBar();
+            notify(InterfaceType.Progress);
         }
     }
 
@@ -45,8 +46,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         {
             startCraft();
         }
-
-        updateUi();
+        notify();
     }
 
     public void setCraft(Recipe recipe)
@@ -67,8 +67,9 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         if (craft.startCraft(onCraftFinished))
         {
             EnergyManager.instance.addGlobalElectricity(itemStatic.electricalCost);
+            notify(InterfaceType.Energy);
         }
-        updateProgressBar();
+        notify(InterfaceType.Progress);
         if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
         {
             _centralUi.updateElectricity();
@@ -77,14 +78,14 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
 
     private void onCraftFinished()
     {
-        GD.Print("craft finish");
         if (craft != null)
         {
             craft.stopCraft();
             EnergyManager.instance.removeGlobalElectricity(itemStatic.electricalCost);
             startCraft();
         }
-        updateUi();
+        notify(InterfaceType.Energy);
+        notify(InterfaceType.Progress);
     }
 
     public override void openUi()
@@ -99,28 +100,15 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         {
             UiManager.instance.openUi(factoryUiName, this);
             _centralUi = (CentralUi)UiManager.instance.getUi(factoryUiName);
+            attach(_centralUi);
         }
     }
 
     public override void closeUi()
     {
+        detach(_centralUi);
         _centralUi = null;
         UiManager.instance.closeUi();
     }
-
-    private void updateUi()
-    {
-        if (UiManager.instance.isAnyUiOpen())
-        {
-            UiManager.instance.refreshCurrentUi(this);
-        }
-    }
-
-    private void updateProgressBar()
-    {
-        if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
-        {
-            _centralUi.updateProgressBar(craft.craftProgress);
-        }
-    }
+    
 }

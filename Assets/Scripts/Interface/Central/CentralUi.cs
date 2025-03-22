@@ -1,4 +1,5 @@
 using System;
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.block.playerStructure.Factory;
 using Godot;
@@ -51,20 +52,20 @@ public partial class CentralUi : Control,BaseUi
 			_craftText.Text += $"\n - {stack.getStack()} x {stack.getResource().GetName()}";
 		}
 
-		updateElectricity();
+		updateUi();
 	}
 
 	/// <summary>
 	/// Updates the central interface UI. This method is called on each UI update.
 	/// </summary>
-	public void updateUi(int updateType = 0)
+	public void updateUi()
 	{
-		updateProgressBar(_central.craft.craftProgress);
+		updateProgressBar();
 		updateElectricity();
 		_inputSlot.updateUi();
 	}
 
-	public  void close()
+	public void close()
 	{
 		_central.interact(InteractType.Close);
 	}
@@ -73,11 +74,11 @@ public partial class CentralUi : Control,BaseUi
 	/// Updates the progress bar of the central.
 	/// </summary>
 	/// <param name="progress">The current progress (between 0 and 1).</param>
-	public void updateProgressBar(float progress)
+	public void updateProgressBar()
 	{
 		if (_craftProgressBar != null)
 		{
-			_craftProgressBar.Value = progress * 100;
+			_craftProgressBar.Value = _central.craft.craftProgress * 100;
 		}
 	}
 
@@ -97,5 +98,21 @@ public partial class CentralUi : Control,BaseUi
 	private void onResetCraftButtonPressed()
 	{
 		_central.setCraft(null);
+	}
+
+	public void update(InterfaceType? interfaceType)
+	{
+		switch (interfaceType)
+		{
+			case InterfaceType.Progress:
+				updateProgressBar();
+				break;
+			case InterfaceType.Energy:
+				updateElectricity();
+				break;
+			default:
+				updateUi();
+				break;
+		}
 	}
 }
