@@ -12,6 +12,7 @@ public partial class CraftingTable: PlayerBaseStructure, IOutputFactory<Crafting
     
     public void setCraft(Recipe recipe)
     {
+        output = new Inventory(1);
         craft = new BulkCraftWithOutput(recipe,InventoryManager.Instance.inventory,output);
         craft.startCraft(onCraftFinished);
     }
