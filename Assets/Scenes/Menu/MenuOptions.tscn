@@ -25,19 +25,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="GridContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
 
-[node name="soundTab" type="Button" parent="GridContainer"]
+[node name="soundTab" type="Control" parent="GridContainer"]
 layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="optionVolume" type="VBoxContainer" parent="GridContainer/soundTab"]
-offset_left = 19.0
-offset_top = 51.0
-offset_right = 1016.0
-offset_bottom = 486.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2_1rsgq")
 
 [node name="masterVolume" type="Label" parent="GridContainer/soundTab/optionVolume"]
@@ -97,15 +104,18 @@ max_value = 1.0
 step = 0.001
 value = 1.0
 
-[node name="videoTab" type="Button" parent="GridContainer"]
+[node name="videoTab" type="Control" parent="GridContainer"]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="optionVideo" type="VBoxContainer" parent="GridContainer/videoTab"]
-visible = false
-offset_left = 1.0
-offset_top = 50.0
-offset_right = 972.0
-offset_bottom = 485.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_ybuuc")
 
 [node name="Label" type="Label" parent="GridContainer/videoTab/optionVideo"]
@@ -131,15 +141,18 @@ offset_right = 177.0
 offset_bottom = 31.0
 text = "On"
 
-[node name="controlTab" type="Button" parent="GridContainer"]
+[node name="controlTab" type="Control" parent="GridContainer"]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="optionControl" type="VBoxContainer" parent="GridContainer/controlTab"]
-visible = false
-offset_left = -80.0
-offset_top = 53.0
-offset_right = 980.0
-offset_bottom = 520.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_uho0j")
 
@@ -262,18 +275,17 @@ offset_bottom = 22.0
 toggle_mode = true
 text = "Tab"
 
-[node name="close" type="Button" parent="GridContainer"]
+[node name="close" type="Control" parent="GridContainer"]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 3
 
-[connection signal="toggled" from="GridContainer/soundTab" to="." method="_volumeTabToggled"]
 [connection signal="value_changed" from="GridContainer/soundTab/optionVolume/masterVolume/Master" to="GridContainer/soundTab/optionVolume" method="_onMasterVolumeUpdate"]
 [connection signal="value_changed" from="GridContainer/soundTab/optionVolume/playerVolume/SFX" to="GridContainer/soundTab/optionVolume" method="_onSFXUpdate"]
 [connection signal="value_changed" from="GridContainer/soundTab/optionVolume/ambiantVolume/BGM" to="GridContainer/soundTab/optionVolume" method="_onBGMUpdate"]
 [connection signal="value_changed" from="GridContainer/soundTab/optionVolume/ressourceVolume/RM" to="GridContainer/soundTab/optionVolume" method="_onRMUpdate"]
-[connection signal="toggled" from="GridContainer/videoTab" to="." method="_videoTabToggled"]
 [connection signal="value_changed" from="GridContainer/videoTab/optionVideo/Label/brightness" to="GridContainer/videoTab/optionVideo" method="_brightnessUpdate"]
 [connection signal="button_down" from="GridContainer/videoTab/optionVideo/Label2/fullscreenButton" to="GridContainer/videoTab/optionVideo" method="_FullscreenToggled"]
-[connection signal="toggled" from="GridContainer/controlTab" to="." method="_controlTabToggled"]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/forward/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["forward"]]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/backward/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["backward"]]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/left/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["left"]]
@@ -283,4 +295,4 @@ layout_mode = 2
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/crouch/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["crouch"]]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/interact/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["interact"]]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/inventory/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["inventory"]]
-[connection signal="button_down" from="GridContainer/close" to="." method="_closeOption"]
+[connection signal="visibility_changed" from="GridContainer/close" to="." method="_closeOption"]

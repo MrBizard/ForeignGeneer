@@ -25,6 +25,7 @@ public partial class Options : Control
 	///<tooltip>close the option settings</tooltip>
 	private void _closeOption()
 	{
-		GetParent<Control>().Visible = false;
+		UiManager.instance.closeUi();
+		Input.MouseMode = Input.MouseModeEnum.Visible;
 	}
 }

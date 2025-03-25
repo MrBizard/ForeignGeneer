@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Options : Control
+public partial class GameOption : Control
 {
 
 	private PackedScene titleScene = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/Menu/titleScreen.tscn");
@@ -25,19 +25,15 @@ public partial class Options : Control
 	///<tooltip>close the option settings</tooltip>
 	private void _closeOption()
 	{
-		GetParent<Control>().Visible = false;
-		Input.MouseMode = Input.MouseModeEnum.Captured;
+		UiManager.instance.closeUi();
 	}
 	
 	private void _titlescreenOption()
 	{
-		if (titleScene != null){
-			Node scene = titleScene.Instantiate();
-			GetTree().Root.AddChild(scene);
-			GetTree().CurrentScene.QueueFree();
-			_closeOption();
-			Input.MouseMode = Input.MouseModeEnum.Visible;
-		}
-
+		Node newSceneInstance = titleScene.Instantiate();
+		GetTree().Root.GetNode("Main").QueueFree();
+		GetTree().Root.AddChild(newSceneInstance);
+		
+		Input.MouseMode = Input.MouseModeEnum.Visible;
 	}
 }
