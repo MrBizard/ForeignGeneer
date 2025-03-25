@@ -47,9 +47,19 @@ public partial class RecetteList : Control,BaseUi
 	{
 		_recipeUser.setCraft(recipe);
 	}
-
 	public void update(InterfaceType? interfaceType)
 	{
-		
+		switch (interfaceType)
+		{
+			case InterfaceType.Close:
+				close();
+				break;
+		}
+	}
+
+	public void detach()
+	{
+		IObservable factory = (IObservable)_recipeUser;
+		factory.detach(this);
 	}
 }

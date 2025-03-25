@@ -44,4 +44,8 @@ public partial class MiniSlotUi : Control, BaseUi
     public void update(InterfaceType? interfaceType)
     {
     }
+
+    public void detach()
+    {
+    }
 }

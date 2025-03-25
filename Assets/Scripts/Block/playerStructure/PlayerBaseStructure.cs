@@ -8,7 +8,7 @@ using Godot;
 public partial class PlayerBaseStructure : StaticBody3D,IObservable, IPlayerStructure<ItemStatic>
 {
     private ItemStatic _itemStatic;
-    private List<IObserver> _observers = new List<IObserver>();
+    protected List<IObserver> _observers = new List<IObserver>();
     public virtual ItemStatic itemStatic => _itemStatic;
 
     protected void SetItemStatic(ItemStatic value)

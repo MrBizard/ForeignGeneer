@@ -30,6 +30,11 @@ public partial class CraftingRecipeChoiceUi: Control, BaseUi
     public void update(InterfaceType? interfaceType)
     {
     }
+
+    public void detach()
+    {
+    }
+
     public void onButtonPressed()
     {
         EmitSignal(nameof(RecipeClicked), _recipe);

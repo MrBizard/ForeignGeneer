@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using System.Collections.Generic;
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.Interface;
 
 public partial class UiManager : Node
@@ -73,6 +74,7 @@ public partial class UiManager : Node
         {
             foreach (var uiEntry in _openUis)
             {
+                DetachIfObserver(uiEntry.Value);
                 uiEntry.Value.QueueFree();
             }
             _openUis.Clear();
@@ -83,6 +85,7 @@ public partial class UiManager : Node
         {
             if (_openUis.ContainsKey(uiName))
             {
+                DetachIfObserver(_openUis[uiName]);
 
                 _openUis[uiName].QueueFree();
                 _openUis.Remove(uiName);
@@ -93,8 +96,19 @@ public partial class UiManager : Node
                 }
             }
         }
-       
     }
+
+    /// <summary>
+    /// Vérifie si l'objet implémente IObserver et appelle detach() si c'est le cas.
+    /// </summary>
+    private void DetachIfObserver(Node uiNode)
+    {
+        if (uiNode is IObserver observer)
+        {
+            observer.detach();
+        }
+    }
+
 
     /// <summary>
     /// Vérifie si une UI est ouverte.

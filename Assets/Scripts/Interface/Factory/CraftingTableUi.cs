@@ -65,20 +65,31 @@ public partial class CraftingTableUi : Control,BaseUi
         _progressBar.Value =  _craftingTable.craft.craftProgress* 100;
     }
 
-    private void onRecipeClicked(Recipe recipe)
+    public void onRecipeClicked(Recipe recipe)
     {
         _craftingTable.setCraft(recipe);
     }
+    
     public void update(InterfaceType? interfaceType)
     {
         switch (interfaceType)
         {
+            case InterfaceType.Energy:
+                break;
             case InterfaceType.Progress:
                 updateProgressBar();
+                break;
+            case InterfaceType.Close:
+                close();
                 break;
             default:
                 updateUi();
                 break;
         }
+    }
+
+    public void detach()
+    {
+        _craftingTable.detach(this);
     }
 }

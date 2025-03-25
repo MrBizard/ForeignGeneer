@@ -87,4 +87,4 @@ grow_horizontal = 0
 theme_override_font_sizes/font_size = 25
 text = "X"
 
-[connection signal="pressed" from="Machine/close" to="." method="close"]
+[connection signal="button_down" from="Machine/close" to="." method="close"]

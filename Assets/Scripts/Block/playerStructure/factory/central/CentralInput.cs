@@ -67,24 +67,20 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         if (craft.startCraft(onCraftFinished))
         {
             EnergyManager.instance.addGlobalElectricity(itemStatic.electricalCost);
-            notify(InterfaceType.Energy);
         }
         notify(InterfaceType.Progress);
-        if (_centralUi != null && UiManager.instance.isUiOpen(factoryUiName))
-        {
-            _centralUi.updateElectricity();
-        }
     }
 
     private void onCraftFinished()
     {
+        GD.Print("passe");
         if (craft != null)
         {
+            GD.Print("!= null");
             craft.stopCraft();
             EnergyManager.instance.removeGlobalElectricity(itemStatic.electricalCost);
             startCraft();
         }
-        notify(InterfaceType.Energy);
         notify(InterfaceType.Progress);
     }
 

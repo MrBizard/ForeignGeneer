@@ -9,7 +9,7 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class CentralUi : Control,BaseUi
 {
 	[Export] private PackedScene _slotUi;
-	private IInputFactory<CraftingFactoryStatic> _central;
+	private CentralInput _central;
 	private SlotUI _inputSlot;
 	private ProgressBar _craftProgressBar;
 	private HBoxContainer _inputList;
@@ -36,7 +36,7 @@ public partial class CentralUi : Control,BaseUi
 	/// <param name="data">The central node associated with this interface.</param>
 	public void initialize(Object data)
 	{
-		_central = (IInputFactory<CraftingFactoryStatic>)data;
+		_central = (CentralInput)data;
 
 		if (_inputSlot == null)
 		{
@@ -76,9 +76,22 @@ public partial class CentralUi : Control,BaseUi
 	/// <param name="progress">The current progress (between 0 and 1).</param>
 	public void updateProgressBar()
 	{
-		if (_craftProgressBar != null)
+		try
 		{
-			_craftProgressBar.Value = _central.craft.craftProgress * 100;
+			// Double vérification de la validité de la ProgressBar
+			if (IsInstanceValid(_craftProgressBar))
+			{
+				_craftProgressBar.Value = _central.craft.craftProgress * 100;
+			}
+			else
+			{
+				_craftProgressBar = null; // Nettoyage si invalide
+			}
+		}
+		catch (ObjectDisposedException)
+		{
+			_craftProgressBar = null;
+			GD.PushWarning("ProgressBar access after disposal");
 		}
 	}
 
@@ -99,7 +112,6 @@ public partial class CentralUi : Control,BaseUi
 	{
 		_central.setCraft(null);
 	}
-
 	public void update(InterfaceType? interfaceType)
 	{
 		switch (interfaceType)
@@ -110,9 +122,16 @@ public partial class CentralUi : Control,BaseUi
 			case InterfaceType.Energy:
 				updateElectricity();
 				break;
+			case InterfaceType.Close:
+				close();
+				break;
 			default:
 				updateUi();
 				break;
 		}
+	}
+	public void detach()
+	{
+		_central.detach(this);
 	}
 }

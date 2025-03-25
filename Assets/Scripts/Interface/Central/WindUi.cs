@@ -51,7 +51,6 @@ public partial class WindUi : Control,BaseUi
             _electricityLabel.Text = $"Puissance : {_central.powerGenerated} kW/s || Électricité totale : {EnergyManager.instance.getGlobalElectricity()} kW/s";
         }
     }
-
     public void update(InterfaceType? interfaceType)
     {
         switch (interfaceType)
@@ -59,9 +58,16 @@ public partial class WindUi : Control,BaseUi
             case InterfaceType.Energy:
                 updateElectricity();
                 break;
+            case InterfaceType.Close:
+                close();
+                break;
             default:
                 updateUi();
                 break;
         }
+    }
+    public void detach()
+    {
+        _central.detach(this);
     }
 }

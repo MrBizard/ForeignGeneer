@@ -60,10 +60,11 @@ public partial class CraftingTable: PlayerBaseStructure, IOutputFactory<Crafting
         attach(_craftingTableUi);
     }
 
-    public void closeUi()
+    public override void closeUi()
     {
         detach(_craftingTableUi);
         _craftingTableUi = null;
+        GD.Print(_observers.Count);
         UiManager.instance.closeUi();
     }
 

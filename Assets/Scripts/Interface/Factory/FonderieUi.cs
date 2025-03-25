@@ -176,7 +176,6 @@ public partial class FonderieUi : Control ,BaseUi
         _fonderie.setCraft(null);
         close();
     }
-
     public void update(InterfaceType? interfaceType)
     {
         switch (interfaceType)
@@ -184,9 +183,16 @@ public partial class FonderieUi : Control ,BaseUi
             case InterfaceType.Progress:
                 updateProgressBar();
                 break;
+            case InterfaceType.Close:
+                close();
+                break;
             default:
                 updateUi();
                 break;
         }
+    }
+    public void detach()
+    {
+        _fonderie.detach(this);
     }
 }

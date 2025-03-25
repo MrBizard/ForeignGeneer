@@ -40,11 +40,9 @@ public partial class CurrentCursorItem :Control,BaseUi
 
     public void update(InterfaceType? interfaceType)
     {
-        switch (interfaceType)
-        {
-            default:
-                updateUi();
-                break;
-        }
+    }
+
+    public void detach()
+    {
     }
 }

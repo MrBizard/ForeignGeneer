@@ -33,4 +33,9 @@ public partial class OverlayItemInformation: Control,BaseUi
     {
         
     }
+
+    public void detach()
+    {
+        
+    }
 }
