@@ -33,16 +33,11 @@ public partial class RecetteList : Control,BaseUi
 		{
 			RecipeChoiceUi recipeUi = _recipeUiPacked.Instantiate<RecipeChoiceUi>();
 			recipeUi.init(recipe);
-			recipeUi.Connect(nameof(RecipeChoiceUi.RecipeClicked), new Callable(this, nameof(onRecipeClicked)));
+			recipeUi.Connect(nameof(CraftingRecipeChoiceUi.RecipeClicked), new Callable(this, nameof(onRecipeClicked)));
 			_scrollContainer.AddChild(recipeUi);
 		}
 	}
-
-	public void updateUi()
-	{
-		
-	}
-
+	
 	public void close()
 	{
 		_recipeUser.interact(InteractType.Close);

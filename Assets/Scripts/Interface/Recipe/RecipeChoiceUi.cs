@@ -30,20 +30,17 @@ public partial class RecipeChoiceUi : Control
             return;
         }
 
-        // Afficher l'item de sortie (output) s'il existe
         if (_recipe.output != null && _recipe.output.getResource() != null)
         {
             _itemIcon.Texture = _recipe.output.getResource().getInventoryIcon;
             _itemNameLabel.Text = _recipe.output.getResource().GetName();
         }
-        // Sinon, afficher le premier item d'entrée (input) s'il existe
         else if (_recipe.input != null && _recipe.input.Count > 0 && _recipe.input[0] != null && _recipe.input[0].getResource() != null)
         {
             var inputItem = _recipe.input[0];
             _itemIcon.Texture = inputItem.getResource().getInventoryIcon;
             _itemNameLabel.Text = inputItem.getResource().GetName();
         }
-        // Si ni output ni input ne sont valides, afficher une icône et un texte par défaut
         else
         {
             GD.PrintErr("La recette n'a ni sortie (output) ni entrée (input) valide.");
@@ -56,7 +53,7 @@ public partial class RecipeChoiceUi : Control
     /// </summary>
     private void SetDefaultDisplay()
     {
-        _itemIcon.Texture = null; // Ou une texture par défaut
+        _itemIcon.Texture = null;
         _itemNameLabel.Text = "Recette invalide";
     }
 
@@ -65,7 +62,6 @@ public partial class RecipeChoiceUi : Control
     /// </summary>
     public void onButtonPressed()
     {
-        // Émettre un signal pour indiquer que cette recette a été sélectionnée
         EmitSignal(nameof(RecipeClicked), _recipe);
     }
 

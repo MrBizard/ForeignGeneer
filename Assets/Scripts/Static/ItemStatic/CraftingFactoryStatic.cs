@@ -3,6 +3,7 @@ using Godot.Collections;
 using MonoCustomResourceRegistry;
 
 [RegisteredType(nameof(CraftingFactoryStatic), "", nameof(FactoryStatic))]
+[GlobalClass]
 public partial class CraftingFactoryStatic : FactoryStatic
 {
     [Export] public Array<Recipe> recipeList { get; set; }
@@ -15,7 +16,6 @@ public partial class CraftingFactoryStatic : FactoryStatic
         if (recipeList != null)
         {
             GD.Print("Crafting started with recipe list");
-            // Logique de production ici
         }
     }
 }

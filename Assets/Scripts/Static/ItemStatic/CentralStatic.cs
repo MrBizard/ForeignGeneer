@@ -2,9 +2,10 @@ using Godot;
 using MonoCustomResourceRegistry;
 
 [RegisteredType(nameof(CentralStatic), "", nameof(FactoryStatic))]
+[GlobalClass]
 public partial class CentralStatic : FactoryStatic
 {
-    [Export] public float duration { get; set; } // Durée spécifique à la centrale
+    [Export] public float duration { get; set; }
 
     /// <summary>
     /// Starts the operation of the power plant.

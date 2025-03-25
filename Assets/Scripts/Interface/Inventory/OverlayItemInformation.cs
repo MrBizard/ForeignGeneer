@@ -7,15 +7,15 @@ public partial class OverlayItemInformation: Control,BaseUi
     [Export] Label _nameLabel = null!;
     [Export] Label _descriptionLabel = null!;
     [Export] TextureRect _icon = null!;
-    StackItem _stackItem;
+    ItemStatic _stackItem;
     public void initialize(object data)
     {
         if (data == null)  
             return;
-        _stackItem = data as StackItem;
-        _nameLabel.SetText(_stackItem?.getResource().GetName());
-        _descriptionLabel.SetText(_stackItem?.getResource().getDescription());
-        _icon.SetTexture(_stackItem.getResource().getInventoryIcon);
+        _stackItem = data as ItemStatic;
+        _nameLabel.SetText(_stackItem?.GetName());
+        _descriptionLabel.SetText(_stackItem?.getDescription());
+        _icon.SetTexture(_stackItem?.getInventoryIcon);
         Position = GetViewport().GetMousePosition();
     }
 

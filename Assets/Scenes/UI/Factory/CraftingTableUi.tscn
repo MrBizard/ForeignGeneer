@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://igq70ebc8pcg"]
+[gd_scene load_steps=5 format=3 uid="uid://igq70ebc8pcg"]
 
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="1_ipoj5"]
 [ext_resource type="Script" path="res://Assets/Scripts/Interface/Factory/CraftingTableUi.cs" id="1_nspl2"]
+[ext_resource type="PackedScene" uid="uid://b8vurq8pm0g60" path="res://Assets/Scenes/UI/Recipe/CraftingRecipeChoiceUi.tscn" id="2_5qwxa"]
 [ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="3_m2jm3"]
 
-[node name="CraftingTableUi" type="Control"]
+[node name="CraftingTableUi" type="Control" node_paths=PackedStringArray("_slot", "_gridContainer", "_progressBar")]
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +14,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nspl2")
+_slot = NodePath("Machine/Container/SlotUI")
+_gridContainer = NodePath("Machine/Container/ScrollContainer/GridContainer")
+_progressBar = NodePath("Machine/Container/ProgressBar")
+_recipeUiPacked = ExtResource("2_5qwxa")
 
 [node name="InventoryUi" parent="." instance=ExtResource("1_ipoj5")]
 layout_mode = 1
@@ -80,3 +86,5 @@ offset_bottom = 31.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 25
 text = "X"
+
+[connection signal="pressed" from="Machine/close" to="." method="close"]

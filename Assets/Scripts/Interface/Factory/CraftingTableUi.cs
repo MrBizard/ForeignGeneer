@@ -16,6 +16,7 @@ public partial class CraftingTableUi : Control,BaseUi
     public void initialize(object data)
     {
         _craftingTable = data as CraftingTable;
+        initRecipeList();
         initOutputSlot();
     }
     
@@ -23,15 +24,16 @@ public partial class CraftingTableUi : Control,BaseUi
     {
         updateProgressBar();
         updateOutputSlot();
+        _progressBar.Value = 0;
     }
 
     private void initRecipeList()
     {
         foreach (Recipe recipe in _craftingTable.itemStatic.recipeList)
         {
-            RecipeChoiceUi recipeUi = _recipeUiPacked.Instantiate<RecipeChoiceUi>();
-            recipeUi.init(recipe);
-            recipeUi.Connect(nameof(RecipeChoiceUi.RecipeClicked), new Callable(this, nameof(onRecipeClicked)));
+            CraftingRecipeChoiceUi recipeUi = _recipeUiPacked.Instantiate<CraftingRecipeChoiceUi>();
+            recipeUi.initialize(recipe);
+            recipeUi.Connect(nameof(CraftingRecipeChoiceUi.RecipeClicked), new Callable(this, nameof(onRecipeClicked)));
             _gridContainer.AddChild(recipeUi);
         }
     }
@@ -51,7 +53,7 @@ public partial class CraftingTableUi : Control,BaseUi
     }
     private void initOutputSlot()
     {
-        _slot.initialize(_craftingTable.output, 0);
+        _slot.initialize(_craftingTable.output, 0, true);
     }
     public void close()
     {
@@ -60,7 +62,7 @@ public partial class CraftingTableUi : Control,BaseUi
 
     private void updateProgressBar()
     {
-        _progressBar.Value = _craftingTable.craft.craftProgress * 100;
+        _progressBar.Value =  _craftingTable.craft.craftProgress* 100;
     }
 
     private void onRecipeClicked(Recipe recipe)
@@ -73,6 +75,9 @@ public partial class CraftingTableUi : Control,BaseUi
         {
             case InterfaceType.Progress:
                 updateProgressBar();
+                break;
+            default:
+                updateUi();
                 break;
         }
     }

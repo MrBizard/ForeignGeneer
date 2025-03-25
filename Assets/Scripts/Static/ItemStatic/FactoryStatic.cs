@@ -3,6 +3,7 @@ using Godot;
 using MonoCustomResourceRegistry;
 
 [RegisteredType(nameof(FactoryStatic), "", nameof(ItemStatic))]
+[GlobalClass]
 public partial class FactoryStatic : ItemStatic
 {
 	[Export] public int electricalCost { get; set; }

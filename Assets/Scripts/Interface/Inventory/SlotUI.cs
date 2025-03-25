@@ -13,11 +13,12 @@ public partial class SlotUI : Control
     private int _slotIndex;
     private Timer _hoverTimer;
     private bool _isHovered = false;
+    [Export] private string _overlay = "overlayItemInformation"; 
 
     public override void _Ready()
     {
         _hoverTimer = new Timer();
-        _hoverTimer.WaitTime = 0.5f; // Temps avant affichage
+        _hoverTimer.WaitTime = 0.5f;
         _hoverTimer.OneShot = true;
         _hoverTimer.Connect("timeout", new Callable(this, nameof(showItemDescription)));
         AddChild(_hoverTimer);
@@ -95,33 +96,27 @@ public partial class SlotUI : Control
             var stackItem = _inventory.getItem(_slotIndex);
             if (stackItem == null)
             {
-                // Poser l'item dans le slot vide
                 _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _slotIndex);
-                InventoryManager.Instance.setCurrentItemInMouse(null); // Mettre à jour l'item dans la souris
-                _inventory.notifyInventoryUpdated();
+                InventoryManager.Instance.setCurrentItemInMouse(null);
             }
             else if (stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
             {
-                // Fusionner les stacks si c'est le même item
                 InventoryManager.Instance.currentItemInMouse.setStack(stackItem.add(InventoryManager.Instance.currentItemInMouse.getStack()));
                 if (InventoryManager.Instance.currentItemInMouse.getStack() <= 0)
                 {
                     InventoryManager.Instance.setCurrentItemInMouse(null);
                 }
-                _inventory.notifyInventoryUpdated();
             }
             else
             {
-                // Échanger les items
                 var temp = stackItem;
                 _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _slotIndex);
-                InventoryManager.Instance.setCurrentItemInMouse(temp); // Mettre à jour l'item dans la souris
-                _inventory.notifyInventoryUpdated();
+                InventoryManager.Instance.setCurrentItemInMouse(temp);
             }
+            _inventory.notifyInventoryUpdated();
         }
     }
     updateUi();
-    // Met à jour l'affichage de l'item dans la souris après chaque interaction
     InventoryManager.Instance.setCurrentItemInMouse(InventoryManager.Instance.currentItemInMouse);
 }
 
@@ -193,13 +188,13 @@ public partial class SlotUI : Control
     {
         if (_isHovered && _inventory.getItem(_slotIndex) != null)
         {
-            UiManager.instance.openUi("overlayItemInformation", _inventory.getItem(_slotIndex));
+            UiManager.instance.openUi(_overlay, _inventory.getItem(_slotIndex).getResource());
         }
     }
 
     private void hideItemDescription()
     {
-        UiManager.instance.closeUi("overlayItemInformation");
+        UiManager.instance.closeUi(_overlay);
     }
     
     /// <summary>

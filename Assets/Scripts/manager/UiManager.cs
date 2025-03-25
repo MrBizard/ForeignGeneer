@@ -135,7 +135,7 @@ public partial class UiManager : Node
         foreach (var uiEntry in _openUis)
         {
             var baseUi = uiEntry.Value as BaseUi;
-            baseUi?.updateUi();
+            baseUi?.update();
         }
     }
     /// <summary>
@@ -148,6 +148,6 @@ public partial class UiManager : Node
             return;
         }
         BaseUi ui = _openUis[name] as BaseUi;
-        ui?.updateUi();
+        ui?.update();
     }
 }

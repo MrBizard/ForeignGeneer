@@ -27,7 +27,6 @@ public abstract class BaseCraft
         {
             isCrafting = true;
             _onCraftFinished = onCraftFinished;
-
             craftTimer.OneShot = true;
             craftTimer.WaitTime = recipe.duration;
             craftTimer.Timeout += onCraftFinished;
@@ -113,9 +112,9 @@ public abstract class BaseCraft
             return true;
 
         var outputSlotItem = output.getItem(0);
-        return outputSlotItem == null ||
+        return outputSlotItem == null ||(
                outputSlotItem.getStack() + recipe.output.getStack()
-               < outputSlotItem.getResource().getMaxStack;
+               < outputSlotItem.getResource().getMaxStack && recipe.output.getResource() == outputSlotItem.getResource());
     }
 
     public override string ToString()
