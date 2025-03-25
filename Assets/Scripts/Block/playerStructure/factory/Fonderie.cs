@@ -73,7 +73,7 @@ public partial class Fonderie : PlayerBaseStructure, IInputFactory<CraftingFacto
 
     private void startCraft()
     {
-        if (EnergyManager.instance.isDown() || craft.isCrafting)
+        if (EnergyManager.getInstance().isDown() || craft.isCrafting)
         {
             return;
         }

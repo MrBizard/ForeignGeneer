@@ -52,14 +52,14 @@ public partial class PlayerBaseStructure : StaticBody3D,IObservable, IPlayerStru
         if (!_observers.Contains(observer))
         {
             _observers.Add(observer);
-            EnergyManager.instance.attach(observer);
+            EnergyManager.getInstance().attach(observer);
         }
     }
 
     public void detach(IObserver observer)
     {
         _observers.Remove(observer);
-        EnergyManager.instance.detach(observer);
+        EnergyManager.getInstance().detach(observer);
     }
     
     public void notify(InterfaceType? interfaceType = null)

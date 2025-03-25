@@ -3,15 +3,18 @@ using Godot;
 
 namespace ForeignGeneer.Assets.Scripts.manager;
 
-public partial class EnergyManager : Node, IObservable
+public class EnergyManager : IObservable
 {
-    public static EnergyManager instance { get; private set; }
+    private static EnergyManager instance { get; set; }
     private List<IObserver> _observers = new List<IObserver>();
-    public EnergyManager()
+    private EnergyManager()
     {
         instance = this;
     }
-    
+    public static EnergyManager getInstance()
+    {
+        return instance ?? (instance = new EnergyManager());
+    }
     private float _globalElectricity = 100;
     
     public float getGlobalElectricity()

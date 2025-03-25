@@ -2,24 +2,20 @@
 
 namespace ForeignGeneer.Assets.Scripts.manager;
 
-public partial class PollutionManager : Node
+public class PollutionManager : IObservable
 {
-    public static PollutionManager instance { get; private set; }
+    private static PollutionManager instance { get; set; }
 
     private float _pollution = 0;
     
-    public PollutionManager()
+    private PollutionManager()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            instance = null;
-        }
     }
 
+    public static PollutionManager getInstance()
+    {
+        return instance ?? (instance = new PollutionManager());
+    }
     public void addPolution(float pollution)
     {
         _pollution += pollution;
@@ -39,5 +35,19 @@ public partial class PollutionManager : Node
     {
         return _pollution >= pollution;
     }
-    
+
+    public void attach(IObserver observer)
+    {
+        
+    }
+
+    public void detach(IObserver observer)
+    {
+        
+    }
+
+    public void notify(InterfaceType? interfaceType = null)
+    {
+        
+    }
 }

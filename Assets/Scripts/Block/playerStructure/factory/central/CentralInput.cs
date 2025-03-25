@@ -66,7 +66,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
     {
         if (craft.startCraft(onCraftFinished))
         {
-            EnergyManager.instance.addGlobalElectricity(itemStatic.electricalCost);
+            EnergyManager.getInstance().addGlobalElectricity(itemStatic.electricalCost);
         }
         notify(InterfaceType.Progress);
     }
@@ -78,7 +78,7 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         {
             GD.Print("!= null");
             craft.stopCraft();
-            EnergyManager.instance.removeGlobalElectricity(itemStatic.electricalCost);
+            EnergyManager.getInstance().removeGlobalElectricity(itemStatic.electricalCost);
             startCraft();
         }
         notify(InterfaceType.Progress);

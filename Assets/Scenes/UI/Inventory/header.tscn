@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://bojbq0vmc2nhq"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/PlayerInventoryUi.cs" id="1_kmu83"]
+[ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="1_vuy4s"]
+[ext_resource type="PackedScene" uid="uid://c83fqjo4lhfry" path="res://Assets/Scenes/UI/miniGame/CircuitUi.tscn" id="2_x058x"]
+
+[node name="InventoryUi" type="Control" node_paths=PackedStringArray("_inventoryUi", "_circuitUi")]
+layout_mode = 3
+anchor_left = 0.1
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kmu83")
+_inventoryUi = NodePath("TabContainer/Inventaire/InventoryUi")
+_circuitUi = NodePath("TabContainer/Circuit/CircuitUi")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="Inventaire" type="Control" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="InventoryUi" parent="TabContainer/Inventaire" instance=ExtResource("1_vuy4s")]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.4
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+
+[node name="Circuit" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="CircuitUi" parent="TabContainer/Circuit" instance=ExtResource("2_x058x")]
+layout_mode = 1

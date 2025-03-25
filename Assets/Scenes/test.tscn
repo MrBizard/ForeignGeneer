@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://0r4bxj3uot8q"]
 
-[ext_resource type="Texture2D" uid="uid://b0an31vpp4wru" path="res://Assets/Texture/environnement/damier.png" id="1_ermdq"]
+[ext_resource type="Texture2D" uid="uid://s8jnyv8qa23s" path="res://Assets/Texture/environnement/damier.png" id="1_ermdq"]
 [ext_resource type="PackedScene" uid="uid://pmk1ja4lcf6d" path="res://Assets/Prefabs/personnage.tscn" id="1_qfhkf"]
 [ext_resource type="PackedScene" uid="uid://d4kum67w04bia" path="res://Assets/Prefabs/Factory/CraftingTable.tscn" id="2_kj6vs"]
 [ext_resource type="PackedScene" uid="uid://c6xr5ux6th5oq" path="res://Assets/Prefabs/manager.tscn" id="2_kk7j7"]
@@ -49,9 +49,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_t7p5m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.500162, 0)
 shape = SubResource("BoxShape3D_lneut")
 
-[node name="CraftingTable" parent="MeshInstance3D" instance=ExtResource("2_kj6vs")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.144613, 0.0259092, -0.418155)
-
 [node name="Manager" parent="." instance=ExtResource("2_kk7j7")]
 
 [node name="Personnage" parent="." instance=ExtResource("1_qfhkf")]
@@ -69,3 +66,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.98275, 0, -8.61066)
 
 [node name="wind_turbine" parent="worldStructure/static" instance=ExtResource("6_612tm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.824, 0, -7.826)
+
+[node name="CraftingTable" parent="worldStructure/static" instance=ExtResource("2_kj6vs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15087, 0.521425, -9.06228)

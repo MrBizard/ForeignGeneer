@@ -25,7 +25,7 @@ public partial class SolarCentral : PlayerBaseStructure, IPlayerStructure<Factor
     {
         base._Ready();
         CalculatePowerGenerated(); 
-        EnergyManager.instance.addGlobalElectricity(PowerGenerated); 
+        EnergyManager.getInstance().addGlobalElectricity(PowerGenerated); 
     }
 
     private void CalculatePowerGenerated()

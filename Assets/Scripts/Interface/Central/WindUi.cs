@@ -48,7 +48,7 @@ public partial class WindUi : Control,BaseUi
     {
         if (_electricityLabel != null && _central != null)
         {
-            _electricityLabel.Text = $"Puissance : {_central.powerGenerated} kW/s || Électricité totale : {EnergyManager.instance.getGlobalElectricity()} kW/s";
+            _electricityLabel.Text = $"Puissance : {_central.powerGenerated} kW/s || Électricité totale : {EnergyManager.getInstance().getGlobalElectricity()} kW/s";
         }
     }
     public void update(InterfaceType? interfaceType)

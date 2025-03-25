@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Godot;
 
 /// <summary>
 /// Classe représentant l'inventaire d'un joueur.

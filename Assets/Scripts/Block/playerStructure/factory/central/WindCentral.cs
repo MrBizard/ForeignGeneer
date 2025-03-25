@@ -20,7 +20,7 @@ public partial class WindCentral : PlayerBaseStructure, IPlayerStructure<Factory
         powerGenerated = itemStatic.electricalCost *
                          (1 + coef * Mathf.Log(1 + GlobalPosition.Y));
         powerGenerated = Mathf.Round(powerGenerated * 10)/10;
-        EnergyManager.instance.addGlobalElectricity(powerGenerated);
+        EnergyManager.getInstance().addGlobalElectricity(powerGenerated);
     }
 
     public override void openUi()
