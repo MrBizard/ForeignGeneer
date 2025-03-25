@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://buaekevq6x28v"]
+[gd_scene load_steps=8 format=3 uid="uid://buaekevq6x28v"]
 
-[ext_resource type="Texture2D" uid="uid://cgi3l5nixfall" path="res://Assets/damier.png" id="1_3puoc"]
+[ext_resource type="Texture2D" uid="uid://by6teeb6ebj0c" path="res://Assets/damier.png" id="1_3puoc"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="3_6fncv"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="4_gc2hg"]
-[ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="7_tdmn0"]
-[ext_resource type="Script" path="res://Assets/Scripts/Player/PlayerInventory.cs" id="8_k76vs"]
+[ext_resource type="PackedScene" uid="uid://pmk1ja4lcf6d" path="res://Assets/Prefabs/personnage.tscn" id="7_tdmn0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wmmy8"]
 sky_top_color = Color(0.310569, 0.430626, 0.74474, 1)
@@ -44,7 +43,6 @@ anchor_right = 0.036
 anchor_bottom = 0.063
 offset_right = -0.472004
 offset_bottom = 0.175999
-script = ExtResource("8_k76vs")
 
 [node name="ColorRect" type="ColorRect" parent="Manager/Inventory Manager/Container"]
 layout_mode = 2

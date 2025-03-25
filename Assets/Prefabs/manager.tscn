@@ -20,11 +20,10 @@
 
 [node name="Manager" type="Node"]
 script = ExtResource("1_71vod")
-option = ExtResource("2_4ko3m")
 
 [node name="UiManager" type="Node" parent="."]
 script = ExtResource("3_a3ua0")
-_uiKeys = ["fonderieUi", "centralUi", "inventoryUi", "itemCursorUi", "slotUi", "recipeListUi", "optionUi", "overlayItemInformation"]
+_uiKeys = ["fonderieUi", "centralUi", "inventoryUi", "itemCursorUi", "slotUi", "recipeListUi", "overlayItemInformation"]
 _uiScenes = [ExtResource("5_ddexw"), ExtResource("6_pllps"), ExtResource("7_go5he"), ExtResource("7_qfv7a"), ExtResource("8_snqcd"), ExtResource("4_iqjgk"), ExtResource("2_4ko3m"), ExtResource("10_h7g1s")]
 
 [node name="InputManager" type="Node" parent="."]
