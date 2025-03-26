@@ -41,22 +41,22 @@ public partial class UiManager : Node
 		}
 	}
 
-    /// <summary>
-    /// Ouvre une UI par son nom.
-    /// </summary>
-    public void openUi(string uiName, Object data = null)
-    {
-        if (_openUis.ContainsKey(uiName))
-        {
-            return;
-        }
-        if (_loadedUiScenes.TryGetValue(uiName, out var uiScene))
-        {
-            var uiInstance = uiScene.Instantiate<Control>();
-            AddChild(uiInstance, true);
+	/// <summary>
+	/// Ouvre une UI par son nom.
+	/// </summary>
+	public void openUi(string uiName, Object data = null)
+	{
+		if (_openUis.ContainsKey(uiName))
+		{
+			return;
+		}
+		if (_loadedUiScenes.TryGetValue(uiName, out var uiScene))
+		{
+			var uiInstance = uiScene.Instantiate<Control>();
+			AddChild(uiInstance, true);
 
-            BaseUi baseUi = uiInstance as BaseUi;
-            baseUi?.initialize(data);
+			BaseUi baseUi = uiInstance as BaseUi;
+			baseUi?.initialize(data);
 
 			_openUis[uiName] = uiInstance;
 			Input.MouseMode = Input.MouseModeEnum.Visible;
@@ -65,49 +65,49 @@ public partial class UiManager : Node
 		}
 	}
 
-    /// <summary>
-    /// Ferme une UI spécifique ou toutes les UI si aucun paramètre n'est fourni.
-    /// </summary>
-    public void closeUi(string uiName = null)
-    {
-        if (string.IsNullOrEmpty(uiName))
-        {
-            foreach (var uiEntry in _openUis)
-            {
-                DetachIfObserver(uiEntry.Value);
-                uiEntry.Value.QueueFree();
-            }
-            _openUis.Clear();
-            Input.MouseMode = Input.MouseModeEnum.Captured;
-            onUiStateChanged?.Invoke(false);
-        }
-        else
-        {
-            if (_openUis.ContainsKey(uiName))
-            {
-                DetachIfObserver(_openUis[uiName]);
+	/// <summary>
+	/// Ferme une UI spécifique ou toutes les UI si aucun paramètre n'est fourni.
+	/// </summary>
+	public void closeUi(string uiName = null)
+	{
+		if (string.IsNullOrEmpty(uiName))
+		{
+			foreach (var uiEntry in _openUis)
+			{
+				DetachIfObserver(uiEntry.Value);
+				uiEntry.Value.QueueFree();
+			}
+			_openUis.Clear();
+			Input.MouseMode = Input.MouseModeEnum.Captured;
+			onUiStateChanged?.Invoke(false);
+		}
+		else
+		{
+			if (_openUis.ContainsKey(uiName))
+			{
+				DetachIfObserver(_openUis[uiName]);
 
 				_openUis[uiName].QueueFree();
 				_openUis.Remove(uiName);
 
-                if (_openUis.Count == 0)
-                {
-                    onUiStateChanged?.Invoke(false);
-                }
-            }
-        }
-    }
+				if (_openUis.Count == 0)
+				{
+					onUiStateChanged?.Invoke(false);
+				}
+			}
+		}
+	}
 
-    /// <summary>
-    /// Vérifie si l'objet implémente IObserver et appelle detach() si c'est le cas.
-    /// </summary>
-    private void DetachIfObserver(Node uiNode)
-    {
-        if (uiNode is IObserver observer)
-        {
-            observer.detach();
-        }
-    }
+	/// <summary>
+	/// Vérifie si l'objet implémente IObserver et appelle detach() si c'est le cas.
+	/// </summary>
+	private void DetachIfObserver(Node uiNode)
+	{
+		if (uiNode is IObserver observer)
+		{
+			observer.detach();
+		}
+	}
 
 
 	/// <summary>
@@ -145,23 +145,23 @@ public partial class UiManager : Node
 			return;
 		}
 
-        // Rafraîchit toutes les UI ouvertes
-        foreach (var uiEntry in _openUis)
-        {
-            var baseUi = uiEntry.Value as BaseUi;
-            baseUi?.update();
-        }
-    }
-    /// <summary>
-    /// Actualise l'interface utilisateur donnée en paramètre
-    /// </summary>
-    public void refreshUi(string name, Node data = null)
-    {
-        if (_openUis.Count == 0 || _openUis.ContainsKey(name))
-        {
-            return;
-        }
-        BaseUi ui = _openUis[name] as BaseUi;
-        ui?.update();
-    }
+		// Rafraîchit toutes les UI ouvertes
+		foreach (var uiEntry in _openUis)
+		{
+			var baseUi = uiEntry.Value as BaseUi;
+			baseUi?.update();
+		}
+	}
+	/// <summary>
+	/// Actualise l'interface utilisateur donnée en paramètre
+	/// </summary>
+	public void refreshUi(string name, Node data = null)
+	{
+		if (_openUis.Count == 0 || _openUis.ContainsKey(name))
+		{
+			return;
+		}
+		BaseUi ui = _openUis[name] as BaseUi;
+		ui?.update();
+	}
 }
