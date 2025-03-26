@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://Assets/Scripts/manager/AudioManager.cs" id="3_whhdt"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="4_75oo3"]
 [ext_resource type="PackedScene" uid="uid://bt22jt7gp0bq5" path="res://Assets/Scenes/UI/Inventory/itemCursorUi.tscn" id="5_rckrv"]
-[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="6_ngkbe"]
+[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="6_ngkbe"]
 [ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Recipe/RecipeListUi.tscn" id="7_xpn3d"]
 [ext_resource type="PackedScene" uid="uid://bvoaib2hksqyq" path="res://Assets/Scenes/UI/Inventory/overlayItemInformation.tscn" id="8_u87il"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/MenuOptions.tscn" id="9_v4j20"]

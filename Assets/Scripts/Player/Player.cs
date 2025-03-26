@@ -56,10 +56,10 @@ public partial class Player : CharacterBody3D
 	/// </summary>
 	private bool _isUiOpen = false;
 
-    /// <summary>
-    /// Référence au Raycast pour les interactions.
-    /// </summary>
-    public RayCast3D raycast;
+	/// <summary>
+	/// Référence au Raycast pour les interactions.
+	/// </summary>
+	public RayCast3D raycast;
 
 	/// <summary>
 	/// Indicateur du mode de vue (FPS ou TPS).
@@ -85,13 +85,13 @@ public partial class Player : CharacterBody3D
 			Instance = this;
 		}
 
-        _armature = GetNode<Node3D>("Armature_001");
-        _pivot = GetNode<Node3D>("Pivot");
-        _springArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
-        _animTree = GetNode<AnimationTree>("AnimationTree");
-        raycast = GetNode<RayCast3D>("Pivot/SpringArm3D/Camera3D/RayCast3D");
-        Input.MouseMode = Input.MouseModeEnum.Captured; // Capture le curseur de la souris.
-        UiManager.instance.onUiStateChanged += OnUiStateChanged; // S'abonne aux changements d'état de l'UI.
+		_armature = GetNode<Node3D>("Armature_001");
+		_pivot = GetNode<Node3D>("Pivot");
+		_springArm = GetNode<SpringArm3D>("Pivot/SpringArm3D");
+		_animTree = GetNode<AnimationTree>("AnimationTree");
+		raycast = GetNode<RayCast3D>("Pivot/SpringArm3D/Camera3D/RayCast3D");
+		Input.MouseMode = Input.MouseModeEnum.Captured; // Capture le curseur de la souris.
+		UiManager.instance.onUiStateChanged += OnUiStateChanged; // S'abonne aux changements d'état de l'UI.
 
 		// Initialise la caméra en mode TPS par défaut
 		SetFirstPersonMode(false);
@@ -107,14 +107,14 @@ public partial class Player : CharacterBody3D
 		Input.MouseMode = _isUiOpen ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
 	}
 
-    /// <summary>
-    /// Active ou désactive le sprint du joueur.
-    /// </summary>
-    public void SetSprinting()
-    {
-        _isSprinting = !_isSprinting;
-        Speed = _isSprinting ? 50.0f : 5.0f;
-    }
+	/// <summary>
+	/// Active ou désactive le sprint du joueur.
+	/// </summary>
+	public void SetSprinting()
+	{
+		_isSprinting = !_isSprinting;
+		Speed = _isSprinting ? 50.0f : 5.0f;
+	}
 
 	/// <summary>
 	/// Permet au joueur de sauter s'il est sur le sol.
@@ -127,18 +127,18 @@ public partial class Player : CharacterBody3D
 		}
 	}
 
-    /// <summary>
-    /// Gestion du clic gauche du joueur.
-    /// </summary>
-    public void LeftClick()
-    {
-        if (_isUiOpen) return;
-        if(!UiManager.instance.isAnyUiOpen())
-            InterractionManager.instance.Interact(InteractType.Dismantle);
-        StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
-        if (item is not null)
-            item.getResource().LeftClick();
-    }
+	/// <summary>
+	/// Gestion du clic gauche du joueur.
+	/// </summary>
+	public void LeftClick()
+	{
+		if (_isUiOpen) return;
+		if(!UiManager.instance.isAnyUiOpen())
+			InterractionManager.instance.Interact(InteractType.Dismantle);
+		StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
+		if (item is not null)
+			item.getResource().LeftClick();
+	}
 
 	/// <summary>
 	/// Gestion du clic droit du joueur.
@@ -194,17 +194,17 @@ public partial class Player : CharacterBody3D
 		_movementDirection = Vector3.Zero; // Arrête le mouvement.
 	}
 
-    /// <summary>
-    /// Méthode appelée à chaque frame physique pour appliquer la gravité, le mouvement et les animations.
-    /// </summary>
-    public override void _PhysicsProcess(double delta)
-    {
-        if (_isUiOpen) return; 
+	/// <summary>
+	/// Méthode appelée à chaque frame physique pour appliquer la gravité, le mouvement et les animations.
+	/// </summary>
+	public override void _PhysicsProcess(double delta)
+	{
+		if (_isUiOpen) return; 
 
-        if (!IsOnFloor())
-        {
-            Velocity += GetGravity() * (float)delta; 
-        }
+		if (!IsOnFloor())
+		{
+			Velocity += GetGravity() * (float)delta; 
+		}
 
 		if (_movementDirection != Vector3.Zero)
 		{

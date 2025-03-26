@@ -20,38 +20,38 @@ public partial class InventoryManager : Node
 	public Inventory hotbar { get; private set; }
 	public StackItem currentItemInMouse { get; private set; }
 
-    public int currentSlotHotbar = 0;
-    public PreviewObject currentPreview;
-    public List<Inventory> inventory = new List<Inventory>();
+	public int currentSlotHotbar = 0;
+	public PreviewObject currentPreview;
+	public List<Inventory> inventory = new List<Inventory>();
 
-    public override void _Ready()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
+	public override void _Ready()
+	{
+		if (Instance == null)
+		{
 			Instance = this;
-        }
-        mainInventory = new Inventory(mainInventorySize);
-        hotbar = new Inventory(hotbarSize);
-        
-        inventory.Add(mainInventory);
-        inventory.Add(hotbar);
-        
-        mainInventory.addItemToSlot(new StackItem(testItem, 50), 10);
-        mainInventory.addItemToSlot(new StackItem(testItem, 67), 7);
-        mainInventory.addItemToSlot(new StackItem(testItem2, 1), 1);
-        mainInventory.addItemToSlot(new StackItem(testItem3, 1), 2);
-        hotbar.addItemToSlot(new StackItem(testItem, 67), 1);
-    }
-    /// <summary>
-    /// Sets the item currently held by the mouse.
-    /// </summary>
-    public void setCurrentItemInMouse(StackItem item)
-    {
-        currentItemInMouse = item;
+		}
+		else
+		{
+			Instance = this;
+		}
+		mainInventory = new Inventory(mainInventorySize);
+		hotbar = new Inventory(hotbarSize);
+		
+		inventory.Add(mainInventory);
+		inventory.Add(hotbar);
+		
+		mainInventory.addItemToSlot(new StackItem(testItem, 50), 10);
+		mainInventory.addItemToSlot(new StackItem(testItem, 67), 7);
+		mainInventory.addItemToSlot(new StackItem(testItem2, 1), 1);
+		mainInventory.addItemToSlot(new StackItem(testItem3, 1), 2);
+		hotbar.addItemToSlot(new StackItem(testItem, 67), 1);
+	}
+	/// <summary>
+	/// Sets the item currently held by the mouse.
+	/// </summary>
+	public void setCurrentItemInMouse(StackItem item)
+	{
+		currentItemInMouse = item;
 
 		UiManager.instance.closeUi("itemCursorUi");
 
@@ -61,17 +61,17 @@ public partial class InventoryManager : Node
 		}
 	}
 
-    public void drop()
-    {
-        if (currentItemInMouse != null)
-        {
-            Vector3 dropPosition = FindDropPosition();
+	public void drop()
+	{
+		if (currentItemInMouse != null)
+		{
+			Vector3 dropPosition = FindDropPosition();
 
-            StaticBody3D itemDrop = currentItemInMouse.getResource().instantiate(dropPosition);
-            itemDrop.Position = FindDropPosition();
-            GetTree().CurrentScene.GetNode("worldStructure").AddChild(itemDrop);
-        }
-    }
+			StaticBody3D itemDrop = currentItemInMouse.getResource().instantiate(dropPosition);
+			itemDrop.Position = FindDropPosition();
+			GetTree().CurrentScene.GetNode("worldStructure").AddChild(itemDrop);
+		}
+	}
 
 	private Vector3 FindDropPosition()
 	{
@@ -93,16 +93,16 @@ public partial class InventoryManager : Node
 		return FindNearestFreeSpot(dropPosition);
 	}
 
-    private Vector3 FindNearestFreeSpot(Vector3 origin)
-    {
-        Node3D player = Player.Instance;
-        if (player == null)
-        {
-            GD.PrintErr("Player not found!", player);
-            return origin;
-        }
-        return origin; 
-    }
+	private Vector3 FindNearestFreeSpot(Vector3 origin)
+	{
+		Node3D player = Player.Instance;
+		if (player == null)
+		{
+			GD.PrintErr("Player not found!", player);
+			return origin;
+		}
+		return origin; 
+	}
 
 	private Vector3 AdjustHeightToGround(Vector3 position)
 	{
@@ -119,60 +119,60 @@ public partial class InventoryManager : Node
 	
 		var result = spaceState.IntersectRay(query);
 
-        if (result.Count > 0)
-        {
-            return (Vector3)result["position"];
-        }
-    
-        return position;
-    }
+		if (result.Count > 0)
+		{
+			return (Vector3)result["position"];
+		}
+	
+		return position;
+	}
 
-    public int addItemToInventory(StackItem stack)
-    {
-        int looseItem = 0;
-        foreach (Inventory inv in inventory)
-        { 
-            looseItem = inv.addItem(stack);
-            if (looseItem <= 0)
-                return 0;
-        }
-        return looseItem;
-    }
-    public StackItem FindItem(ItemStatic item)
-    {
-        foreach (Inventory inv in inventory)
-        {
-            StackItem foundItem = inv.FindItem(item);
-            if (foundItem != null)
-            {
-                return foundItem;
-            }
-        }
-        return null;
-    }
-    public void addCurrentItemToHotbar()
-    {
-        if (currentSlotHotbar + 1 < hotbarSize)
-        {
-            currentSlotHotbar++;
-        }
-        else
-        {
-            currentSlotHotbar = 0;
-        }
-        
-        StopPreview();
-    }
-    public void removeCurrentItemToHotbar()
-    {
-        if (currentSlotHotbar - 1 >= 0)
-        {
-            currentSlotHotbar--;
-        }
-        else
-        {
-            currentSlotHotbar = hotbarSize-1;
-        }
+	public int addItemToInventory(StackItem stack)
+	{
+		int looseItem = 0;
+		foreach (Inventory inv in inventory)
+		{ 
+			looseItem = inv.addItem(stack);
+			if (looseItem <= 0)
+				return 0;
+		}
+		return looseItem;
+	}
+	public StackItem FindItem(ItemStatic item)
+	{
+		foreach (Inventory inv in inventory)
+		{
+			StackItem foundItem = inv.FindItem(item);
+			if (foundItem != null)
+			{
+				return foundItem;
+			}
+		}
+		return null;
+	}
+	public void addCurrentItemToHotbar()
+	{
+		if (currentSlotHotbar + 1 < hotbarSize)
+		{
+			currentSlotHotbar++;
+		}
+		else
+		{
+			currentSlotHotbar = 0;
+		}
+		
+		StopPreview();
+	}
+	public void removeCurrentItemToHotbar()
+	{
+		if (currentSlotHotbar - 1 >= 0)
+		{
+			currentSlotHotbar--;
+		}
+		else
+		{
+			currentSlotHotbar = hotbarSize-1;
+		}
 
 		StopPreview();
 	}

@@ -378,9 +378,11 @@ transform = Transform3D(0.31, 0, 0, 0, 0.31, 0, 0, 0, 0.31, -28.0309, 0, -39.639
 
 [node name="central_biomasse" parent="worldStructure/static" instance=ExtResource("11_ueu8c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.2034, 0, -6.98664)
+itemStatic = null
 
 [node name="Fonderie" parent="worldStructure/static" instance=ExtResource("12_b1lrc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.2545, 2.38419e-07, 1.43519)
+itemStatic = null
 
 [node name="Personnage" parent="." instance=ExtResource("4_xqtcq")]
 process_priority = 2

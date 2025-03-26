@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Recipe" load_steps=10 format=3 uid="uid://betqpgypraidr"]
+[gd_resource type="Resource" load_steps=10 format=3 uid="uid://betqpgypraidr"]
 
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="1_h17ku"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/recipe/Recipe.cs" id="1_namxi"]
