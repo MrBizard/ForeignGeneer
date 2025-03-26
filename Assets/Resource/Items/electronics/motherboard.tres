@@ -6,7 +6,7 @@
 [resource]
 resource_name = "motherboard"
 script = ExtResource("1_uabjm")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _inventoryIcon = ExtResource("1_0ob84")
 _description = ""

@@ -6,7 +6,7 @@
 [resource]
 resource_name = "fan"
 script = ExtResource("1_vsreh")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _inventoryIcon = ExtResource("1_muqt2")
 _description = ""

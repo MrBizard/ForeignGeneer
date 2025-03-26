@@ -6,7 +6,7 @@
 [resource]
 resource_name = "coal"
 script = ExtResource("1_iy06v")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _inventoryIcon = ExtResource("1_axlrr")
 _description = ""

@@ -6,7 +6,7 @@
 [resource]
 resource_name = "led"
 script = ExtResource("2_io5yc")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _inventoryIcon = ExtResource("1_jj2bc")
 _description = ""

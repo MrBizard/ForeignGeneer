@@ -6,7 +6,7 @@
 [resource]
 resource_name = "pcb"
 script = ExtResource("1_pvthr")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _inventoryIcon = ExtResource("1_rnvc4")
 _description = ""

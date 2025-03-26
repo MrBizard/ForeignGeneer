@@ -6,7 +6,7 @@
 [resource]
 resource_name = "IronRod"
 script = ExtResource("1_m77ou")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _inventoryIcon = ExtResource("1_cpgu6")
 _description = ""

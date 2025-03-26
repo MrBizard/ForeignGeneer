@@ -5,6 +5,6 @@
 [resource]
 resource_name = "rawCopper"
 script = ExtResource("1_uu0a1")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _description = ""

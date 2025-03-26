@@ -6,7 +6,7 @@
 [resource]
 resource_name = "IronPlate"
 script = ExtResource("1_msnpd")
-_maxStack = 0
+_maxStack = 99
 _scenePath = ""
 _inventoryIcon = ExtResource("1_4ay71")
 _description = ""
