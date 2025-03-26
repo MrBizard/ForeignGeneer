@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dggykrrvl5i6h"]
+[gd_scene load_steps=4 format=3 uid="uid://cqcwsd4waorqb"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/SlotUI.cs" id="1_dpt7w"]
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/slot/SlotUiBlocked.cs" id="1_itful"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vdlo"]
 bg_color = Color(0.194349, 0.194349, 0.194349, 1)
@@ -15,7 +15,7 @@ font_size = 30
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
-[node name="SlotUI" type="Control"]
+[node name="SlotUIBlocked" type="Control"]
 physics_interpolation_mode = 0
 z_index = 2
 custom_minimum_size = Vector2(64, 64)
@@ -26,7 +26,7 @@ offset_right = -0.512001
 offset_bottom = -0.152008
 size_flags_horizontal = 6
 size_flags_vertical = 6
-script = ExtResource("1_dpt7w")
+script = ExtResource("1_itful")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1

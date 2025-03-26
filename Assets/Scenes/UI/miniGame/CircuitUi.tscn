@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c83fqjo4lhfry"]
+[gd_scene load_steps=8 format=3 uid="uid://c83fqjo4lhfry"]
 
 [ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="1_1nlaq"]
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/MiniGame/CircuitUi.cs" id="1_cesen"]
+[ext_resource type="PackedScene" uid="uid://bblmy6nha3j5u" path="res://Assets/Scenes/UI/Inventory/Slot/CircuitSlotUi.tscn" id="2_okr47"]
 [ext_resource type="PackedScene" uid="uid://sq3mjfb16uya" path="res://Assets/Scenes/UI/Inventory/InventoryBottom.tscn" id="2_vcft0"]
 
 [sub_resource type="Theme" id="Theme_bs0v5"]
@@ -18,13 +20,20 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.201527, 0.201527, 0.201526, 1)
 
-[node name="Circuit" type="Control"]
+[node name="Circuit" type="Control" node_paths=PackedStringArray("_inventoryBottomUi", "_craftButton", "_changeButton", "_gridContainer", "_outputSlotUi")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_cesen")
+_inventoryBottomUi = NodePath("InventoryBottom")
+_craftButton = NodePath("Craft/Craft/Button")
+_changeButton = NodePath("Craft/Reset/Button")
+_gridContainer = NodePath("Panel/FlowContainer")
+_circuitSlotUi = ExtResource("2_okr47")
+_outputSlotUi = NodePath("Output/SlotUI")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -53,8 +62,6 @@ offset_left = -32.0
 offset_top = -32.0
 offset_right = 32.0
 offset_bottom = 32.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Label" type="Label" parent="Output"]
 layout_mode = 1
@@ -154,13 +161,11 @@ anchor_bottom = 0.55
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="Panel"]
+[node name="FlowContainer" type="FlowContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.05
-anchor_right = 0.95
-anchor_bottom = 0.95
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -171,3 +176,6 @@ anchor_left = 0.05
 anchor_top = 0.6
 anchor_right = 0.75
 anchor_bottom = 0.95
+
+[connection signal="button_down" from="Craft/Reset/Button" to="." method="onChangeButtonPressed"]
+[connection signal="button_down" from="Craft/Craft/Button" to="." method="onCraftButtonPressed"]

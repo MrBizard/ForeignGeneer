@@ -35,11 +35,7 @@ public partial class InputManager : Node
             return;
         if (Input.IsActionJustPressed("sprint"))
         {
-            Player.Instance.SetSprinting(true);
-        }
-        if (Input.IsActionJustReleased("sprint"))
-        {
-            Player.Instance.SetSprinting(false);
+            Player.Instance.SetSprinting();
         }
 
         if (Input.IsActionJustPressed("jump"))

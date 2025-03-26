@@ -20,12 +20,11 @@ physics_interpolation_mode = 0
 z_index = 2
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 3
-anchor_right = 0.05
-anchor_bottom = 0.1
-offset_right = -0.512001
-offset_bottom = -0.152008
-size_flags_horizontal = 6
-size_flags_vertical = 6
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_ug21o")
 
 [node name="Background" type="Panel" parent="."]
@@ -55,7 +54,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-stretch_mode = 5
+expand_mode = 3
+stretch_mode = 3
 
 [node name="CountLabel" type="Label" parent="."]
 layout_mode = 1

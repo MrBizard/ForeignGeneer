@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3 uid="uid://bblmy6nha3j5u"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/slot/CircuitSlotUi.cs" id="1_8wuwh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s6q6p"]
+bg_color = Color(0.266575, 0.266575, 0.266575, 1)
+border_color = Color(0.689269, 0.318742, 0.510139, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="CircuitSlotUi" type="Control" node_paths=PackedStringArray("_textureRect", "_textureBackgroundRect", "_labelCount")]
+z_index = 2
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_8wuwh")
+_textureRect = NodePath("TextureRect")
+_textureBackgroundRect = NodePath("Panel/background")
+_labelCount = NodePath("Label")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s6q6p")
+
+[node name="background" type="TextureRect" parent="Panel"]
+modulate = Color(1, 1, 1, 0.219608)
+self_modulate = Color(1, 1, 1, 0.403922)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 4
+stretch_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 4
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.9
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

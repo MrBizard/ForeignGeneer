@@ -6,7 +6,7 @@ using ForeignGeneer.Assets.Scripts.Interface;
 
 public partial class InventoryBottomUi : Control, BaseUi
 {
-	[Export]private GridContainer _gridContainer;
+	[Export]private FlowContainer _flowContainer;
 	[Export] private PackedScene _slotUi;
 	[Export] private PackedScene _slotUiBlocked;
 	private Recipe _recipe;
@@ -20,7 +20,7 @@ public partial class InventoryBottomUi : Control, BaseUi
 
 	private void updateUi()
 	{
-		foreach (Node child in _gridContainer.GetChildren())
+		foreach (Node child in _flowContainer.GetChildren())
 		{
 			child.QueueFree();
 		}
@@ -38,7 +38,7 @@ public partial class InventoryBottomUi : Control, BaseUi
 
 	private void updateSlotUi()
 	{
-		foreach (Node child in _gridContainer.GetChildren())
+		foreach (Node child in _flowContainer.GetChildren())
 		{
 			child.QueueFree();
 		}
@@ -51,13 +51,13 @@ public partial class InventoryBottomUi : Control, BaseUi
 			{
 				SlotUI slotUi = _slotUi.Instantiate<SlotUI>();
 				slotUi.initialize(inv, i);
-				_gridContainer.AddChild(slotUi);
+				_flowContainer.AddChild(slotUi);
 			}
 			else
 			{
 				SlotUiBlocked slotUi = _slotUiBlocked.Instantiate<SlotUiBlocked>();
 				slotUi.initialize(stackItem);
-				_gridContainer.AddChild(slotUi);
+				_flowContainer.AddChild(slotUi);
 			}
 		}
 	}

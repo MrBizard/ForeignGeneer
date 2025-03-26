@@ -6,4 +6,6 @@ public enum InteractType
     Interact,
     Open,
     Close,
+    Craft,
+    Modify
 }

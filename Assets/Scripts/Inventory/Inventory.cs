@@ -1,174 +1,170 @@
 using System;
 using System.Collections.Generic;
+using ForeignGeneer.Assets.Scripts;
 
-/// <summary>
-/// Classe représentant l'inventaire d'un joueur.
-/// Gère les slots, les items et les interactions avec les items.
-/// </summary>
-public class Inventory
+public class Inventory : ISlotObservable
 {
-	public List<StackItem> slots { get; private set; }
-	public event Action onInventoryUpdated;
+    public List<StackItem> slots { get; private set; }
+    protected Dictionary<int, List<IObserver>> _slotObservers = new Dictionary<int, List<IObserver>>(); // Dictionnaire pour observer par slot
+    public event Action onInventoryUpdated;
 
-	/// <summary>
-	/// Constructeur de l'inventaire.
-	/// Initialise les slots avec une taille donnée.
-	/// </summary>
-	/// <param name="slotCount">Nombre de slots dans l'inventaire.</param>
-	public Inventory(int slotCount)
-	{
-		slots = new List<StackItem>(slotCount);
-		for (int i = 0; i < slotCount; i++)
-		{
-			slots.Add(null);
-		}
-	}
+    public Inventory(int slotCount)
+    {
+        slots = new List<StackItem>(slotCount);
+        for (int i = 0; i < slotCount; i++)
+        {
+            slots.Add(null);
+        }
+    }
 
-	/// <summary>
-	/// Ajoute un item à un slot spécifique de l'inventaire.
-	/// </summary>
-	/// <param name="item">Item à ajouter.</param>
-	/// <param name="slotIndex">Index du slot cible.</param>
-	/// <returns>True si l'ajout est réussi, sinon False.</returns>
-	public bool addItemToSlot(StackItem item, int slotIndex)
-	{
-		if (slotIndex >= slots.Count)
-			return false;
+    public void addItemToSlot(StackItem item, int slotIndex)
+    {
+        if (slotIndex >= slots.Count)
+            return;
 
-		bool success = false;
+        bool success = false;
 
-		if (slots[slotIndex] == null)
-		{
-			slots[slotIndex] = item;
-			success = true;
-		}
-		else if (slots[slotIndex].getResource() == item.getResource())
-		{
-			int remaining = slots[slotIndex].add(item.getStack());
-			if (remaining == 0)
-			{
-				success = true;
-			}
-			else
-			{
-				item.setStack(remaining);
-			}
-		}
+        if (slots[slotIndex] == null)
+        {
+            slots[slotIndex] = item;
+            success = true;
+        }
+        else if (slots[slotIndex].getResource() == item.getResource())
+        {
+            int remaining = slots[slotIndex].add(item.getStack());
+            if (remaining == 0)
+            {
+                success = true;
+            }
+            else
+            {
+                item.setStack(remaining);
+            }
+        }
 
-		if (success)
-		{
-			onInventoryUpdated?.Invoke(); // Déclenche l'événement
-		}
+        if (success)
+        {
+            onInventoryUpdated?.Invoke();
+            notify(slotIndex);  // Notify only the updated slot
+        }
+    }
 
-		return success;
-	}
+    public void removeItem(int slotIndex, int amount)
+    {
+        if (slots[slotIndex] != null)
+        {
+            slots[slotIndex].subtract(amount);
+            if (slots[slotIndex].isEmpty())
+            {
+                deleteItem(slotIndex);
+            }
+            onInventoryUpdated?.Invoke();
+            notify(slotIndex);  // Notify only the updated slot
+        }
+    }
 
-	/// <summary>
-	/// Retire une quantité d'item d'un slot spécifique.
-	/// Si le slot devient vide, il est réinitialisé à null.
-	/// </summary>
-	/// <param name="slotIndex">Index du slot cible.</param>
-	/// <param name="amount">Quantité à retirer.</param>
-	public void removeItem(int slotIndex, int amount)
-	{
-		if (slots[slotIndex] != null)
-		{
-			slots[slotIndex].subtract(amount);
-			if (slots[slotIndex].isEmpty())
-			{
-				deleteItem(slotIndex);
-			}
-			onInventoryUpdated?.Invoke();
-		}
-	}
+    public void deleteItem(int slotIndex)
+    {
+        if (slots[slotIndex] != null)
+        {
+            slots[slotIndex] = null;
+            onInventoryUpdated?.Invoke();
+            notify(slotIndex);  // Notify only the updated slot
+        }
+    }
 
-	/// <summary>
-	// Supprime l'item dans le slot
-	/// </summary>
-	/// <param name="slotIndex">Index du slot cible.</param>
-	public void deleteItem(int slotIndex)
-	{
-		if (slots[slotIndex] != null)
-		{
-			slots[slotIndex] = null;
-			onInventoryUpdated?.Invoke(); 
-		}
-	}
+    public StackItem getItem(int slotIndex)
+    {
+        return slots[slotIndex];
+    }
 
-	/// <summary>
-	/// Récupère l'item dans un slot spécifique.
-	/// </summary>
-	/// <param name="slotIndex">Index du slot cible.</param>
-	/// <returns>L'item dans le slot, ou null si le slot est vide.</returns>
-	public StackItem getItem(int slotIndex)
-	{
-		return slots[slotIndex];
-	}
+    public StackItem FindItem(ItemStatic item)
+    {
+        if (item == null)
+        {
+            return null;
+        }
 
-	public int addItem(StackItem item)
-	{
-		if (item == null)
-			return 0;
-		for (int i = 0; i < slots.Count; i++)
-		{
-			if (slots[i] != null && slots[i].getResource() == item.getResource())
-			{
-				int remaining = slots[i].add(item.getStack());
-				if (remaining == 0)
-				{
-					return 0; 
-				}
-				else
-				{
-					item.setStack(remaining); 
-				}
-			}
-		}
+        foreach (var slot in slots)
+        {
+            if (slot != null && slot.getResource() == item)
+            {
+                return slot;
+            }
+        }
 
-		// si il n'y a pas encore de slot occupé par cette item
-		for (int i = 0; i < slots.Count; i++)
-		{
-			if (slots[i] == null)
-			{
-				slots[i] = item;
-				return 0; // All items were added successfully
-			}
-		}
+        return null;
+    }
 
-		// If no space is available, return the remaining items
-		return item.getStack();
-	}
-	
-	public void notifyInventoryUpdated()
-	{
-		onInventoryUpdated?.Invoke();
-	}
-	
-	/// <summary>
-	/// Recherche un item spécifique dans l'inventaire.
-	/// </summary>
-	/// <param name="item">L'item à rechercher.</param>
-	/// <returns>L'item trouvé, ou null si l'item n'existe pas dans l'inventaire.</returns>
-	public StackItem FindItem(ItemStatic item)
-	{
-		if (item == null)
-		{
-			return null;
-		}
+    public int addItem(StackItem item)
+    {
+        if (item == null)
+            return 0;
 
-		// Parcours de tous les slots de l'inventaire
-		foreach (var slot in slots)
-		{
-			if (slot != null && slot.getResource() == item)
-			{
-				return slot; // Retourne l'item trouvé
-			}
-		}
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i] != null && slots[i].getResource() == item.getResource())
+            {
+                int remaining = slots[i].add(item.getStack());
+                if (remaining == 0)
+                {
+                    notify(i);  // Notify only the updated slot
+                    return 0;
+                }
+                item.setStack(remaining);
+            }
+        }
 
-		return null; // Aucun item correspondant trouvé
-	}
-	public override string ToString()
-	{
-		return String.Join(", ", slots.ToString());
-	}
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i] == null)
+            {
+                notify(i);  // Notify only the updated slot
+                slots[i] = item;
+                return 0;
+            }
+        }
+
+        return item.getStack();
+    }
+
+    public void notifyInventoryUpdated()
+    {
+        onInventoryUpdated?.Invoke();
+    }
+
+    // Attach un observateur à un slot spécifique
+    public void attach(int slotIndex, IObserver observer)
+    {
+        if (!_slotObservers.ContainsKey(slotIndex))
+        {
+            _slotObservers[slotIndex] = new List<IObserver>();
+        }
+
+        if (!_slotObservers[slotIndex].Contains(observer))
+        {
+            _slotObservers[slotIndex].Add(observer);
+        }
+    }
+
+    // Detach un observateur d'un slot spécifique
+    public void detach(int slotIndex, IObserver observer)
+    {
+        if (_slotObservers.ContainsKey(slotIndex))
+        {
+            _slotObservers[slotIndex].Remove(observer);
+        }
+    }
+
+    // Notifie tous les observateurs du slot spécifié
+    public void notify(int slotIndex)
+    {
+        if (_slotObservers.ContainsKey(slotIndex))
+        {
+            foreach (var observer in _slotObservers[slotIndex])
+            {
+                observer.update(null);
+            }
+        }
+    }
 }
