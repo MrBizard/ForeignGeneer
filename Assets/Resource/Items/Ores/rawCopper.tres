@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="1_uu0a1"]
 
 [resource]
+resource_name = "rawCopper"
 script = ExtResource("1_uu0a1")
 _maxStack = 0
 _scenePath = ""
