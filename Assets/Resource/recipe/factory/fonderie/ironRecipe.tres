@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=7 format=3 uid="uid://cn77hdltbsnd3"]
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://cn77hdltbsnd3"]
 
 [ext_resource type="Resource" uid="uid://c4304nu2rd20a" path="res://Assets/Resource/Items/Ingots/GoldIngot.tres" id="1_8oy8u"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="1_rqcvg"]
