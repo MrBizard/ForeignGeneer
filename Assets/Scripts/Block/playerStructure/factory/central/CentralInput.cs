@@ -17,8 +17,8 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
     public Inventory input { get; set; }
     public BaseCraft craft { get; set; }
 
-    private CentralUi _centralUi;
-    private Timer _craftTimer;
+	private CentralUi _centralUi;
+	private Timer _craftTimer;
 
     public override void _Ready()
     {
@@ -49,13 +49,13 @@ public partial class CentralInput : PlayerBaseStructure, IInputFactory<CraftingF
         notify();
     }
 
-    public void setCraft(Recipe recipe)
-    {
-        if (recipe == null)
-        {
-            craft = null;
-            return;
-        }
+	public void setCraft(Recipe recipe)
+	{
+		if (recipe == null)
+		{
+			craft = null;
+			return;
+		}
 
         craft = new FixedInputCraft(recipe, input);
         craft.craftTimer = _craftTimer;

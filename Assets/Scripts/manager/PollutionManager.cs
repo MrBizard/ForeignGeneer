@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 
 namespace ForeignGeneer.Assets.Scripts.manager;
 
@@ -21,15 +21,15 @@ public class PollutionManager : IObservable
         _pollution += pollution;
     }
 
-    public void removePolution(float pollution)
-    {
-        _pollution -= pollution;
-    }
+	public void removePolution(float pollution)
+	{
+		_pollution -= pollution;
+	}
 
-    public float getPollution()
-    {
-        return _pollution;
-    }
+	public float getPollution()
+	{
+		return _pollution;
+	}
 
     public bool hasPollution(float pollution)
     {

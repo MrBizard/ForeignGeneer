@@ -1,25 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://nukq4775resy"]
+[gd_scene load_steps=14 format=3 uid="uid://nukq4775resy"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/manager/MenuManager.cs" id="1_48b88"]
-[ext_resource type="PackedScene" uid="uid://jptukljyrgsw" path="res://Assets/Scenes/Menu/OptionsTabs.tscn" id="2_ptgkx"]
+[ext_resource type="Script" path="res://Assets/Scripts/manager/UiManager.cs" id="1_o6qr3"]
+[ext_resource type="PackedScene" uid="uid://cu77v5jkyswnn" path="res://Assets/Scenes/UI/Factory/FonderieUi.tscn" id="2_mr7uv"]
+[ext_resource type="PackedScene" uid="uid://ddp7q1ns3jgci" path="res://Assets/Scenes/UI/centrale/CentralUi.tscn" id="3_5ebg7"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/AudioManager.cs" id="3_whhdt"]
+[ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="4_75oo3"]
+[ext_resource type="PackedScene" uid="uid://bt22jt7gp0bq5" path="res://Assets/Scenes/UI/Inventory/itemCursorUi.tscn" id="5_rckrv"]
+[ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/slotUi.tscn" id="6_ngkbe"]
+[ext_resource type="PackedScene" uid="uid://btmrk0ejdndf2" path="res://Assets/Scenes/UI/Recipe/RecipeListUi.tscn" id="7_xpn3d"]
+[ext_resource type="PackedScene" uid="uid://bvoaib2hksqyq" path="res://Assets/Scenes/UI/Inventory/overlayItemInformation.tscn" id="8_u87il"]
+[ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/MenuOptions.tscn" id="9_v4j20"]
+[ext_resource type="PackedScene" uid="uid://cmxhqperf45w8" path="res://Assets/Scenes/Menu/GameOption.tscn" id="10_mlulu"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ipb6g"]
 font_size = 32
 
-[sub_resource type="CSharpScript" id="CSharpScript_yejw6"]
-script/source = "using Godot;
-using System;
-
-public partial class Start : Control
-{
-	private void _on_button_down(){
-		get_tree().change_scene_to_file(\"res://Assets/Scenes/main.tscn\")
-	}
-}
-"
-
 [node name="TitleScreen" type="Node2D"]
+z_index = 10
+
+[node name="UiManager" type="Node" parent="."]
+script = ExtResource("1_o6qr3")
+_uiKeys = ["fonderieUi", "centralUi", "inventoryUi", "itemCursorUi", "slotUi", "recipeListUi", "overlayItemInformation", "GameOption", "MenuOptions"]
+_uiScenes = [ExtResource("2_mr7uv"), ExtResource("3_5ebg7"), ExtResource("4_75oo3"), ExtResource("5_rckrv"), ExtResource("6_ngkbe"), ExtResource("7_xpn3d"), ExtResource("8_u87il"), ExtResource("10_mlulu"), ExtResource("9_v4j20")]
 
 [node name="root" type="Control" parent="."]
 layout_mode = 3
@@ -45,7 +48,6 @@ offset_right = 610.0
 offset_bottom = 142.0
 action_mode = 0
 text = "Start"
-script = SubResource("CSharpScript_yejw6")
 
 [node name="newGame" type="Button" parent="root"]
 layout_mode = 0
@@ -81,10 +83,6 @@ offset_bottom = 394.0
 action_mode = 0
 text = "Quitter
 "
-
-[node name="OptionsTabs" parent="root" instance=ExtResource("2_ptgkx")]
-visible = false
-layout_mode = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="root"]
 script = ExtResource("3_whhdt")

@@ -15,17 +15,16 @@ public partial class InputManager : Node
             Instance = this;
         }
         else
-        {
-            QueueFree();
-        }
-    }
+		{
+			Instance = this;
+		}
 
-    public override void _Process(double delta)
-    {
-        if (Input.IsActionJustPressed("inventory"))
-        {
-            HandleUiToggle("inventoryUi");
-        }
+	public override void _Process(double delta)
+	{
+		if (Input.IsActionJustPressed("inventory"))
+		{
+			HandleUiToggle("inventoryUi");
+		}
 
         if (Input.IsActionJustPressed("option"))
         {
@@ -38,55 +37,55 @@ public partial class InputManager : Node
             Player.Instance.SetSprinting();
         }
 
-        if (Input.IsActionJustPressed("jump"))
-        {
-            Player.Instance.Jump();
-        }
+		if (Input.IsActionJustPressed("jump"))
+		{
+			Player.Instance.Jump();
+		}
 
-        if (Input.IsActionJustPressed("leftClick"))
-        {
-            Player.Instance.LeftClick();
-        }
+		if (Input.IsActionJustPressed("leftClick"))
+		{
+			Player.Instance.LeftClick();
+		}
 
-        if (Input.IsActionJustPressed("rightClick"))
-        {
-            Player.Instance.RightClick();
-            if(UiManager.instance.isAnyUiOpen())
-                InventoryManager.Instance.drop();
-        }
+		if (Input.IsActionJustPressed("rightClick"))
+		{
+			Player.Instance.RightClick();
+			if(UiManager.instance.isAnyUiOpen())
+				InventoryManager.Instance.drop();
+		}
 
-        Vector2 inputDir = Input.GetVector("left", "right", "forward", "backward");
-        if (inputDir != Vector2.Zero)
-        {
-            Player.Instance.Move(inputDir);
-        }
-        else
-        {
-            Player.Instance.StopMoving();
-        }
+		Vector2 inputDir = Input.GetVector("left", "right", "forward", "backward");
+		if (inputDir != Vector2.Zero)
+		{
+			Player.Instance.Move(inputDir);
+		}
+		else
+		{
+			Player.Instance.StopMoving();
+		}
 
         if (Input.IsActionJustPressed("interragir"))
         {
             InterractionManager.instance.Interact(InteractType.Interact);
         }
 
-        if (Input.IsActionJustPressed("camera"))
-        {
-            Player.Instance.ToggleViewMode();
-        }
+		if (Input.IsActionJustPressed("camera"))
+		{
+			Player.Instance.ToggleViewMode();
+		}
 
-        if (Input.IsActionPressed("rotation"))
-        {
-            InventoryManager.Instance.rotatePreview(0.1f);
-        }
-    }
+		if (Input.IsActionPressed("rotation"))
+		{
+			InventoryManager.Instance.rotatePreview(0.1f);
+		}
+	}
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is InputEventMouseMotion mouseMotionEvent)
-        {
-            Player.Instance.RotateCamera(mouseMotionEvent.Relative);
-        }
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseMotion mouseMotionEvent)
+		{
+			Player.Instance.RotateCamera(mouseMotionEvent.Relative);
+		}
 
         if (@event is InputEventMouseButton mouseButtonEvent)
         {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Godot;
 
 namespace ForeignGeneer.Assets.Scripts.manager;
@@ -33,10 +33,10 @@ public class EnergyManager : IObservable
         notify(InterfaceType.Energy);
     }
 
-    public bool hasEnergy(float value)
-    {
-        return _globalElectricity - value >= 0;
-    }
+	public bool hasEnergy(float value)
+	{
+		return _globalElectricity - value >= 0;
+	}
 
     public bool isDown()
     {
