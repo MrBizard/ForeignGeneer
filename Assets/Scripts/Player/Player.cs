@@ -80,7 +80,7 @@ public partial class Player : CharacterBody3D
 		}
 		else
 		{
-			QueueFree(); // Assure qu'il n'y a qu'une seule instance du joueur.
+			Instance = this;
 		}
 
 		_armature = GetNode<Node3D>("Armature_001");

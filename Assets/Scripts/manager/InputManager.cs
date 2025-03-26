@@ -17,7 +17,7 @@ public partial class InputManager : Node
 		}
 		else
 		{
-			QueueFree();
+			Instance = this;
 		}
 	}
 

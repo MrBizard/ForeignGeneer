@@ -14,12 +14,9 @@ public partial class MenuManager : Control
 		if (newScene != null){
 			// instantiate the new scene
 			Node newSceneInstance = newScene.Instantiate();
-			GetTree().Root.GetNode("TitleScreen").QueueFree();
+			GetTree().Root.GetNode("TitleScreen").CallDeferred("queue_free");
 			// Add the new scene to the root of the scene tree
 			GetTree().Root.AddChild(newSceneInstance);
-			
-			// Optionally, you can free the current scene
-			
 		}
 		else{
 			GD.PrintErr("Failed to load scene: " + scenePath);

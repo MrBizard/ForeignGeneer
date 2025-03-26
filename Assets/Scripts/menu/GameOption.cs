@@ -31,7 +31,7 @@ public partial class GameOption : Control
 	private void _titlescreenOption()
 	{
 		Node newSceneInstance = titleScene.Instantiate();
-		GetTree().Root.GetNode("Main").QueueFree();
+		GetTree().Root.GetNode("Main").CallDeferred("queue_free");
 		GetTree().Root.AddChild(newSceneInstance);
 		
 		Input.MouseMode = Input.MouseModeEnum.Visible;

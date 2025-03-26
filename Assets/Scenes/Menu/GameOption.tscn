@@ -31,10 +31,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 2
+current_tab = 0
 
 [node name="soundTab" type="Control" parent="GridContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -142,6 +141,7 @@ offset_bottom = 31.0
 text = "On"
 
 [node name="controlTab" type="Control" parent="GridContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
