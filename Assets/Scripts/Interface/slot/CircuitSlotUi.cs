@@ -51,6 +51,7 @@ public partial class CircuitSlotUi : Control, BaseUi
 	{
 	}
 
+
 	public void initialize(Circuit circuit, int index, bool outputSlot = false)
 	{
 		_circuit = circuit;
