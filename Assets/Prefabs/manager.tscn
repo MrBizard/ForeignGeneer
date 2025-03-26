@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c6xr5ux6th5oq"]
+[gd_scene load_steps=23 format=3 uid="uid://c6xr5ux6th5oq"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="1_71vod"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="2_4ko3m"]
@@ -13,13 +13,24 @@
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InventoryManager.cs" id="9_tqnk7"]
 [ext_resource type="PackedScene" uid="uid://bvoaib2hksqyq" path="res://Assets/Scenes/UI/Inventory/overlayItemInformation.tscn" id="10_h7g1s"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="10_lix3d"]
-[ext_resource type="Resource" uid="uid://blqmnqkdcbi7l" path="res://Assets/Resource/Block/factory/Fonderie.tres" id="11_2jesr"]
 [ext_resource type="PackedScene" uid="uid://bo8sap88s0lgi" path="res://Assets/Scenes/UI/Centrale/solarUi.tscn" id="11_4hqb7"]
 [ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/BiomasCentral.tres" id="12_r8hvi"]
 [ext_resource type="PackedScene" uid="uid://igq70ebc8pcg" path="res://Assets/Scenes/UI/Factory/CraftingTableUi.tscn" id="12_t0n70"]
+[ext_resource type="Texture2D" uid="uid://bivpuqyh38fyk" path="res://addons/terrabrush/Assets/Buttons/square_white.png" id="16_nd5mg"]
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/FactoryStatic.cs" id="17_da81i"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InterractionManager.cs" id="19_8bcaf"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/MiniGameManager.cs" id="19_qsjdc"]
 [ext_resource type="Resource" uid="uid://betqpgypraidr" path="res://Assets/Resource/recipe/circuit/c1.tres" id="20_o34gw"]
+
+[sub_resource type="Resource" id="Resource_pl4oj"]
+script = ExtResource("17_da81i")
+electricalCost = 0
+pollutionIndex = 0
+tier = 0
+_maxStack = 10
+_scenePath = "res://Assets/Prefabs/fondation/base.tscn"
+_inventoryIcon = ExtResource("16_nd5mg")
+_description = ""
 
 [node name="Manager" type="Node"]
 script = ExtResource("1_71vod")
@@ -36,7 +47,7 @@ script = ExtResource("8_a14bf")
 [node name="InventoryManager" type="Node" parent="."]
 script = ExtResource("9_tqnk7")
 testItem = ExtResource("10_lix3d")
-testItem2 = ExtResource("11_2jesr")
+testItem2 = SubResource("Resource_pl4oj")
 testItem3 = ExtResource("12_r8hvi")
 
 [node name="InterractionManager" type="Node" parent="."]

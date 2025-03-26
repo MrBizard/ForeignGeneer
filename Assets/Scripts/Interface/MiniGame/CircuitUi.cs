@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.Block;
+using ForeignGeneer.Assets.Scripts.Interface;
 using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
 
@@ -12,106 +14,189 @@ public partial class CircuitUi : Control, BaseUi
     [Export] private Button _changeButton;
     [Export] private Control _slotContainer;
     [Export] private Control _connectionLayer;
-    private List<Vector2> _slotPositions = new List<Vector2>();
     [Export] private PackedScene _circuitSlotUi;
     [Export] private SlotUI _outputSlotUi;
+
     private Circuit _circuit;
-    public void update(InterfaceType? interfaceType = null)
-    {
-        switch (interfaceType)
-        {
-            default:
-                updateUi();
-                break;
-        }
-    }
+    private List<Vector2> _slotPositions = new();
+    private RandomNumberGenerator _rng = new();
 
     public override void _Ready()
     {
         base._Ready();
-        _circuit = MiniGameManager.instance._circuit;
+        _rng.Randomize();
+        _circuit = MiniGameManager.instance.circuit;
+
         _inventoryBottomUi.initialize(_circuit.currentRecipe);
-        initRecipe();
-        _outputSlotUi.initialize(_circuit.outputInventory,0);
+        _outputSlotUi.initialize(_circuit.outputInventory, 0);
+
+        _craftButton.Pressed += OnCraftButtonPressed;
+        _changeButton.Pressed += OnChangeButtonPressed;
+
+        InitCircuit();
     }
 
-    private void updateUi()
+    private void InitCircuit()
     {
-        
+        ClearCircuit();
+        PlaceSlots();
+        UpdateContainerSize();
     }
+
+    private void PlaceSlots()
+    {
+        _slotPositions.Clear();
+        Vector2 containerSize = _slotContainer.Size;
+        float margin = 10; // La marge entre les slots
+
+        if (_circuit.slotPositions == null || _circuit.slotPositions.Count != _circuit.currentRecipe.input.Count)
+        {
+            _circuit.slotPositions = new List<Vector2>(new Vector2[_circuit.currentRecipe.input.Count]);
+        }
+
+        for (int i = 0; i < _circuit.currentRecipe.input.Count; i++)
+        {
+            var input = _circuit.currentRecipe.input[i];
+            CircuitSlotUi slot = _circuitSlotUi.Instantiate<CircuitSlotUi>();
+            slot.initialize(_circuit, i, false);
+
+            int itemCount = input.Stack;
+            Vector2 slotSize = GetSlotSize(itemCount);
+
+            slot.CustomMinimumSize = slotSize;
+            slot.Size = slotSize;
+
+            Vector2 position;
+
+            if (_circuit.slotPositions[i] != Vector2.Zero)
+            {
+                position = _circuit.slotPositions[i];
+            }
+            else
+            {
+                position = FindValidPosition(slotSize, containerSize, margin);
+                _circuit.slotPositions[i] = position; // Sauvegarde de la position
+            }
+
+            slot.Position = position;
+            _slotContainer.AddChild(slot);
+            _slotPositions.Add(position);
+        }
+
+        UpdateContainerSize();
+    }
+
+    private Vector2 FindValidPosition(Vector2 slotSize, Vector2 containerSize, float margin)
+    {
+        Vector2 position;
+        bool validPosition;
+        int attempts = 0;
+
+        do
+        {
+            validPosition = true;
+            position = new Vector2(
+                _rng.RandfRange(margin, containerSize.X - slotSize.X - margin),
+                _rng.RandfRange(margin, containerSize.Y - slotSize.Y - margin)
+            );
+
+            foreach (var existing in _slotPositions)
+            {
+                if (Mathf.Abs(position.X - existing.X) < slotSize.X + margin &&
+                    Mathf.Abs(position.Y - existing.Y) < slotSize.Y + margin) // Ajout de marge dans le test
+                {
+                    validPosition = false;
+                    break;
+                }
+            }
+
+            attempts++;
+        } while (!validPosition && attempts < 50);
+
+        return position;
+    }
+
+    private void ClearCircuit()
+    {
+        foreach (Node child in _slotContainer.GetChildren())
+            child.QueueFree();
+
+        _slotPositions.Clear();
+        _circuit.slotPositions.Clear();
+    }
+
+    private void UpdateContainerSize()
+    {
+        float maxWidth = 0;
+        float maxHeight = 0;
+
+        foreach (Node child in _slotContainer.GetChildren())
+        {
+            if (child is CircuitSlotUi slot)
+            {
+                maxWidth = Mathf.Max(maxWidth, slot.Position.X + slot.Size.X);
+                maxHeight = Mathf.Max(maxHeight, slot.Position.Y + slot.Size.Y);
+            }
+        }
+
+        _slotContainer.CustomMinimumSize = new Vector2(maxWidth + 20, maxHeight + 20); // Ajout d'une petite marge
+    }
+
+    private Vector2 GetSlotSize(int itemCount)
+    {
+        float baseSize = 32;
+        float scaleFactor = 2.0f;
+        float minSize = 32;
+        float maxSize = 128;
+        float size = Mathf.Clamp(baseSize * Mathf.Pow(scaleFactor, itemCount - 1), minSize, maxSize);
+
+        return new Vector2(size, size);
+    }
+
+    private void OnCraftButtonPressed()
+    {
+        _circuit.interact(InteractType.Craft);
+    }
+
+    private void OnChangeButtonPressed()
+    {
+        _circuit.interact(InteractType.Modify);
+        InitCircuit();
+    }
+
+    public void update(InterfaceType? interfaceType = null)
+    {
+    }
+
     public void detach()
     {
         _circuit.detach(this);
     }
 
-    public void onChangeButtonPressed()
-    {
-        _circuit.interact(InteractType.Modify);
-        foreach (var circuitSlotUi in _slotContainer.GetChildren())
-        {
-            circuitSlotUi.QueueFree();
-        }
-        initRecipe();
-    }
-
-    public void onCraftButtonPressed()
-    {
-        _circuit.interact(InteractType.Craft);
-        
-    }
-    
     public void initialize(object data)
     {
     }
 
-    private void initRecipe()
+    // Mise à jour de la texture du slot en fonction du nombre d'items
+    public void UpdateSlotTexture(CircuitSlotUi slot, int currentStack, int maxStack)
     {
-        RandomNumberGenerator rng = new RandomNumberGenerator();
-        rng.Randomize();
-
-        _slotPositions.Clear();
-        foreach (Node child in _slotContainer.GetChildren())
+        if (slot != null)
         {
-            child.QueueFree();
-        }
+            // Calculer la proportion de l'item dans le slot
+            float ratio = (float)currentStack / maxStack;
 
-        float radius = 100; // Rayon d'une zone où placer les slots
-        int maxAttempts = 10; // Nombre max de tentatives pour éviter le chevauchement
-        float minDistance = 70; // Distance minimale entre les slots pour éviter le chevauchement
+            // Modifier la taille de la texture en fonction de l'état du slot
+            slot.icon.Scale = new Vector2(ratio, 1f); // Ajuste l'échelle de la texture
 
-        foreach (var _ in _circuit.currentRecipe.input)
-        {
-            CircuitSlotUi circuitSlotUi = _circuitSlotUi.Instantiate<CircuitSlotUi>();
-
-            Vector2 slotPosition;
-            bool positionAccepted;
-
-            int attempts = 0;
-            do
+            // Si le nombre d'items est suffisant, cacher l'icône de background
+            if (currentStack >= maxStack)
             {
-                float randomX = rng.RandfRange(-radius, radius);
-                float randomY = rng.RandfRange(-radius, radius);
-                slotPosition = new Vector2(randomX, randomY);
-
-                // Vérifier si la position ne chevauche pas un autre slot
-                positionAccepted = true;
-                foreach (var existingPos in _slotPositions)
-                {
-                    if (slotPosition.DistanceTo(existingPos) < minDistance)
-                    {
-                        positionAccepted = false;
-                        break;
-                    }
-                }
-
-                attempts++;
-            } while (!positionAccepted && attempts < maxAttempts);
-
-            circuitSlotUi.Size = new Vector2(64, 64);
-            circuitSlotUi.Position = slotPosition;
-            _slotContainer.AddChild(circuitSlotUi);
-            _slotPositions.Add(slotPosition);
+                slot.background.Visible = false; // Cacher l'icône de background
+            }
+            else
+            {
+                slot.background.Visible = true; // Afficher l'icône de background
+            }
         }
     }
-
 }

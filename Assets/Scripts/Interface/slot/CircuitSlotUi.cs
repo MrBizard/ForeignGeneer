@@ -1,69 +1,48 @@
-using Godot;
-using System;
 using ForeignGeneer.Assets.Scripts;
+using Godot;
 using ForeignGeneer.Assets.Scripts.Interface;
 
 public partial class CircuitSlotUi : Control, BaseUi
 {
-	[Export]private TextureRect _textureRect;
-	[Export]private TextureRect _textureBackgroundRect;
-	[Export]private Label _labelCount;
-	private StackItem _stackItem;
-	private Circuit _circuit;
-	private int _index = 0;
-	private bool _isOutputSlot = false;
-	public override void _Ready()
-	{
-	}
+    [Export] public TextureRect icon;
+    [Export] public TextureRect background;
+    [Export] private Label countLabel;
+    
+    private Circuit circuit;
+    private int slotIndex;
+    private bool isOutput;
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        CustomMinimumSize = new Vector2(64, 64);
+        SizeFlagsHorizontal = SizeFlags.ShrinkCenter;
+        SizeFlagsVertical = SizeFlags.ShrinkCenter;
+    }
 
-	public override void _Process(double delta)
-	{
-	}
-
-	public void update(InterfaceType? interfaceType = null)
-	{
-		switch (interfaceType)
-		{
-			default:
-				updateUi();
-				break;
-		}
-	}
-
-	public void detach()
-	{
-		_circuit.inputInventory.detach(_index,this);
-	}
-
-	private void updateUi()
-	{
-		setLabelCount();
-		_textureRect.SetTexture(_stackItem?.getResource().getInventoryIcon);
-	}
-	private void setLabelCount()
-	{
-		if (_stackItem != null)
-			_labelCount.Text = _stackItem.Stack + " / " + _circuit.currentRecipe.input[_index].Stack;
-		else
-			_labelCount.Text =  "0 / " + _circuit.currentRecipe.input[_index].Stack;
-	}
-	public void initialize(object data)
-	{
-	}
-
-
-	public void initialize(Circuit circuit, int index, bool outputSlot = false)
-	{
-		_circuit = circuit;
-		_index = index;
-		_isOutputSlot = outputSlot;
-		_stackItem = _circuit.inputInventory.getItem(index);
-		_textureBackgroundRect.SetTexture(_circuit.currentRecipe.input[_index]?.getResource().getInventoryIcon);
-		_circuit.inputInventory.attach(index,this);
-		updateUi();
-	}
-	
-	public override void _GuiInput(InputEvent @event)
+    public void initialize(Circuit circuit, int index, bool output = false)
+    {
+        this.circuit = circuit;
+        this.slotIndex = index;
+        this.isOutput = output;
+        
+        updateUi();
+    }
+    private void updateUi()
+    {
+        var item = circuit.inputInventory.getItem(slotIndex);
+        var recipeItem = circuit.currentRecipe.input[slotIndex];
+        
+        icon.Texture = item?.getResource().getInventoryIcon;
+        background.Texture = circuit.currentRecipe.input[slotIndex].getResource().getInventoryIcon;
+        countLabel.Text = $"{item?.Stack ?? 0} / {recipeItem.Stack}";
+        
+    }
+    public void update(InterfaceType? interfaceType = null) => updateUi();
+    public void detach() => circuit.inputInventory.detach(slotIndex, this);
+    public void initialize(object data) { }
+    
+    public override void _GuiInput(InputEvent @event)
     {
         if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
         {
@@ -82,21 +61,23 @@ public partial class CircuitSlotUi : Control, BaseUi
 {
     if (InventoryManager.Instance.currentItemInMouse == null)
     {
-        var stackItem = _circuit.inputInventory.getItem(_index);
+        var stackItem = circuit.inputInventory.getItem(slotIndex);
         if (stackItem != null)
         {
+            // Prendre l'item du slot
             InventoryManager.Instance.setCurrentItemInMouse(stackItem);
-            _circuit.inputInventory.deleteItem(_index);
+            circuit.inputInventory.deleteItem(slotIndex);
+            circuit.inputInventory.notifyInventoryUpdated();
         }
     }
     else
     {
-        if (!_isOutputSlot)
+        if (!isOutput)
         {
-            var stackItem = _circuit.inputInventory.getItem(_index);
+            var stackItem = circuit.inputInventory.getItem(slotIndex);
             if (stackItem == null)
             {
-	            _circuit.inputInventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _index);
+                circuit.inputInventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, slotIndex);
                 InventoryManager.Instance.setCurrentItemInMouse(null);
             }
             else if (stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
@@ -110,10 +91,10 @@ public partial class CircuitSlotUi : Control, BaseUi
             else
             {
                 var temp = stackItem;
-                _circuit.inputInventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _index);
+                circuit.inputInventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, slotIndex);
                 InventoryManager.Instance.setCurrentItemInMouse(temp);
             }
-            _circuit.inputInventory.notifyInventoryUpdated();
+            circuit.inputInventory.notifyInventoryUpdated();
         }
     }
     updateUi();
@@ -123,7 +104,7 @@ public partial class CircuitSlotUi : Control, BaseUi
 
     private void handleRightClick()
     {
-        var stackItem = _circuit.inputInventory.getItem(_index);
+        var stackItem = circuit.inputInventory.getItem(slotIndex);
         if (stackItem != null && stackItem.getStack() > 0)
         {
             StackItem splitItem = stackItem.split();
@@ -145,19 +126,26 @@ public partial class CircuitSlotUi : Control, BaseUi
                 InventoryManager.Instance.setCurrentItemInMouse(currentMouseItem);
             } 
 
-            _circuit.inputInventory.notifyInventoryUpdated();
+            circuit.inputInventory.notifyInventoryUpdated();
             updateUi();
         }
         else if (stackItem != null && stackItem.getStack() == 1)
         {
             InventoryManager.Instance.setCurrentItemInMouse(stackItem);
-            _circuit.inputInventory.deleteItem(_index);
-            _circuit.inputInventory.notifyInventoryUpdated();
+            circuit.inputInventory.deleteItem(slotIndex);
+            circuit.inputInventory.notifyInventoryUpdated();
             updateUi();
         }
     }
-    public void clearSlot()
+    public void UpdateItemProgress()
     {
-	    _textureRect.Texture = null;
+        StackItem stackItem = circuit.inputInventory.getItem(slotIndex);
+        float progress = (float)stackItem.Stack / circuit.currentRecipe.input[slotIndex].Stack;
+        icon.Scale = new Vector2(progress, 1);
+    
+        if (stackItem.Stack > 0)
+        {
+            background.Visible = false;
+        }
     }
 }

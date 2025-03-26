@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://bojbq0vmc2nhq"]
+[gd_scene load_steps=4 format=3 uid="uid://bojbq0vmc2nhq"]
 
-[ext_resource type="Script" path="res://Assets/Scripts/Interface/Inventory/PlayerInventoryUi.cs" id="1_bam6r"]
 [ext_resource type="PackedScene" uid="uid://pvecjgib4vbr" path="res://Assets/Scenes/UI/Inventory/inventoryUi.tscn" id="2_10g85"]
 [ext_resource type="PackedScene" uid="uid://c83fqjo4lhfry" path="res://Assets/Scenes/UI/miniGame/CircuitUi.tscn" id="3_gvk1p"]
 
@@ -16,7 +15,6 @@ anchor_right = 0.9
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_bam6r")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

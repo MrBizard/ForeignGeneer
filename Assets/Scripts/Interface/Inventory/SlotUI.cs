@@ -44,7 +44,7 @@ public partial class SlotUI : Control
     /// <summary>
     /// Met à jour l'affichage du slot en fonction de son contenu.
     /// </summary>
-    public void updateUi(int updateType = 0)
+    public void updateUi()
     {
         var stackItem = _inventory.getItem(_slotIndex);
 

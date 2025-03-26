@@ -1,17 +1,22 @@
 using System;
+using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
-using Godot.Collections;
 
-public partial class Circuit : Node, IObservable, IInteractable
+public partial class Circuit : Node, IObservable
 {
     public FixedInputOutputCraft _craft;
     public Recipe currentRecipe;
     private Timer _craftTimer;
     public Inventory inputInventory;
     public Inventory outputInventory;
+    private List<IObserver> _observers = new List<IObserver>();
+
+    // Liste pour stocker les positions des slots
+    public List<Vector2> slotPositions = new List<Vector2>();
+
     public override void _Ready()
     {
         base._Ready();
@@ -24,26 +29,36 @@ public partial class Circuit : Node, IObservable, IInteractable
 
     public void attach(IObserver observer)
     {
-        
+        if (!_observers.Contains(observer))
+        {
+            _observers.Add(observer);
+        }
     }
 
     public void detach(IObserver observer)
     {
-        
+        if (_observers.Contains(observer))
+        {
+            _observers.Remove(observer);
+        }
     }
 
     public void notify(InterfaceType? interfaceType = null)
     {
-        
+        foreach (var observer in _observers)
+        {
+            observer.update(interfaceType);
+        }
     }
 
     private void generateRandomRecipe()
     {
-        Random rand  = new Random();
-        currentRecipe = MiniGameManager.instance.listRecipe[rand.Next( MiniGameManager.instance.listRecipe.Count)];
+        var rand = new Random();
+        currentRecipe = MiniGameManager.instance.listRecipe[rand.Next(MiniGameManager.instance.listRecipe.Count)];
         inputInventory = new Inventory(currentRecipe.input.Count);
         notify();
     }
+
     private void startCraft()
     {
         if (currentRecipe == null)
@@ -52,6 +67,7 @@ public partial class Circuit : Node, IObservable, IInteractable
         _craft = new FixedInputOutputCraft(currentRecipe, inputInventory, outputInventory);
         _craft.craftTimer = _craftTimer;
         _craft.startCraft(onCraftFinished);
+        notify();
     }
 
     private void onCraftFinished()
@@ -65,6 +81,7 @@ public partial class Circuit : Node, IObservable, IInteractable
     {
         generateRandomRecipe();
     }
+
     public void interact(InteractType interactType)
     {
         switch (interactType)

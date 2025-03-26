@@ -73,7 +73,7 @@ public class Inventory : ISlotObservable
         }
     }
 
-    public StackItem getItem(int slotIndex)
+    public StackItem? getItem(int slotIndex)
     {
         return slots[slotIndex];
     }
