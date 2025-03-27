@@ -1,13 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://djbqo6ml3waqr"]
+[gd_scene load_steps=3 format=3 uid="uid://cp60naod7ksmm"]
 
 [ext_resource type="PackedScene" uid="uid://brwt5bel55y2m" path="res://Assets/Model/map/statue_obelisk.glb" id="1_6gd4r"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ui02q"]
-points = PackedVector3Array(-0.153509, 0, -0.153509, 0.153479, 0, -0.153509, -0.153509, 0, 0.153479, -0.0548462, 0.792279, -0.0548462, 0.153479, 0, 0.153479, 0.0548162, 0.792279, -0.0548462, -0.0548462, 0.792279, 0.0548162, -3.00407e-05, 0.875397, -3.00407e-05, 0.0548162, 0.792279, 0.0548162)
+[sub_resource type="BoxShape3D" id="BoxShape3D_pgytc"]
+size = Vector3(1, 4.31029, 0.808716)
 
 [node name="statue_obelisk2" instance=ExtResource("1_6gd4r")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/statue_obelisk" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/statue_obelisk/StaticBody3D" index="0"]
-shape = SubResource("ConvexPolygonShape3D_ui02q")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.16787, 0.00543213)
+shape = SubResource("BoxShape3D_pgytc")

@@ -1,13 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmk1cqb3wmlme"]
+[gd_scene load_steps=3 format=3 uid="uid://b8i48kmhrkrhi"]
 
 [ext_resource type="PackedScene" uid="uid://cao12vfldvgfh" path="res://Assets/Model/map/statue_ring.glb" id="1_wdghi"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_itjaw"]
-points = PackedVector3Array(-0.3, 0, -0.2, -0.3, 0, 0.2, -0.3, 0.159968, -0.2, 0.3, 0, -0.2, 0.3, 0, 0.2, -0.3, 0.159968, 0.2, 0.3, 0.159968, -0.2, -0.3, 0.623189, -0.0866092, -5.87404e-05, 0.79641, -0.0866092, 0.3, 0.159968, 0.2, -5.87404e-05, 0.79641, 0.0865701, -0.3, 0.623189, 0.0865701, 0.3, 0.623189, -0.0866092, 0.3, 0.623189, 0.0865701)
+[sub_resource type="BoxShape3D" id="BoxShape3D_srtp0"]
+size = Vector3(3.00629, 4.02058, 1.9873)
 
 [node name="statue_ring2" instance=ExtResource("1_wdghi")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/statue_ring" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/statue_ring/StaticBody3D" index="0"]
-shape = SubResource("ConvexPolygonShape3D_itjaw")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0101013, 2.04527, -0.0161133)
+shape = SubResource("BoxShape3D_srtp0")

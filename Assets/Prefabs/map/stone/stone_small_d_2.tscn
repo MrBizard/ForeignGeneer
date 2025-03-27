@@ -1,13 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmhsack2tfmdp"]
+[gd_scene load_steps=3 format=3 uid="uid://bglvtkchdlhxh"]
 
 [ext_resource type="PackedScene" uid="uid://dtlgl10h8m62m" path="res://Assets/Model/map/stone_smallD.glb" id="1_8ei04"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_20fnh"]
-points = PackedVector3Array(-0.106478, 0, -0.184353, -0.212872, 0, -3.60757e-05, -0.136275, 0.230912, -3.60757e-05, -0.0921834, 0.230912, -0.0763684, -0.0837235, 0.136929, -0.145013, -4.16636e-05, 0.230912, -0.118017, 0.106394, 0, -0.184353, -0.106478, 0, 0.184317, -0.0732633, 0.200104, 0.126824, -0.124814, 0.230912, 0.0197778, 0.0680957, 0.230912, -0.118017, 0.212872, 0, -3.60757e-05, 0.106394, 0, 0.184317, 0.0452582, 0.230912, 0.117981, 0.123064, 0.230912, -0.0228095, 0.200786, 0.0363456, -3.60757e-05, 0.114771, 0.230912, 0.0371015, 0.0680957, 0.230912, 0.117981)
+[sub_resource type="BoxShape3D" id="BoxShape3D_2usj8"]
+size = Vector3(1.28903, 1.30383, 1.40686)
 
 [node name="stone_smallD2" instance=ExtResource("1_8ei04")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/stone_smallD" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/stone_smallD/StaticBody3D" index="0"]
-shape = SubResource("ConvexPolygonShape3D_20fnh")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.179746, 0.526028, 0.0532157)
+shape = SubResource("BoxShape3D_2usj8")

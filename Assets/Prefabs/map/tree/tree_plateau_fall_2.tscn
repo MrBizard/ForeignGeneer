@@ -1,14 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://125dypjk4j77"]
+[gd_scene load_steps=3 format=3 uid="uid://bvfnlnm1fikr0"]
 
 [ext_resource type="PackedScene" uid="uid://chtnanc5pwsek" path="res://Assets/Model/map/tree_plateau_fall.glb" id="1_qlafl"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_c8lxl"]
-size = Vector3(0.582275, 6.52637, 0.7596)
+[sub_resource type="BoxShape3D" id="BoxShape3D_c8lsj"]
+size = Vector3(0.638611, 5.46722, 0.61853)
 
 [node name="tree_plateau_fall2" instance=ExtResource("1_qlafl")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/tree_plateau_fall" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/tree_plateau_fall/StaticBody3D" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000366211, 3.3042, -0.0652552)
-shape = SubResource("BoxShape3D_c8lxl")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00186157, 2.81119, -0.017395)
+shape = SubResource("BoxShape3D_c8lsj")

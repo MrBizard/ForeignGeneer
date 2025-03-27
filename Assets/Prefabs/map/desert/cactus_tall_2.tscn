@@ -2,12 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://br4dd5tipbhjt" path="res://Assets/Model/map/cactus_tall.glb" id="1_t7epv"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_q4pwq"]
-points = PackedVector3Array(-0.199461, 0.439898, -0.0805352, -0.169479, 0.439898, -0.13248, -0.100011, 0, -1.31577e-05, -0.0300388, 0.279929, 0.206603, -0.199461, 0.669832, -0.0805352, 0.166767, 0.213122, -0.130953, -0.0500142, 0, -0.0866092, -0.169479, 0.669832, -0.13248, -0.0500142, 0, 0.0865829, 0.029965, 0.279929, 0.206603, -0.0300388, 0.609926, 0.206603, -0.055522, 0.699932, 0.0961088, -0.0277892, 0.75, 0.0480478, -0.055522, 0.75, -1.31577e-05, -0.158502, 0.699858, -0.0915215, 0.196789, 0.213122, -0.0790084, 0.0499792, 0, -0.0866092, 0.166767, 0.543119, -0.130953, -0.0277892, 0.75, -0.0480741, 0.0277153, 0.75, -0.0480741, 0.0554869, 0.699932, -0.0961351, 0.0499792, 0, 0.0865829, 0.029965, 0.609926, 0.206603, -1.75387e-05, 0.639952, 0.176598, 0.0277153, 0.75, 0.0480478, 0.0999758, 0, -1.31577e-05, 0.196789, 0.543119, -0.0790084, 0.0554869, 0.75, -1.31577e-05, 0.110991, 0.699932, -1.31577e-05, 0.0554869, 0.699932, 0.0961088)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kdxpd"]
+height = 4.12401
 
 [node name="cactus_tall2" instance=ExtResource("1_t7epv")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/cactus_tall" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/cactus_tall/StaticBody3D" index="0"]
-shape = SubResource("ConvexPolygonShape3D_q4pwq")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.89632, 0)
+shape = SubResource("CapsuleShape3D_kdxpd")
