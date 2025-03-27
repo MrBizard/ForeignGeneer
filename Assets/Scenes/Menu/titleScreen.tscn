@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://nukq4775resy"]
+[gd_scene load_steps=17 format=3 uid="uid://nukq4775resy"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/manager/MenuManager.cs" id="1_48b88"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/UiManager.cs" id="1_o6qr3"]
@@ -12,83 +12,101 @@
 [ext_resource type="PackedScene" uid="uid://bvoaib2hksqyq" path="res://Assets/Scenes/UI/Inventory/overlayItemInformation.tscn" id="8_u87il"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/MenuOptions.tscn" id="9_v4j20"]
 [ext_resource type="PackedScene" uid="uid://cmxhqperf45w8" path="res://Assets/Scenes/Menu/GameOption.tscn" id="10_mlulu"]
+[ext_resource type="Texture2D" uid="uid://d3kv6kg285q6e" path="res://Assets/Texture/ui/menu/ForeignGineer_logo_final.png" id="12_q64gf"]
+[ext_resource type="StyleBox" uid="uid://c2qeveib6l40s" path="res://Assets/Texture/ui/menu/hoverBG.tres" id="13_ucg8v"]
+[ext_resource type="StyleBox" uid="uid://bggc85efcyawx" path="res://Assets/Texture/ui/menu/BG.tres" id="14_lryvc"]
+[ext_resource type="AudioStream" uid="uid://ewq1mog8ieky" path="res://Assets/Resource/sound/101017821-ambient-dark-synthesizer-sci-f.wav" id="15_3dcd4"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_ipb6g"]
-font_size = 32
-
-[node name="TitleScreen" type="Node2D"]
-z_index = 10
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_48b88")
 
 [node name="UiManager" type="Node" parent="."]
 script = ExtResource("1_o6qr3")
 _uiKeys = ["fonderieUi", "centralUi", "inventoryUi", "itemCursorUi", "slotUi", "recipeListUi", "overlayItemInformation", "GameOption", "MenuOptions"]
 _uiScenes = [ExtResource("2_mr7uv"), ExtResource("3_5ebg7"), ExtResource("4_75oo3"), ExtResource("5_rckrv"), ExtResource("6_ngkbe"), ExtResource("7_xpn3d"), ExtResource("8_u87il"), ExtResource("10_mlulu"), ExtResource("9_v4j20")]
 
-[node name="root" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("1_48b88")
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+autoplay = true
+loop = true
+bus = &"BGM"
 
-[node name="title" type="Label" parent="root"]
+[node name="ForeignGineerLogoFinal" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 451.0
-offset_top = 25.0
-offset_right = 680.0
-offset_bottom = 70.0
-text = "ForeignGineer"
-label_settings = SubResource("LabelSettings_ipb6g")
+offset_left = 9.0
+offset_top = -182.0
+offset_right = 1289.0
+offset_bottom = 1098.0
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("12_q64gf")
+expand_mode = 2
 
-[node name="start" type="Button" parent="root"]
+[node name="start" type="Button" parent="."]
 layout_mode = 0
-offset_left = 550.0
-offset_top = 111.0
-offset_right = 610.0
-offset_bottom = 142.0
+offset_left = 51.0
+offset_top = 181.0
+offset_right = 111.0
+offset_bottom = 212.0
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("13_ucg8v")
+theme_override_styles/normal = ExtResource("14_lryvc")
 action_mode = 0
 text = "Start"
 
-[node name="newGame" type="Button" parent="root"]
+[node name="option" type="Button" parent="."]
 layout_mode = 0
-offset_left = 551.0
-offset_top = 169.0
-offset_right = 611.0
-offset_bottom = 200.0
-text = "New"
-
-[node name="option" type="Button" parent="root"]
-layout_mode = 0
-offset_left = 553.0
-offset_top = 232.0
-offset_right = 613.0
-offset_bottom = 263.0
+offset_left = 54.0
+offset_top = 236.0
+offset_right = 118.0
+offset_bottom = 267.0
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("13_ucg8v")
+theme_override_styles/normal = ExtResource("14_lryvc")
 text = "Param"
 
-[node name="credit" type="Button" parent="root"]
+[node name="credit" type="Button" parent="."]
 layout_mode = 0
-offset_left = 551.0
-offset_top = 295.0
-offset_right = 615.0
-offset_bottom = 326.0
+offset_left = 52.0
+offset_top = 299.0
+offset_right = 121.0
+offset_bottom = 330.0
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("13_ucg8v")
+theme_override_styles/normal = ExtResource("14_lryvc")
 text = "Crédits
 "
 
-[node name="quit" type="Button" parent="root"]
+[node name="quit" type="Button" parent="."]
 layout_mode = 0
-offset_left = 551.0
-offset_top = 363.0
-offset_right = 615.0
-offset_bottom = 394.0
+offset_left = 52.0
+offset_top = 367.0
+offset_right = 122.0
+offset_bottom = 398.0
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("13_ucg8v")
+theme_override_styles/normal = ExtResource("14_lryvc")
 action_mode = 0
 text = "Quitter
 "
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="root"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_3dcd4")
+autoplay = true
+bus = &"BGM"
 script = ExtResource("3_whhdt")
 
-[connection signal="button_down" from="root/start" to="root" method="_onButtonStartDown"]
-[connection signal="button_down" from="root/newGame" to="root" method="_onNewGameButtonDown"]
-[connection signal="button_down" from="root/option" to="root" method="_onOptionButtonDown"]
-[connection signal="button_down" from="root/credit" to="root" method="_onCreditButtonDown"]
-[connection signal="button_down" from="root/quit" to="root" method="_onQuitButtonDown"]
+[connection signal="button_down" from="start" to="." method="_onButtonStartDown"]
+[connection signal="button_down" from="option" to="." method="_onOptionButtonDown"]
+[connection signal="button_down" from="credit" to="." method="_onCreditButtonDown"]
+[connection signal="button_down" from="quit" to="." method="_onQuitButtonDown"]
