@@ -4,37 +4,29 @@
 [ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="2_3ahh4"]
 [ext_resource type="PackedScene" uid="uid://cqcwsd4waorqb" path="res://Assets/Scenes/UI/Inventory/Slot/slotUiBlock.tscn" id="3_c8q1w"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wrl2"]
-bg_color = Color(0.288518, 0.288518, 0.288518, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qkgs1"]
+bg_color = Color(0.290196, 0.290196, 0.290196, 1)
 
-[node name="InventoryBottom" type="Control" node_paths=PackedStringArray("_flowContainer")]
-layout_mode = 3
+[node name="InventoryBottom" type="PanelContainer" node_paths=PackedStringArray("_flowContainer")]
+layout_direction = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qkgs1")
 script = ExtResource("1_cmp3e")
-_flowContainer = NodePath("FlowContainer")
+_flowContainer = NodePath("ScrollContainer/FlowContainer")
 _slotUi = ExtResource("2_3ahh4")
 _slotUiBlocked = ExtResource("3_c8q1w")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0wrl2")
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+horizontal_scroll_mode = 0
 
-[node name="FlowContainer" type="FlowContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.025
-anchor_top = 0.025
-anchor_right = 0.975
-anchor_bottom = 0.975
-grow_horizontal = 2
-grow_vertical = 2
-last_wrap_alignment = 1
+[node name="FlowContainer" type="FlowContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

@@ -15,7 +15,6 @@ public partial class CircuitSlotUi : Control, BaseUi
     public override void _Ready()
     {
         base._Ready();
-        CustomMinimumSize = new Vector2(64, 64);
         SizeFlagsHorizontal = SizeFlags.ShrinkCenter;
         SizeFlagsVertical = SizeFlags.ShrinkCenter;
     }
@@ -23,10 +22,32 @@ public partial class CircuitSlotUi : Control, BaseUi
     public void initialize(Circuit circuit, int index, bool output = false)
     {
         this.circuit = circuit;
-        this.slotIndex = index;
-        this.isOutput = output;
-        
+        slotIndex = index;
+        isOutput = output;
         updateUi();
+        adjustSize();
+    }
+
+    private void adjustSize()
+    {
+        int totalItems = circuit.currentRecipe.input[slotIndex].Stack;
+        Vector2 newSize;
+        switch (totalItems)
+        {
+            case 2:
+                newSize = new Vector2(80, 80);
+                break;
+            case 3:
+                newSize = new Vector2(110,110);
+                break;
+            default:
+                newSize = new Vector2(64, 64);
+                break;
+        }
+
+        CustomMinimumSize = newSize;
+        SetDeferred("size", newSize);
+        PivotOffset = newSize / 2;
     }
     private void updateUi()
     {
@@ -34,10 +55,11 @@ public partial class CircuitSlotUi : Control, BaseUi
         var recipeItem = circuit.currentRecipe.input[slotIndex];
         
         icon.Texture = item?.getResource().getInventoryIcon;
-        background.Texture = circuit.currentRecipe.input[slotIndex].getResource().getInventoryIcon;
+        background.Texture = recipeItem.getResource().getInventoryIcon;
         countLabel.Text = $"{item?.Stack ?? 0} / {recipeItem.Stack}";
-        
+        updateItemProgress();
     }
+    
     public void update(InterfaceType? interfaceType = null) => updateUi();
     public void detach() => circuit.inputInventory.detach(slotIndex, this);
     public void initialize(object data) { }
@@ -58,56 +80,66 @@ public partial class CircuitSlotUi : Control, BaseUi
     }
 
     private void handleLeftClick()
-{
-    if (InventoryManager.Instance.currentItemInMouse == null)
     {
-        var stackItem = circuit.inputInventory.getItem(slotIndex);
-        if (stackItem != null)
-        {
-            // Prendre l'item du slot
-            InventoryManager.Instance.setCurrentItemInMouse(stackItem);
-            circuit.inputInventory.deleteItem(slotIndex);
-            circuit.inputInventory.notifyInventoryUpdated();
-        }
-    }
-    else
-    {
-        if (!isOutput)
+        if (InventoryManager.Instance.currentItemInMouse == null)
         {
             var stackItem = circuit.inputInventory.getItem(slotIndex);
-            if (stackItem == null)
+            if (stackItem != null)
             {
-                circuit.inputInventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, slotIndex);
-                InventoryManager.Instance.setCurrentItemInMouse(null);
+                InventoryManager.Instance.setCurrentItemInMouse(stackItem);
+                circuit.inputInventory.deleteItem(slotIndex);
+                circuit.inputInventory.notifyInventoryUpdated();
             }
-            else if (stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
-            {
-                InventoryManager.Instance.currentItemInMouse.setStack(stackItem.add(InventoryManager.Instance.currentItemInMouse.getStack()));
-                if (InventoryManager.Instance.currentItemInMouse.getStack() <= 0)
-                {
-                    InventoryManager.Instance.setCurrentItemInMouse(null);
-                }
-            }
-            else
-            {
-                var temp = stackItem;
-                circuit.inputInventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, slotIndex);
-                InventoryManager.Instance.setCurrentItemInMouse(temp);
-            }
-            circuit.inputInventory.notifyInventoryUpdated();
         }
-    }
-    updateUi();
-    InventoryManager.Instance.setCurrentItemInMouse(InventoryManager.Instance.currentItemInMouse);
-}
+        else
+        {
+            if (!isOutput)
+            {
+                var stackItem = circuit.inputInventory.getItem(slotIndex);
+                int maxAllowed = circuit.currentRecipe.input[slotIndex].Stack;
 
+                if (stackItem == null)
+                {
+                    if (InventoryManager.Instance.currentItemInMouse.getStack() > maxAllowed)
+                    {
+                        var excess = InventoryManager.Instance.currentItemInMouse.getStack() - maxAllowed;
+                        InventoryManager.Instance.currentItemInMouse.subtract(maxAllowed);
+                        circuit.inputInventory.slots[slotIndex] = new StackItem(InventoryManager.Instance.currentItemInMouse.getResource(),maxAllowed);
+                    }
+                    else
+                    {
+                        circuit.inputInventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, slotIndex);
+                        InventoryManager.Instance.setCurrentItemInMouse(null);
+                    }
+                }
+                else if (stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
+                {
+                    int total = stackItem.getStack() + InventoryManager.Instance.currentItemInMouse.getStack();
+                    if (total > maxAllowed)
+                    {
+                        int excess = total - maxAllowed;
+                        stackItem.setStack(maxAllowed);
+                        InventoryManager.Instance.currentItemInMouse.setStack(excess);
+                    }
+                    else
+                    {
+                        stackItem.setStack(total);
+                        InventoryManager.Instance.setCurrentItemInMouse(null);
+                    }
+                }
+
+                circuit.inputInventory.notifyInventoryUpdated();
+            }
+        }
+        updateUi();
+    }
 
     private void handleRightClick()
     {
         var stackItem = circuit.inputInventory.getItem(slotIndex);
         if (stackItem != null && stackItem.getStack() > 0)
         {
-            StackItem splitItem = stackItem.split();
+            StackItem splitItem = stackItem.split(); // Divise par 2
             
             StackItem currentMouseItem = InventoryManager.Instance.currentItemInMouse;
             if (currentMouseItem == null)
@@ -136,16 +168,21 @@ public partial class CircuitSlotUi : Control, BaseUi
             circuit.inputInventory.notifyInventoryUpdated();
             updateUi();
         }
+
     }
-    public void UpdateItemProgress()
+
+    public void updateItemProgress()
     {
         StackItem stackItem = circuit.inputInventory.getItem(slotIndex);
-        float progress = (float)stackItem.Stack / circuit.currentRecipe.input[slotIndex].Stack;
-        icon.Scale = new Vector2(progress, 1);
-    
-        if (stackItem.Stack > 0)
+        int maxAllowed = circuit.currentRecipe.input[slotIndex].Stack;
+
+        if (stackItem != null)
         {
-            background.Visible = false;
+            float progress = Mathf.Clamp((float)stackItem.Stack / maxAllowed, 0.3f, 1.0f);
+            icon.Scale = new Vector2(progress, progress);
+            icon.PivotOffset = icon.Size / 2;
+            background.Visible = stackItem.Stack == 0;
         }
+        
     }
 }

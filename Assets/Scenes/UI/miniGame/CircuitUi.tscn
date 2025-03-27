@@ -23,7 +23,7 @@ border_color = Color(0.201527, 0.201527, 0.201526, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtmmb"]
 bg_color = Color(0.127646, 0.306964, 0.177766, 1)
 
-[node name="Circuit" type="Control" node_paths=PackedStringArray("_inventoryBottomUi", "_craftButton", "_changeButton", "_outputSlotUi")]
+[node name="Circuit" type="Control" node_paths=PackedStringArray("_inventoryBottomUi", "_craftButton", "_changeButton", "_outputSlotUi", "_slots")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,10 +31,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cesen")
-_inventoryBottomUi = NodePath("InventoryBottom")
+_inventoryBottomUi = NodePath("Node/InventoryBottom")
 _craftButton = NodePath("Craft/Craft/Button")
 _changeButton = NodePath("Craft/Reset/Button")
 _outputSlotUi = NodePath("Output/SlotUI")
+_slots = [NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi"), NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi2"), NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi3"), NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi4")]
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -63,6 +64,7 @@ offset_left = -32.0
 offset_top = -32.0
 offset_right = 32.0
 offset_bottom = 32.0
+_isOutputSlot = true
 
 [node name="Label" type="Label" parent="Output"]
 layout_mode = 1
@@ -152,17 +154,6 @@ grow_vertical = 2
 text = "Souder le circuit :"
 horizontal_alignment = 1
 
-[node name="InventoryBottom" parent="." instance=ExtResource("2_vcft0")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.5
-anchor_right = 0.75
-anchor_bottom = 0.95
-offset_left = 0.399998
-offset_top = 81.2
-offset_bottom = 0.400024
-
 [node name="circuitSlot" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = -1
@@ -176,33 +167,87 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_jtmmb")
 
 [node name="VFlowContainer" type="VBoxContainer" parent="circuitSlot"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -253.0
+offset_top = -32.0
+offset_right = 253.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(181.4, -134.4)
 alignment = 1
 
 [node name="slots" type="HBoxContainer" parent="circuitSlot/VFlowContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/separation = 0
 alignment = 1
+
+[node name="ColorRect5" type="ColorRect" parent="circuitSlot/VFlowContainer/slots"]
+custom_minimum_size = Vector2(50, 4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.86, 0.847387, 0.1032, 1)
 
 [node name="slotCircuitUi" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="circuitSlot/VFlowContainer/slots"]
-custom_minimum_size = Vector2(50, 2)
+custom_minimum_size = Vector2(50, 4)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.86, 0.847387, 0.1032, 1)
 
 [node name="slotCircuitUi2" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
 layout_mode = 2
 
+[node name="ColorRect3" type="ColorRect" parent="circuitSlot/VFlowContainer/slots"]
+custom_minimum_size = Vector2(50, 4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.86, 0.847387, 0.1032, 1)
+
 [node name="slotCircuitUi3" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
 layout_mode = 2
 
+[node name="ColorRect2" type="ColorRect" parent="circuitSlot/VFlowContainer/slots"]
+custom_minimum_size = Vector2(50, 4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.86, 0.847387, 0.1032, 1)
+
 [node name="slotCircuitUi4" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
 layout_mode = 2
+
+[node name="ColorRect4" type="ColorRect" parent="circuitSlot/VFlowContainer/slots"]
+custom_minimum_size = Vector2(50, 4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.86, 0.847387, 0.1032, 1)
+
+[node name="Node" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.05
+anchor_top = 0.65
+anchor_right = 0.75
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="InventoryBottom" parent="Node" instance=ExtResource("2_vcft0")]
+layout_mode = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [connection signal="button_down" from="Craft/Reset/Button" to="." method="onChangeButtonPressed"]
 [connection signal="button_down" from="Craft/Craft/Button" to="." method="onCraftButtonPressed"]

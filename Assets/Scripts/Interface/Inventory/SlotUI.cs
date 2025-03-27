@@ -9,7 +9,7 @@ public partial class SlotUI : Control
     private Inventory _inventory;
     private TextureRect _backIcon;
     private Panel _background;
-    private bool _isOutputSlot = false;
+    [Export]private bool _isOutputSlot;
     private int _slotIndex;
     private Timer _hoverTimer;
     private bool _isHovered = false;
@@ -31,7 +31,8 @@ public partial class SlotUI : Control
     {
         _inventory = inventory;
         _slotIndex = slotIndex;
-        _isOutputSlot = isOutputSlot;
+        if(isOutputSlot)
+            _isOutputSlot = isOutputSlot;
 
         _background = GetNode<Panel>("Background");
         _backIcon = GetNode<TextureRect>("Background/BackIcon");

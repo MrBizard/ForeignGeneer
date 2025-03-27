@@ -4,6 +4,7 @@ using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.Interface;
 using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
+using Godot.Collections;
 
 namespace ForeignGeneer.Assets.Scripts.Interface.MiniGame;
 
@@ -12,21 +13,15 @@ public partial class CircuitUi : Control, BaseUi
     [Export] private InventoryBottomUi _inventoryBottomUi;
     [Export] private Button _craftButton;
     [Export] private Button _changeButton;
-    [Export] private Control _slotContainerPath;
     [Export] private SlotUI _outputSlotUi;
+    [Export] private Array<CircuitSlotUi> _slots;
 
     private Circuit _circuit;
-    private List<CircuitSlotUi> _slots = new();
 
     public override void _Ready()
     {
         base._Ready();
         _circuit = MiniGameManager.instance.circuit;
-        foreach (Node child in _slotContainerPath.GetChildren())
-        {
-            if (child is CircuitSlotUi slot)
-                _slots.Add(slot);
-        }
 
         _inventoryBottomUi.initialize(_circuit.currentRecipe);
         _outputSlotUi.initialize(_circuit.outputInventory, 0);
@@ -39,9 +34,10 @@ public partial class CircuitUi : Control, BaseUi
 
     private void InitCircuit()
     {
-        for (int i = 0; i < _circuit.currentRecipe.input.Count; i++)
+        int slotCount = Mathf.Min(_slots.Count, _circuit.currentRecipe.input.Count);
+        
+        for (int i = 0; i < slotCount; i++)
         {
-            var input = _circuit.currentRecipe.input[i];
             _slots[i].initialize(_circuit, i, false);
         }
     }
