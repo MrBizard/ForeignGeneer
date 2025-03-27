@@ -41,3 +41,9 @@ duration = 1.0
 [resource]
 script = ExtResource("1_xonqx")
 recipeList = Array[Object]([SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_oeeq4"), SubResource("Resource_nomm8")])
+electricalCost = 0
+pollutionIndex = 0
+tier = 0
+_maxStack = 0
+_scenePath = ""
+_description = ""
