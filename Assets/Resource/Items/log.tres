@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemStatic" load_steps=2 format=3 uid="uid://cgc4wdqhtsjay"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="1_rnfjw"]
+
+[resource]
+script = ExtResource("1_rnfjw")
+_maxStack = 0
+_scenePath = ""
+_description = ""
