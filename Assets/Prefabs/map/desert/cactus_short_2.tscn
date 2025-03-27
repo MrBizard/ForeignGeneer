@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cugewnkgpcy82"]
+
+[ext_resource type="PackedScene" uid="uid://ch7ivxvue0g4w" path="res://Assets/Model/map/cactus_short.glb" id="1_114q5"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7fsav"]
+points = PackedVector3Array(-0.168335, 0.179945, -0.0626308, -0.138436, 0.179945, -0.114499, -0.0820168, -4.28152e-18, -2.77758e-05, -0.0410147, -4.28152e-18, 0.0710115, -0.0299448, 0.270413, 0.179839, -0.168335, 0.269735, -0.0626308, 0.0409894, -4.28152e-18, -0.0710379, -0.0410147, -4.28152e-18, -0.0710379, -0.138436, 0.269735, -0.114499, 0.143394, 0.370116, -0.11735, 0.0409894, -4.28152e-18, 0.0710115, 0.0299196, 0.270413, 0.179839, -0.0299448, 0.360203, 0.179839, -0.0992403, 0.491992, -2.77758e-05, 0.0819915, -4.28152e-18, -2.77758e-05, 0.173326, 0.370116, -0.0655398, -0.0496432, 0.491992, -0.0859323, 0.143394, 0.459906, -0.11735, 0.0299196, 0.360203, 0.179839, -0.0496432, 0.491992, 0.0859059, -0.0611478, 0.532948, -2.77758e-05, 0.173326, 0.459906, -0.0655398, -0.0305802, 0.532948, -0.0529436, 0.030555, 0.532948, -0.0529436, 0.0495845, 0.491992, 0.0859059, -0.0305802, 0.532948, 0.0529171, 0.0611226, 0.532948, -2.77758e-05, 0.030555, 0.532948, 0.0529171)
+
+[node name="cactus_short2" instance=ExtResource("1_114q5")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/cactus_short" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/cactus_short/StaticBody3D" index="0"]
+shape = SubResource("ConvexPolygonShape3D_7fsav")

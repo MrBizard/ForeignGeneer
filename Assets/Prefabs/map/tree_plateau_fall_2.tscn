@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1ue6ocq6ike2"]
+
+[ext_resource type="PackedScene" uid="uid://chtnanc5pwsek" path="res://Assets/Model/map/tree_plateau_fall.glb" id="1_om8rp"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4ovjf"]
+points = PackedVector3Array(-1.40965e-05, 1.17817, 0.329425, 0.28358, 1.17817, 0.165636, 0.195616, 1.24934, 0.114929, -1.40965e-05, 1.24934, 0.227882, -0.195704, 1.24934, 0.114929, -0.283608, 1.17817, 0.165636, -1.40965e-05, 1.03936, 0.329425, 0.28358, 1.17817, -0.161814, 0.28358, 1.03936, 0.165636, 0.195616, 1.24934, -0.111043, -0.195704, 1.24934, -0.111043, -0.283608, 1.17817, -0.161814, -0.328159, 0.792578, -0.0246928, -0.283608, 1.03936, 0.165636, -0.065224, 0, 0.0651188, 0.0651359, 0, 0.0651188, -1.40965e-05, 1.17817, -0.325475, -1.40965e-05, 1.24934, -0.223996, 0.28358, 1.03936, -0.161814, 0.237951, 0.452727, 0.0370406, -0.158039, 0.792578, -0.319449, -0.328159, 0.792578, -0.221176, -0.328159, 0.709296, -0.0246928, -0.065224, 0, -0.0652074, 0.0651359, 0, -0.0652074, -1.40965e-05, 1.03936, -0.325475, 0.237951, 0.452727, -0.112261, 0.108609, 0.452727, -0.186943, -0.158039, 0.709296, -0.319449, -0.328159, 0.709296, -0.221176)
+
+[node name="tree_plateau_fall2" instance=ExtResource("1_om8rp")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/tree_plateau_fall" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/tree_plateau_fall/StaticBody3D" index="0"]
+shape = SubResource("ConvexPolygonShape3D_4ovjf")
