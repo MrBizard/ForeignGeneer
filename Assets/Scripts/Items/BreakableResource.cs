@@ -50,4 +50,12 @@ public partial class BreakableResource : StaticBody3D, IInteractable
 				break;
 		}
 	}
+
+	public StackItem botInteract()
+	{
+		int value = new Random().Next(2,5);
+		item.subtract(value);
+        StackItem output = new StackItem(item.getResource(), value);
+		return output;
+	}
 }
