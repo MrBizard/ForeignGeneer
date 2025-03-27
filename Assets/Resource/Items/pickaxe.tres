@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ToolStatic" load_steps=2 format=3 uid="uid://b2vs0cgl5sf3q"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/ToolStatic.cs" id="1_k0bx1"]
+
+[resource]
+script = ExtResource("1_k0bx1")
+tool = 0
+_maxStack = 0
+_scenePath = ""
+_description = ""

@@ -25,8 +25,10 @@ public partial class Circuit : Node, IObservable
         AddChild(_craftTimer);
         generateRandomRecipe();
         outputInventory = new Inventory(1);
+        outputInventory.onInventoryUpdated += notify;
     }
 
+    
     public void attach(IObserver observer)
     {
         if (!_observers.Contains(observer))
@@ -43,14 +45,17 @@ public partial class Circuit : Node, IObservable
         }
     }
 
-    public void notify(InterfaceType? interfaceType = null)
+    public void notify(InterfaceType? interfaceType)
     {
         foreach (var observer in _observers)
         {
             observer.update(interfaceType);
         }
     }
-
+    public void notify()
+    {
+        notify(null);
+    }
     private void generateRandomRecipe()
     {
         var rand = new Random();

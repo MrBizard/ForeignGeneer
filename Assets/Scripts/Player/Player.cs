@@ -133,8 +133,6 @@ public partial class Player : CharacterBody3D
     public void LeftClick()
     {
         if (_isUiOpen) return;
-        if(!UiManager.instance.isAnyUiOpen())
-            InterractionManager.instance.Interact(InteractType.Dismantle);
         StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
         if (item is not null)
             item.getResource().LeftClick();
@@ -146,18 +144,9 @@ public partial class Player : CharacterBody3D
     public void RightClick()
     {
         if (_isUiOpen) return;
-        if (InventoryManager.Instance.currentPreview != null)
-        {
-            InventoryManager.Instance.PlaceItem();
-        }
-        else
-        {
-            StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
-            if (item != null)
-            {
-                InventoryManager.Instance.StartPreview(item);
-            }
-        }
+        StackItem item = InventoryManager.Instance.getCurrentItem();
+        if (item != null)
+            item.getResource().RightClick();
     }
 
     /// <summary>

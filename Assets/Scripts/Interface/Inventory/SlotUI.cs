@@ -134,7 +134,7 @@ public partial class SlotUI : Control
             {
                 InventoryManager.Instance.setCurrentItemInMouse(splitItem);
             }
-            else if (currentMouseItem.getResource() == splitItem.getResource())
+            else if (splitItem != null && currentMouseItem.getResource() == splitItem.getResource())
             {
                 int excess = currentMouseItem.add(splitItem.getStack()); 
 

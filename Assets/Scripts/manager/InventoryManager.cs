@@ -60,39 +60,6 @@ public partial class InventoryManager : Node
             UiManager.instance.openUi("itemCursorUi", item);
         }
     }
-
-    public void drop()
-    {
-        if (currentItemInMouse != null)
-        {
-            Vector3 dropPosition = FindDropPosition();
-
-            StaticBody3D itemDrop = currentItemInMouse.getResource().instantiate(dropPosition);
-            itemDrop.Position = FindDropPosition();
-            GetTree().CurrentScene.GetNode("worldStructure").AddChild(itemDrop);
-        }
-    }
-
-    private Vector3 FindDropPosition()
-    {
-        Node3D player = Player.Instance;
-        if (player == null)
-        {
-            GD.PrintErr("Player not found!", player);
-            return Vector3.Zero;
-        }
-
-        RayCast3D playerRaycast = Player.Instance.raycast; 
-        if (playerRaycast == null)
-        {
-            GD.PrintErr("RayCast3D non trouvé dans le joueur !");
-            return Vector3.Zero;
-        }
-
-        Vector3 dropPosition = new Vector3();
-        return FindNearestFreeSpot(dropPosition);
-    }
-
     private Vector3 FindNearestFreeSpot(Vector3 origin)
     {
         Node3D player = Player.Instance;
@@ -137,6 +104,11 @@ public partial class InventoryManager : Node
                 return 0;
         }
         return looseItem;
+    }
+
+    public StackItem getCurrentItem()
+    {
+        return hotbar.getItem(currentSlotHotbar);
     }
     public StackItem FindItem(ItemStatic item)
     {
@@ -190,22 +162,6 @@ public partial class InventoryManager : Node
         instance.QueueFree();
         return isItemAuSol;
     }
-    
-    /// <summary>
-    /// Active la prévisualisation pour un objet sélectionné.
-    /// </summary>
-    /// <param name="item">L'objet sélectionné.</param>
-    public void StartPreview(StackItem item)
-    {
-        if (currentPreview != null)
-        {
-            currentPreview.Destroy();
-        }
-        
-        currentPreview = new PreviewObject();
-        currentPreview.Initialize(item.getResource());
-        Player.Instance.GetParent().AddChild(currentPreview);
-    }
 
     /// <summary>
     /// Désactive la prévisualisation.
@@ -216,25 +172,6 @@ public partial class InventoryManager : Node
         {
             currentPreview.Destroy();
             currentPreview = null;
-        }
-    }
-
-    public void rotatePreview(float angle)
-    {
-        if(currentPreview != null)
-            currentPreview.rotate(angle);
-    }
-    /// <summary>
-    /// Place l'objet définitivement à la position actuelle de la prévisualisation.
-    /// </summary>
-    public void PlaceItem()
-    {
-        if (currentPreview != null && currentPreview.CanPlace())
-        {
-            FactoryStatic bloc = (FactoryStatic)hotbar.getItem(currentSlotHotbar).getResource();
-            StaticBody3D blocSpawn = bloc.instantiateFactory(currentPreview.Position, currentPreview.Rotation);
-            Player.Instance.GetParent().AddChild(blocSpawn);
-            StopPreview();
         }
     }
 }

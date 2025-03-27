@@ -70,8 +70,8 @@ public partial class ItemStatic : Resource
                 meshInstance.MaterialOverride = _material;
             }
         }
-
-        itemInstantiate.GlobalPosition = pos;
+        if(pos != Vector3.Zero)
+            itemInstantiate.GlobalPosition = pos;
         return itemInstantiate;
     }
     

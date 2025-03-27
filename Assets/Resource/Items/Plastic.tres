@@ -1,6 +1,6 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://buyrurxe32h8w"]
+[gd_resource type="Resource" script_class="ItemStatic" load_steps=3 format=3 uid="uid://buyrurxe32h8w"]
 
-[ext_resource type="Texture2D" uid="uid://dtlfkrjukgy2s" path="res://Assets/Texture/items/icon_plastic.png" id="1_oumpe"]
+[ext_resource type="Texture2D" uid="uid://burnvm8ug86dy" path="res://Assets/Texture/items/icon_plastic.png" id="1_oumpe"]
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic.cs" id="1_ym54k"]
 
 [resource]
@@ -9,3 +9,4 @@ script = ExtResource("1_ym54k")
 _maxStack = 99
 _scenePath = "res://Assets/Prefabs/Ingots/Plastic.tscn"
 _inventoryIcon = ExtResource("1_oumpe")
+_description = ""

@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
 using MonoCustomResourceRegistry;
@@ -11,7 +12,8 @@ public partial class FactoryStatic : ItemStatic
 	[Export] public int tier { get; set; }
 	public override void LeftClick()
 	{
-		GD.Print("Factory Left Clicked");
+		if(InputManager.Instance.dismantle)
+			InterractionManager.instance.Interact(InteractType.Dismantle);
 	}
 
 	/// <summary>
@@ -47,6 +49,12 @@ public partial class FactoryStatic : ItemStatic
 	/// <param name="player">The player who triggered the right-click action.</param>
 	public override void RightClick()
 	{
+		if (InventoryManager.Instance.currentPreview == null)
+		{
+			StartPreview(this);
+			return;
+		}
+		InventoryManager.Instance.StopPreview();
 		StaticBody3D instance = instantiateFactory(InterractionManager.instance.getWorldCursorPosition());
 		if (instance != null)
 		{
@@ -55,5 +63,16 @@ public partial class FactoryStatic : ItemStatic
 			Player.Instance.GetParent().AddChild(instance);
 		}
 	}
-	
+	public void StartPreview(ItemStatic item)
+	{
+		InventoryManager inventoryManager = InventoryManager.Instance;
+		if (inventoryManager.currentPreview != null)
+		{
+			inventoryManager.currentPreview.Destroy();
+		}
+        
+		inventoryManager.currentPreview = new PreviewObject();
+		inventoryManager.currentPreview.Initialize(item);
+		Player.Instance.GetParent().AddChild(inventoryManager.currentPreview);
+	}
 }

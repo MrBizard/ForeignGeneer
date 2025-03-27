@@ -7,7 +7,7 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class InputManager : Node
 {
     public static InputManager Instance { get; private set; }
-    
+    public bool dismantle = false;
     public override void _Ready()
     {
         if (Instance == null)
@@ -51,8 +51,6 @@ public partial class InputManager : Node
         if (Input.IsActionJustPressed("rightClick"))
         {
             Player.Instance.RightClick();
-            if(UiManager.instance.isAnyUiOpen())
-                InventoryManager.Instance.drop();
         }
 
         Vector2 inputDir = Input.GetVector("left", "right", "forward", "backward");
@@ -77,7 +75,9 @@ public partial class InputManager : Node
 
         if (Input.IsActionPressed("rotation"))
         {
-            InventoryManager.Instance.rotatePreview(0.1f);
+            InventoryManager manager = InventoryManager.Instance;
+            if(manager.currentPreview != null)
+                manager.currentPreview.rotate(0.1f);
         }
     }
 
@@ -102,7 +102,6 @@ public partial class InputManager : Node
         if (UiManager.instance.isAnyUiOpen())
         {
             UiManager.instance.closeUi();
-            InventoryManager.Instance.drop();
         }
         else
         {
