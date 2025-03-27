@@ -1,24 +1,18 @@
-[gd_scene load_steps=103 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=97 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://c6xr5ux6th5oq" path="res://Assets/Prefabs/manager.tscn" id="1_qiebo"]
-[ext_resource type="PackedScene" uid="uid://byoqqtn8kr1qt" path="res://Assets/Prefabs/personnage.tscn" id="4_xqtcq"]
+[ext_resource type="PackedScene" uid="uid://pmk1ja4lcf6d" path="res://Assets/Prefabs/personnage.tscn" id="4_xqtcq"]
 [ext_resource type="PackedScene" uid="uid://bxncduxmicfgw" path="res://Assets/Prefabs/central/centraleBiomasse.tscn" id="11_ueu8c"]
 [ext_resource type="PackedScene" uid="uid://ceeumu8ai6jxw" path="res://Assets/Prefabs/Factory/Fonderie.tscn" id="12_b1lrc"]
 [ext_resource type="PackedScene" uid="uid://ktfq1ucdt8rt" path="res://Assets/Prefabs/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
 [ext_resource type="Script" path="res://addons/terrabrush/TerraBrush.cs" id="19_goxem"]
 [ext_resource type="PackedScene" uid="uid://cn0y2hdd0ln3x" path="res://Assets/Prefabs/Ingots/BreakableGold.tscn" id="19_lp64r"]
 [ext_resource type="PackedScene" uid="uid://cw6d4kvnndb7s" path="res://Assets/Prefabs/Ingots/BreakableIron.tscn" id="20_2qc85"]
-[ext_resource type="Texture2D" uid="uid://dd5bxfb3fr1jx" path="res://Assets/Texture/grass/grass lowpoly.png" id="20_dhlk7"]
 [ext_resource type="Texture2D" uid="uid://bnewil42ssigy" path="res://Assets/Scenes/Main/Heightmap_0_0.res" id="20_ennuc"]
 [ext_resource type="PackedScene" uid="uid://bm46vhmsrkfgg" path="res://Assets/Prefabs/worldStructure/laboratoire.tscn" id="21_58cnq"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZoneResource.cs" id="21_230gm"]
-[ext_resource type="Texture2D" uid="uid://t4cw67sivpg" path="res://Assets/Texture/grass/Vol_42_1_Height.png" id="21_o67be"]
-[ext_resource type="Texture2D" uid="uid://dm0y1mqwp4dl8" path="res://Assets/Texture/grass/Vol_42_1_Normal.png" id="22_c18t6"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/ZonesResource.cs" id="22_teg6v"]
-[ext_resource type="Texture2D" uid="uid://bwk5ix84er781" path="res://Assets/Texture/rock/rock lowpoly.png" id="23_4b35g"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/TextureSetResource.cs" id="23_5bc04"]
-[ext_resource type="Texture2D" uid="uid://cfebw4haj2w58" path="res://Assets/Texture/grass/Vol_42_1_Roughness.png" id="23_rjxmx"]
-[ext_resource type="Texture2D" uid="uid://b4qgs0i5stvvr" path="res://Assets/Texture/dirt/dirt lowpoly.png" id="25_ucwgl"]
 [ext_resource type="Script" path="res://addons/terrabrush/Scripts/EditorResources/TextureSetsResource.cs" id="27_p0dka"]
 [ext_resource type="Texture2D" uid="uid://bp06vlp1q2jlp" path="res://Assets/Scenes/Main/Heightmap_1_0.res" id="29_7vanb"]
 [ext_resource type="Texture2D" uid="uid://g1hbtcte2rvp" path="res://Assets/Scenes/Main/Splatmap_0_0_0.res" id="29_t3dt6"]
@@ -81,22 +75,16 @@ mesh = SubResource("TextMesh_ek6no")
 [sub_resource type="Resource" id="Resource_ecp1u"]
 script = ExtResource("23_5bc04")
 Name = "grass"
-AlbedoTexture = ExtResource("20_dhlk7")
-NormalTexture = ExtResource("22_c18t6")
-RoughnessTexture = ExtResource("23_rjxmx")
-HeightTexture = ExtResource("21_o67be")
 TextureDetail = -1
 
 [sub_resource type="Resource" id="Resource_4t7b0"]
 script = ExtResource("23_5bc04")
 Name = "dirt"
-AlbedoTexture = ExtResource("25_ucwgl")
 TextureDetail = -1
 
 [sub_resource type="Resource" id="Resource_ej50g"]
 script = ExtResource("23_5bc04")
 Name = "rock"
-AlbedoTexture = ExtResource("23_4b35g")
 TextureDetail = -1
 
 [sub_resource type="Resource" id="Resource_bt4g8"]

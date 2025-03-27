@@ -1,3 +1,4 @@
+using ForeignGeneer.Assets.Scripts.manager;
 using Godot;
 using System;
 
@@ -6,12 +7,14 @@ public partial class HealthManager : Node
 	[Export] public Player player; // Reference to the Player node
 	[Export] public HealthBar healthManager; // Reference to the HealthBar node
 	 private float previousVelocityY = 0.0f;
-	
-	private double timer=10.0;
+    public static HealthManager instance;
+
+    private double timer=10.0;
 
 
 	public override void _Ready()
 	{
+		instance = this;
 		if (player == null)
 		{
 			GD.PrintErr("Player node is not assigned!");
@@ -39,7 +42,7 @@ public partial class HealthManager : Node
 				healthManager.healthBar.Value-=5;
 			}
 
-			healthManager.remove_hunger();
+			healthManager.removeHunger(1);
 
 		}
 		if (healthManager.get_health()<=0){
@@ -47,21 +50,21 @@ public partial class HealthManager : Node
 			healthManager.healthBar.Value=100;
 			healthManager.hungerBar.Value=100;
 		}
-		if(Input.IsActionPressed("ui_up")){
+        /*if(Input.IsActionPressed("ui_up")){
 			//healthManager.add_health();
 			healthManager.add_hunger();
 		}
 		else if(Input.IsActionPressed("ui_down")){
 			//healthManager.remove_health();
 			healthManager.remove_hunger();
-		}
+		}*/
 
-		// Degat de chute
-		if (player.IsOnFloor() && previousVelocityY < -8)
+        // Degat de chute
+        if (player.IsOnFloor() && previousVelocityY < -8)
 		{
 			// calcule des degats (velocité * 2)
 			float fallDamage = Mathf.Abs(previousVelocityY);
-			healthManager.healthBar.Value-=fallDamage*2;
+			healthManager.removeHealth((int)((fallDamage*2)+1));
 		}
 
 		// Update previous vertical velocity

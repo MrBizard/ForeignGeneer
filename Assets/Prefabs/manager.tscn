@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c6xr5ux6th5oq"]
+[gd_scene load_steps=25 format=3 uid="uid://c6xr5ux6th5oq"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="1_71vod"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="2_4ko3m"]
@@ -19,6 +19,11 @@
 [ext_resource type="PackedScene" uid="uid://igq70ebc8pcg" path="res://Assets/Scenes/UI/Factory/CraftingTableUi.tscn" id="12_t0n70"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InterractionManager.cs" id="19_8bcaf"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/MiniGameManager.cs" id="19_qsjdc"]
+[ext_resource type="Script" path="res://Assets/Scripts/manager/SpawnerManager.cs" id="20_ju1ku"]
+[ext_resource type="PackedScene" uid="uid://ktfq1ucdt8rt" path="res://Assets/Prefabs/Ingots/BreakableCopper.tscn" id="21_lhack"]
+[ext_resource type="PackedScene" uid="uid://cn0y2hdd0ln3x" path="res://Assets/Prefabs/Ingots/BreakableGold.tscn" id="22_8q55d"]
+[ext_resource type="PackedScene" uid="uid://cw6d4kvnndb7s" path="res://Assets/Prefabs/Ingots/BreakableIron.tscn" id="23_e51xb"]
+[ext_resource type="PackedScene" uid="uid://dsp7adyefetyk" path="res://Assets/Model/Nourriture/Berry/bush_berry.tscn" id="24_dpein"]
 
 [node name="Manager" type="Node"]
 script = ExtResource("1_71vod")
@@ -43,3 +48,9 @@ script = ExtResource("19_8bcaf")
 
 [node name="MiniGameManager" type="Node" parent="."]
 script = ExtResource("19_qsjdc")
+
+[node name="SpawnerManager" type="Node3D" parent="." node_paths=PackedStringArray("_manager")]
+script = ExtResource("20_ju1ku")
+_manager = NodePath("..")
+objectList = [ExtResource("21_lhack"), ExtResource("22_8q55d"), ExtResource("23_e51xb"), ExtResource("24_dpein")]
+SpawnCountPerObject = 100
