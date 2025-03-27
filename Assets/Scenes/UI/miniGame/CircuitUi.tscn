@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://c83fqjo4lhfry"]
+[gd_scene load_steps=9 format=3 uid="uid://c83fqjo4lhfry"]
 
 [ext_resource type="PackedScene" uid="uid://ojau7ov2vb5r" path="res://Assets/Scenes/UI/Inventory/Slot/slotUi.tscn" id="1_1nlaq"]
 [ext_resource type="Script" path="res://Assets/Scripts/Interface/MiniGame/CircuitUi.cs" id="1_cesen"]
 [ext_resource type="PackedScene" uid="uid://bkqb1w6ijhgj8" path="res://Assets/Scenes/UI/Inventory/Slot/slotCircuitUi.tscn" id="2_okr47"]
 [ext_resource type="PackedScene" uid="uid://sq3mjfb16uya" path="res://Assets/Scenes/UI/Inventory/InventoryBottom.tscn" id="2_vcft0"]
-[ext_resource type="Script" path="res://Assets/Scripts/Interface/MiniGame/ConnectionLayer.cs" id="4_w3sik"]
 
 [sub_resource type="Theme" id="Theme_bs0v5"]
 default_base_scale = 10.9
@@ -21,10 +20,10 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.201527, 0.201527, 0.201526, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smocq"]
-bg_color = Color(0.111414, 0.398286, 0.230041, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtmmb"]
+bg_color = Color(0.127646, 0.306964, 0.177766, 1)
 
-[node name="Circuit" type="Control" node_paths=PackedStringArray("_inventoryBottomUi", "_craftButton", "_changeButton", "_slotContainer", "_connectionLayer", "_outputSlotUi")]
+[node name="Circuit" type="Control" node_paths=PackedStringArray("_inventoryBottomUi", "_craftButton", "_changeButton", "_outputSlotUi")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,9 +34,6 @@ script = ExtResource("1_cesen")
 _inventoryBottomUi = NodePath("InventoryBottom")
 _craftButton = NodePath("Craft/Craft/Button")
 _changeButton = NodePath("Craft/Reset/Button")
-_slotContainer = NodePath("Panel/SlotContainer")
-_connectionLayer = NodePath("Panel/draw")
-_circuitSlotUi = ExtResource("2_okr47")
 _outputSlotUi = NodePath("Output/SlotUI")
 
 [node name="Background" type="Panel" parent="."]
@@ -156,45 +152,57 @@ grow_vertical = 2
 text = "Souder le circuit :"
 horizontal_alignment = 1
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.05
-anchor_right = 0.75
-anchor_bottom = 0.55
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_smocq")
-
-[node name="draw" type="Control" parent="Panel"]
-layout_mode = 1
-anchor_left = 0.05
-anchor_top = 0.05
-anchor_right = 0.95
-anchor_bottom = 0.95
-offset_bottom = 3.05176e-05
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("4_w3sik")
-
-[node name="SlotContainer" type="Control" parent="Panel"]
-layout_mode = 1
-anchor_left = 0.05
-anchor_top = 0.05
-anchor_right = 0.95
-anchor_bottom = 0.95
-offset_bottom = 3.05176e-05
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="InventoryBottom" parent="." instance=ExtResource("2_vcft0")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
-anchor_top = 0.6
+anchor_top = 0.5
 anchor_right = 0.75
 anchor_bottom = 0.95
+offset_left = 0.399998
+offset_top = 81.2
+offset_bottom = 0.400024
+
+[node name="circuitSlot" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.75
+anchor_bottom = 0.6
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jtmmb")
+
+[node name="VFlowContainer" type="VBoxContainer" parent="circuitSlot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="slots" type="HBoxContainer" parent="circuitSlot/VFlowContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="slotCircuitUi" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="circuitSlot/VFlowContainer/slots"]
+custom_minimum_size = Vector2(50, 2)
+layout_mode = 2
+
+[node name="slotCircuitUi2" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
+layout_mode = 2
+
+[node name="slotCircuitUi3" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
+layout_mode = 2
+
+[node name="slotCircuitUi4" parent="circuitSlot/VFlowContainer/slots" instance=ExtResource("2_okr47")]
+layout_mode = 2
 
 [connection signal="button_down" from="Craft/Reset/Button" to="." method="onChangeButtonPressed"]
 [connection signal="button_down" from="Craft/Craft/Button" to="." method="onCraftButtonPressed"]
