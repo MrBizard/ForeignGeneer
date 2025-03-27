@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dslhjqlwj87du"]
+
+[ext_resource type="PackedScene" uid="uid://cy8sxwguv1wrp" path="res://Assets/Model/map/statue_columnDamaged.glb" id="1_ukuug"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_prnny"]
+points = PackedVector3Array(-0.15, 0, -0.15, -0.15, 0, 0.15, -0.15, 0.159994, -0.15, 0.15, 0, -0.15, 0.15, 0, 0.15, -0.15, 0.159994, 0.15, 0.15, 0.159994, -0.15, -0.110004, 0.699932, -0.110004, 0.15, 0.159994, 0.15, -0.110004, 0.64998, 0.109975, -0.110004, 0.699932, -0.0600235, -0.0600235, 0.699932, -0.110004, 0.109975, 0.599961, -0.110004, 0.109975, 0.599961, -0.0600235, 0.109975, 0.549941, 0.109975, -0.0600235, 0.64998, 0.109975, -0.0600235, 0.699932, -0.0600235)
+
+[node name="statue_columnDamaged2" instance=ExtResource("1_ukuug")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/statue_columnDamaged" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/statue_columnDamaged/StaticBody3D" index="0"]
+shape = SubResource("ConvexPolygonShape3D_prnny")

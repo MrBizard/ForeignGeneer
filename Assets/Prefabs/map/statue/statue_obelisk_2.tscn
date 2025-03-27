@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://djbqo6ml3waqr"]
+
+[ext_resource type="PackedScene" uid="uid://brwt5bel55y2m" path="res://Assets/Model/map/statue_obelisk.glb" id="1_6gd4r"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ui02q"]
+points = PackedVector3Array(-0.153509, 0, -0.153509, 0.153479, 0, -0.153509, -0.153509, 0, 0.153479, -0.0548462, 0.792279, -0.0548462, 0.153479, 0, 0.153479, 0.0548162, 0.792279, -0.0548462, -0.0548462, 0.792279, 0.0548162, -3.00407e-05, 0.875397, -3.00407e-05, 0.0548162, 0.792279, 0.0548162)
+
+[node name="statue_obelisk2" instance=ExtResource("1_6gd4r")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/statue_obelisk" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/statue_obelisk/StaticBody3D" index="0"]
+shape = SubResource("ConvexPolygonShape3D_ui02q")

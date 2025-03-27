@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bccciw3qli2lf"]
+
+[ext_resource type="PackedScene" uid="uid://cqo46y5fqe5v3" path="res://Assets/Model/map/tree_cone.glb" id="1_pqnxv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vidno"]
+size = Vector3(0.512756, 6.8335, 0.641479)
+
+[node name="tree_cone2" instance=ExtResource("1_pqnxv")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/tree_cone" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/tree_cone/StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0210876, 3.54321, 0.00628662)
+shape = SubResource("BoxShape3D_vidno")
