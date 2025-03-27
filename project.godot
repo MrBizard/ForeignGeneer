@@ -18,7 +18,7 @@ ResourceScriptDirectories=["res://"]
 
 config/name="ForeignGeneer"
 run/main_scene="res://Assets/Scenes/test.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
