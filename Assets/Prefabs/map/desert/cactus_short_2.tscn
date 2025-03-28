@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cugewnkgpcy82"]
+
+[ext_resource type="PackedScene" uid="uid://ch7ivxvue0g4w" path="res://Assets/Model/map/cactus_short.glb" id="1_114q5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fffyt"]
+height = 2.85891
+
+[node name="cactus_short2" instance=ExtResource("1_114q5")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/cactus_short" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tmpParent/cactus_short/StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25048, 0)
+shape = SubResource("CapsuleShape3D_fffyt")
