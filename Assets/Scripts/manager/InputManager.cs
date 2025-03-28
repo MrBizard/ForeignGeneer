@@ -7,17 +7,10 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class InputManager : Node
 {
     public static InputManager Instance { get; private set; }
-    public bool dismantle = false;
+    
     public override void _Ready()
     {
-        if (Instance == null)
-        {
             Instance = this;
-        }
-        else
-        {
-            QueueFree();
-        }
     }
 
     public override void _Process(double delta)
@@ -27,16 +20,16 @@ public partial class InputManager : Node
             HandleUiToggle("inventoryUi");
         }
 
-        if (Input.IsActionJustPressed("option"))
-        {
-            HandleUiToggle("optionUi");
-        }
-        if(UiManager.instance.isAnyUiOpen())
-            return;
-        if (Input.IsActionJustPressed("sprint"))
-        {
-            Player.Instance.SetSprinting();
-        }
+		if (Input.IsActionJustPressed("option"))
+		{
+			HandleUiToggle("GameOption");
+		}
+		if(UiManager.instance.isAnyUiOpen())
+			return;
+		if (Input.IsActionJustPressed("sprint"))
+		{
+			Player.Instance.SetSprinting();
+		}
 
         if (Input.IsActionJustPressed("jump"))
         {
@@ -47,7 +40,7 @@ public partial class InputManager : Node
         {
             Player.Instance.LeftClick();
         }
-
+        
         if (Input.IsActionJustPressed("rightClick"))
         {
             Player.Instance.RightClick();

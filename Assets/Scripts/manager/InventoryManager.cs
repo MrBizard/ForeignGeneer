@@ -28,14 +28,7 @@ public partial class InventoryManager : Node
 
     public override void _Ready()
     {
-        if (Instance == null)
-        {
             Instance = this;
-        }
-        else
-        {
-            QueueFree();
-        }
         mainInventory = new Inventory(mainInventorySize);
         hotbar = new Inventory(hotbarSize);
         

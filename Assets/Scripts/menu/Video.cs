@@ -3,6 +3,8 @@ using System;
 
 public partial class Video : BoxContainer
 {
+	[Export]
+	public filterManager filter;
 	private bool _fullscreen = false;
 	private float _brightness = 1.0f;
 	// Called when the node enters the scene tree for the first time.
@@ -31,4 +33,9 @@ public partial class Video : BoxContainer
 			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
 		}
 	}
+	
+	private void _DaltonismChange(int Index){
+		
+	}
+	
 }

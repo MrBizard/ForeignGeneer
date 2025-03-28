@@ -17,7 +17,7 @@ ResourceScriptDirectories=["res://"]
 [application]
 
 config/name="ForeignGeneer"
-run/main_scene="res://Assets/Scenes/main.tscn"
+run/main_scene="res://Assets/Scenes/Menu/titleScreen.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

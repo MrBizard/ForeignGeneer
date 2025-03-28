@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://c6xr5ux6th5oq"]
+[gd_scene load_steps=20 format=3 uid="uid://c6xr5ux6th5oq"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/manager/Manager.cs" id="1_71vod"]
 [ext_resource type="PackedScene" uid="uid://csfqa8ppcx5m0" path="res://Assets/Scenes/Menu/Options.tscn" id="2_4ko3m"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InventoryManager.cs" id="9_tqnk7"]
 [ext_resource type="PackedScene" uid="uid://bvoaib2hksqyq" path="res://Assets/Scenes/UI/Inventory/overlayItemInformation.tscn" id="10_h7g1s"]
 [ext_resource type="Resource" uid="uid://bh0wee65eoi72" path="res://Assets/Resource/Items/Ingots/IronIngot.tres" id="10_lix3d"]
+[ext_resource type="PackedScene" uid="uid://cmxhqperf45w8" path="res://Assets/Scenes/Menu/GameOption.tscn" id="10_lj37u"]
+[ext_resource type="Resource" uid="uid://blqmnqkdcbi7l" path="res://Assets/Resource/Block/factory/Fonderie.tres" id="11_2jesr"]
 [ext_resource type="PackedScene" uid="uid://bo8sap88s0lgi" path="res://Assets/Scenes/UI/centrale/solarUi.tscn" id="11_4hqb7"]
 [ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/BiomasCentral.tres" id="12_r8hvi"]
 [ext_resource type="PackedScene" uid="uid://igq70ebc8pcg" path="res://Assets/Scenes/UI/Factory/CraftingTableUi.tscn" id="12_t0n70"]
@@ -28,8 +30,8 @@ option = ExtResource("2_4ko3m")
 
 [node name="UiManager" type="Node" parent="."]
 script = ExtResource("3_a3ua0")
-_uiKeys = ["fonderieUi", "centralUi", "inventoryUi", "itemCursorUi", "slotUi", "recipeListUi", "optionUi", "overlayItemInformation", "windUi", "craftingTableUi"]
-_uiScenes = [ExtResource("5_ddexw"), ExtResource("6_pllps"), ExtResource("6_t0fjt"), ExtResource("7_qfv7a"), ExtResource("8_snqcd"), ExtResource("4_iqjgk"), ExtResource("2_4ko3m"), ExtResource("10_h7g1s"), ExtResource("11_4hqb7"), ExtResource("12_t0n70")]
+_uiKeys = ["fonderieUi", "centralUi", "inventoryUi", "itemCursorUi", "slotUi", "recipeListUi", "overlayItemInformation", "GameOption", "windUi", "craftingTableUi"]
+_uiScenes = [ExtResource("5_ddexw"), ExtResource("6_pllps"), ExtResource("6_t0fjt"), ExtResource("7_qfv7a"), ExtResource("8_snqcd"), ExtResource("4_iqjgk"), ExtResource("10_h7g1s"), ExtResource("10_lj37u"), ExtResource("11_4hqb7"), ExtResource("12_t0n70")]
 
 [node name="InputManager" type="Node" parent="."]
 script = ExtResource("8_a14bf")
