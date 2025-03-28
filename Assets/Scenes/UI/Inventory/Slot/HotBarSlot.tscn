@@ -1,11 +1,18 @@
-[gd_scene format=3 uid="uid://cshkjrjlmetnd"]
+[gd_scene load_steps=2 format=3 uid="uid://cshkjrjlmetnd"]
 
-[node name="HotBarSlot" type="Control"]
-layout_mode = 3
+[ext_resource type="Script" path="res://Assets/Scripts/Interface/slot/HotbarSlotUi.cs" id="1_xl5ub"]
+
+[node name="HotBarSlot" type="Panel" node_paths=PackedStringArray("_textureRect")]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = -1
 anchor_right = 0.05
 anchor_bottom = 0.1
+offset_right = 6.4
+offset_bottom = -0.800003
+script = ExtResource("1_xl5ub")
+_textureRect = NodePath("icon")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="icon" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

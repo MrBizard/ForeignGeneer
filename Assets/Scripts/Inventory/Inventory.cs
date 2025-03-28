@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts;
+using Godot;
 
 public class Inventory : ISlotObservable
 {
@@ -163,6 +164,7 @@ public class Inventory : ISlotObservable
         {
             foreach (var observer in _slotObservers[slotIndex])
             {
+                GD.Print(observer);
                 observer.update(null);
             }
         }

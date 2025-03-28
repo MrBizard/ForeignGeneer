@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolStatic" load_steps=2 format=3 uid="uid://b2vs0cgl5sf3q"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bibgkd4auq35e"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Static/ItemStatic/ToolStatic.cs" id="1_k0bx1"]
 

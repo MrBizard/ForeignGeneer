@@ -21,15 +21,14 @@ public partial class FactoryStatic : ItemStatic
 	/// </summary>
 	/// <param name="pos">The position where the Fonderie will be instantiated.</param>
 	/// <returns>The instantiated Fonderie object.</returns>
-	public StaticBody3D instantiateFactory(Vector3 pos, Vector3 rot = new Vector3())
+	public StaticBody3D instantiateFactory(Vector3 rot = new Vector3())
 	{
 		PackedScene scene = GD.Load<PackedScene>(_scenePath);
-		if (scene == null || pos == Vector3.Zero)
+		if (scene == null)
 		{
 			return null;
 		}
-		var itemInstantiate = scene.Instantiate<StaticBody3D>();
-		itemInstantiate.GlobalPosition = pos;
+		StaticBody3D itemInstantiate = scene.Instantiate<StaticBody3D>();
 		if (getMaterial != null)
 		{
 			MeshInstance3D meshInstance = itemInstantiate.GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
@@ -55,12 +54,13 @@ public partial class FactoryStatic : ItemStatic
 			return;
 		}
 		InventoryManager.Instance.StopPreview();
-		StaticBody3D instance = instantiateFactory(InterractionManager.instance.getWorldCursorPosition());
+		StaticBody3D instance = instantiateFactory();
 		if (instance != null)
 		{
 			InventoryManager manager = InventoryManager.Instance;
 			manager.hotbar.removeItem(manager.currentSlotHotbar,1);
 			Player.Instance.GetParent().AddChild(instance);
+			instance.GlobalPosition = InterractionManager.instance.getWorldCursorPosition();
 		}
 	}
 	public void StartPreview(ItemStatic item)
