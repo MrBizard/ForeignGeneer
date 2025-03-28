@@ -21,7 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://rq7sp1efmurb" path="res://Assets/Texture/environnement/foliage/sprite_0090.png" id="16_kus3r"]
 [ext_resource type="Texture2D" uid="uid://0w6xbgddp6n8" path="res://Assets/Texture/environnement/foliage/sprite_0091.png" id="17_tv2u0"]
 [ext_resource type="PackedScene" uid="uid://bccciw3qli2lf" path="res://Assets/Prefabs/map/tree/tree_cone_2.tscn" id="18_j80hr"]
-[ext_resource type="PackedScene" uid="uid://ktfq1ucdt8rt" path="res://Assets/Prefabs/Ingots/BreakableCopper.tscn" id="18_jsjwk"]
+[ext_resource type="PackedScene" uid="uid://cn0y2hdd0ln3x" path="res://Assets/Prefabs/Ingots/BreakableGold.tscn" id="18_jsjwk"]
 [ext_resource type="PackedScene" uid="uid://csdoudlt57k2t" path="res://Assets/Prefabs/map/stone/stone_large_a_2.tscn" id="18_mk7mi"]
 [ext_resource type="Script" path="res://addons/terrabrush/TerraBrush.cs" id="19_goxem"]
 [ext_resource type="PackedScene" uid="uid://cn0y2hdd0ln3x" path="res://Assets/Prefabs/Ingots/BreakableGold.tscn" id="19_lp64r"]
