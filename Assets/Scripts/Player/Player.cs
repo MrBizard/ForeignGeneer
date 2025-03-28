@@ -110,10 +110,10 @@ public partial class Player : CharacterBody3D
     /// <summary>
     /// Active ou désactive le sprint du joueur.
     /// </summary>
-    public void SetSprinting()
+    public void SetSprinting(bool isSprinting)
     {
-        _isSprinting = !_isSprinting;
-        Speed = _isSprinting ? 50.0f : 5.0f;
+        _isSprinting = isSprinting;
+        Speed = isSprinting ? 50.0f : 5.0f;
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public partial class Player : CharacterBody3D
     public void LeftClick()
     {
         if (_isUiOpen) return;
-        StackItem item = InventoryManager.Instance.hotbar.getItem(InventoryManager.Instance.currentSlotHotbar);
+        StackItem item = InventoryManager.Instance.getCurrentItem();
         if (item is not null)
             item.getResource().LeftClick();
     }

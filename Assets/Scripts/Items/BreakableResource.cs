@@ -1,53 +1,38 @@
 using Godot;
-using System;
-using ForeignGeneer.Assets.Scripts.Block;
 
-public partial class BreakableResource : StaticBody3D, IInteractable
+public partial class BreakableResource : HarvestableResource
 {
-	public StackItem item {get;set;}
-	[Export] public ResourceStatic resourceStatic {get;set;}
-	[Export]private double timer=5.0f;
-	public bool IsActive=false;
-	private CollisionShape3D collisionShape;
-	
-	
-	// Called when the node enters the scene tree for the first time.
+	[Export] public StackItem Item { get; set; }
+	[Export] public ResourceStatic ResourceStatic { get; set; }
+
+	private CollisionShape3D _collisionShape;
+
 	public override void _Ready()
 	{
-		item= new StackItem(resourceStatic);
-		collisionShape = GetNode<CollisionShape3D>("CollisionShape3D");
-		
+		base._Ready();
+		_collisionShape = GetNode<CollisionShape3D>("CollisionShape3D");
+		ItemResource = ResourceStatic; 
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public override void Harvest()
 	{
-		if(IsActive){
-			this.Visible=false;
-			collisionShape.Disabled = true;
-			timer-=delta;
-			if(timer<=0){
-				timer=10;
-				this.Visible=true;
-				collisionShape.Disabled = false;
-				IsActive=false;
-			}
-		}
-	}
-	public ItemStatic GetItem(){
-		return item.getResource();
-	}
+		if (IsActive) return;
 
+		IsActive = true;
+		Visible = false;
+		_collisionShape.Disabled = true;
 
-	public void interact(InteractType interactType)
-	{
-		switch (interactType)
+		if (Item != null)
 		{
-			case InteractType.Interact:
-				IsActive = true;
-				InventoryManager.Instance.addItemToInventory(item);
-				item.getResource().LeftClick();
-				break;
+			InventoryManager.Instance.addItemToInventory(Item);
 		}
+	}
+
+	public override void ResetResource()
+	{
+		IsActive = false;
+		Visible = true;
+		_collisionShape.Disabled = false;
+		RespawnTimer = 10.0;
 	}
 }

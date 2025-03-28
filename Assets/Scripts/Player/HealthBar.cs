@@ -1,53 +1,89 @@
 using Godot;
-using System;
 
 public partial class HealthBar : Control
 {
-	//bar de progression
-	[Export] public TextureProgressBar healthBar ;
-    [Export] public TextureProgressBar pollutionBar;
-    [Export] public TextureProgressBar hungerBar;
-    public override void _Ready()
-    {
-        base._Ready();
+	[Export] public TextureProgressBar HealthProgressBar;
+	[Export] public TextureProgressBar PollutionProgressBar;
+	[Export] public TextureProgressBar HungerProgressBar;
 
-        //initialisation des valeur
-        healthBar.Value = 100;
-        pollutionBar.Value=20;
-        hungerBar.Value=100;
-    }
+	private HealthData _healthData;
+	public override void _Ready()
+	{
+		HealthProgressBar.MinValue = 0;
+		HealthProgressBar.MaxValue = 100;
+		HungerProgressBar.MinValue = 0;
+		HungerProgressBar.MaxValue = 100;
+		PollutionProgressBar.MinValue = 0;
+		PollutionProgressBar.MaxValue = 10000;
 
-    public void remove_health(){
-        healthBar.Value-=1;
-    }
+		if (HealthManager.Instance != null)
+		{
+			Initialize(HealthManager.Instance.HealthData);
+		}
+		else
+		{
+			GD.Print("HealthManager not ready yet - will need manual initialization");
+		}
+	}
 
-    public void add_health(){
-        healthBar.Value+=1;
-    }
+	public void Initialize(HealthData healthData)
+	{
+		if (_healthData != null)
+		{
+			_healthData.HealthChanged -= updateHealthDisplay;
+			_healthData.HungerChanged -= updateHungerDisplay;
+			_healthData.PollutionChanged -= updatePollutionDisplay;
+		}
 
-    public void remove_hunger(){
-        hungerBar.Value-=1;
-    }
+		_healthData = healthData;
 
-    public void add_hunger(){
-        hungerBar.Value+=1;
-    }
+		if (_healthData != null)
+		{
+			_healthData.HealthChanged += updateHealthDisplay;
+			_healthData.HungerChanged += updateHungerDisplay;
+			_healthData.PollutionChanged += updatePollutionDisplay;
 
-    public void remove_pollution(){
-        pollutionBar.Value-=1;
-    }
+			CallDeferred(nameof(updateDisplays));
+			GD.Print("HealthBar initialized with HealthData");
+		}
+		else
+		{
+			GD.PrintErr("Failed to initialize HealthBar - HealthData is null");
+		}
+	}
 
-    public void add_pollution(){
-        pollutionBar.Value+=1;
-    }
+	private void updateDisplays()
+	{
+		updateHealthDisplay();
+		updateHungerDisplay();
+		updatePollutionDisplay();
+	}
 
-    public double get_health(){
-        return healthBar.Value;
-    }
-    public double get_hunger(){
-        return hungerBar.Value;
-    }
-    public double get_pollution(){
-        return pollutionBar.Value;
-    }
+	private void updateHealthDisplay()
+	{
+		GD.Print($"Updating health display: {_healthData.Health}");
+		HealthProgressBar.Value = _healthData.Health;
+	}
+
+	private void updateHungerDisplay()
+	{
+		GD.Print($"Updating hunger display: {_healthData.Hunger}");
+		HungerProgressBar.Value = _healthData.Hunger;
+	}
+
+	private void updatePollutionDisplay()
+	{
+		GD.Print($"Updating pollution display: {_healthData.Pollution}");
+		PollutionProgressBar.Value = _healthData.Pollution;
+	}
+
+	public override void _ExitTree()
+	{
+		if (_healthData != null)
+		{
+			_healthData.HealthChanged -= updateHealthDisplay;
+			_healthData.HungerChanged -= updateHungerDisplay;
+			_healthData.PollutionChanged -= updatePollutionDisplay;
+		}
+	}
 }
