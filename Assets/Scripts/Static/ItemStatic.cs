@@ -87,7 +87,6 @@ public partial class ItemStatic : Resource
 
     public override string ToString()
     {
-        return " name : " + GetName() + "\n scenePath : " + _scenePath + "\n inventoryIcon : " 
-               + _inventoryIcon.ToString() + "\n maxStack : " + _maxStack + "\n material : " + _material.ToString();
+        return " name : " + GetName() ;
     }
 }

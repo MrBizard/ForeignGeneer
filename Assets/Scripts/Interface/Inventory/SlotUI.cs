@@ -1,8 +1,9 @@
 using System;
+using ForeignGeneer.Assets.Scripts;
 using ForeignGeneer.Assets.Scripts.Interface;
 using Godot;
 
-public partial class SlotUI : Control
+public partial class SlotUI : Control,BaseUi
 {
     private TextureRect _icon;
     private Label _countLabel;
@@ -18,7 +19,7 @@ public partial class SlotUI : Control
     public override void _Ready()
     {
         _hoverTimer = new Timer();
-        _hoverTimer.WaitTime = 0.5f;
+        _hoverTimer.WaitTime = 1.5f;
         _hoverTimer.OneShot = true;
         _hoverTimer.Connect("timeout", new Callable(this, nameof(showItemDescription)));
         AddChild(_hoverTimer);
@@ -29,6 +30,12 @@ public partial class SlotUI : Control
     /// </summary>
     public void initialize(Inventory inventory, int slotIndex, bool isOutputSlot = false)
     {
+        // Détacher d'abord de l'ancien inventaire si nécessaire
+        if (_inventory != null)
+        {
+            _inventory.detach(_slotIndex, this);
+        }
+
         _inventory = inventory;
         _slotIndex = slotIndex;
         if(isOutputSlot)
@@ -38,6 +45,12 @@ public partial class SlotUI : Control
         _backIcon = GetNode<TextureRect>("Background/BackIcon");
         _icon = GetNode<TextureRect>("Icon");
         _countLabel = GetNode<Label>("CountLabel");
+        
+        // S'attacher au nouvel inventaire
+        if (_inventory != null)
+        {
+            _inventory.attach(_slotIndex, this);
+        }
         
         updateUi();
     }
@@ -49,7 +62,7 @@ public partial class SlotUI : Control
     {
         var stackItem = _inventory.getItem(_slotIndex);
 
-        if (stackItem != null && stackItem.getStack() > 0 && stackItem.getResource() != null)
+        if (stackItem != null && stackItem.getStack() > 0 && stackItem.getResource() != null && _icon !=null && _countLabel != null)
         {
             if(stackItem.getResource().getInventoryIcon!=null)
                 _icon.Texture = stackItem.getResource().getInventoryIcon;
@@ -78,48 +91,64 @@ public partial class SlotUI : Control
     }
 
     private void handleLeftClick()
-{
-    if (InventoryManager.Instance.currentItemInMouse == null)
     {
-        var stackItem = _inventory.getItem(_slotIndex);
-        if (stackItem != null)
+        var currentMouseItem = InventoryManager.Instance.currentItemInMouse;
+        var slotItem = _inventory.getItem(_slotIndex);
+    
+        bool inventoryChanged = false;  // Variable pour savoir si l'inventaire a changé
+    
+        // Cas 1: Pas d'item dans le curseur
+        if (currentMouseItem == null)
         {
-            // Prendre l'item du slot
-            InventoryManager.Instance.setCurrentItemInMouse(stackItem);
-            _inventory.deleteItem(_slotIndex);
-            _inventory.notifyInventoryUpdated();
-        }
-    }
-    else
-    {
-        if (!_isOutputSlot)
-        {
-            var stackItem = _inventory.getItem(_slotIndex);
-            if (stackItem == null)
+            if (slotItem != null)
             {
-                _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _slotIndex);
+                // Prendre l'item du slot
+                InventoryManager.Instance.setCurrentItemInMouse(slotItem);
+                _inventory.deleteItem(_slotIndex);
+                inventoryChanged = true;
+            }
+        }
+        // Cas 2: Item dans le curseur et slot vide
+        else if (slotItem == null && !_isOutputSlot)
+        {
+            // Placer l'item du curseur dans le slot
+            _inventory.addItemToSlot(currentMouseItem, _slotIndex);
+            InventoryManager.Instance.setCurrentItemInMouse(null);
+            inventoryChanged = true;
+        }
+        // Cas 3: Items de même type - fusionner les stacks
+        else if (slotItem.getResource() == currentMouseItem.getResource())
+        {
+            int remaining = slotItem.add(currentMouseItem.getStack());
+            currentMouseItem.setStack(remaining);
+        
+            if (remaining <= 0)
+            {
                 InventoryManager.Instance.setCurrentItemInMouse(null);
             }
-            else if (stackItem.getResource() == InventoryManager.Instance.currentItemInMouse.getResource())
-            {
-                InventoryManager.Instance.currentItemInMouse.setStack(stackItem.add(InventoryManager.Instance.currentItemInMouse.getStack()));
-                if (InventoryManager.Instance.currentItemInMouse.getStack() <= 0)
-                {
-                    InventoryManager.Instance.setCurrentItemInMouse(null);
-                }
-            }
-            else
-            {
-                var temp = stackItem;
-                _inventory.addItemToSlot(InventoryManager.Instance.currentItemInMouse, _slotIndex);
-                InventoryManager.Instance.setCurrentItemInMouse(temp);
-            }
-            _inventory.notifyInventoryUpdated();
+        
+            inventoryChanged = true;
         }
+        // Cas 4: Items différents - échanger les items
+        else
+        {
+            StackItem tempSlotItem = new StackItem(slotItem.getResource(), slotItem.getStack());
+
+            _inventory.deleteItem(_slotIndex);
+            _inventory.addItemToSlot(currentMouseItem, _slotIndex);
+            InventoryManager.Instance.setCurrentItemInMouse(tempSlotItem);
+
+            inventoryChanged = true;
+        }
+
+        // Mise à jour de l'UI uniquement si un changement a eu lieu
+        if (inventoryChanged)
+        {
+            updateUi();
+        }
+
+        updateUi();
     }
-    updateUi();
-    InventoryManager.Instance.setCurrentItemInMouse(InventoryManager.Instance.currentItemInMouse);
-}
 
 
     private void handleRightClick()
@@ -145,17 +174,14 @@ public partial class SlotUI : Control
 
                 InventoryManager.Instance.setCurrentItemInMouse(currentMouseItem);
             } 
-
-            _inventory.notifyInventoryUpdated();
-            updateUi();
+            
         }
         else if (stackItem != null && stackItem.getStack() == 1)
         {
             InventoryManager.Instance.setCurrentItemInMouse(stackItem);
             _inventory.deleteItem(_slotIndex);
-            _inventory.notifyInventoryUpdated();
-            updateUi();
         }
+        updateUi();
     }
 
     /// <summary>
@@ -206,5 +232,22 @@ public partial class SlotUI : Control
         _icon.Texture = null;
         _countLabel.Text = "";
     }
-    
+
+    public void update(InterfaceType? interfaceType = null)
+    {
+        updateUi();
+    }
+
+    public void detach()
+    {
+        if (_inventory != null)
+        {
+            _inventory.detach(_slotIndex, this);
+        }
+    }
+
+    public void initialize(object data)
+    {
+        
+    }
 }

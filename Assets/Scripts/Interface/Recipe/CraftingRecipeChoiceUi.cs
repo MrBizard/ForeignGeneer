@@ -33,6 +33,7 @@ public partial class CraftingRecipeChoiceUi: Control, BaseUi
 
     public void detach()
     {
+        
     }
 
     public void onButtonPressed()

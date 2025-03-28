@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ForeignGeneer.Assets.Scripts.Block;
 using ForeignGeneer.Assets.Scripts.Interface;
@@ -15,10 +16,11 @@ public partial class InventoryManager : Node
     [Export] private ItemStatic testItem3;
     [Export] public int mainInventorySize { get; private set; } = 20;
     [Export] public int hotbarSize { get; private set; } = 5;
-
+    public event Action OnHotbarSelectionChanged;
     public Inventory mainInventory { get; private set; }
     public Inventory hotbar { get; private set; }
-    public StackItem currentItemInMouse { get; private set; }
+    private StackItem _currentItemInMouse;
+    public StackItem currentItemInMouse { get => _currentItemInMouse; private set => setCurrentItemInMouse(value); }
 
     public int currentSlotHotbar = 0;
     public PreviewObject currentPreview;
@@ -46,18 +48,95 @@ public partial class InventoryManager : Node
         mainInventory.addItemToSlot(new StackItem(testItem3, 1), 2);
         hotbar.addItemToSlot(new StackItem(testItem, 67), 1);
     }
-    /// <summary>
-    /// Sets the item currently held by the mouse.
-    /// </summary>
     public void setCurrentItemInMouse(StackItem item)
     {
-        currentItemInMouse = item;
-
-        UiManager.instance.closeUi("itemCursorUi");
-
-        if (item != null)
+        // Détacher les observateurs de l'ancien item
+        if (_currentItemInMouse != null)
         {
-            UiManager.instance.openUi("itemCursorUi", item);
+            _currentItemInMouse.OnStackModified -= OnMouseItemChanged;
+        }
+
+        _currentItemInMouse = item;
+
+        // Attacher les observateurs au nouvel item
+        if (_currentItemInMouse != null)
+        {
+            _currentItemInMouse.OnStackModified += OnMouseItemChanged;
+            
+            // Forcer la validation de l'item
+            if (_currentItemInMouse.isEmpty() || _currentItemInMouse.getResource() == null)
+            {
+                _currentItemInMouse = null;
+            }
+        }
+
+        UpdateMouseItemUI();
+    }
+
+    private void OnMouseItemChanged(StackItem item)
+    {
+        // Synchronisation immédiate
+        if (item == null || item.isEmpty() || item.getResource() == null)
+        {
+            setCurrentItemInMouse(null);
+        }
+        else
+        {
+            UpdateMouseItemUI();
+        }
+    }
+
+    private void UpdateMouseItemUI()
+    {
+        UiManager.instance?.closeUi("itemCursorUi");
+        
+        if (_currentItemInMouse != null && !_currentItemInMouse.isEmpty())
+        {
+            UiManager.instance?.openUi("itemCursorUi", _currentItemInMouse);
+        }
+
+        
+    }
+
+    // Méthodes pour manipuler l'item du curseur de manière sécurisée
+    public void AddToMouseItem(int quantity)
+    {
+        if (currentItemInMouse == null) return;
+
+        int remainingStack = currentItemInMouse.getStack() + quantity;
+
+        // Vérifier que l'item peut être ajouté à l'inventaire
+        if (remainingStack <= currentItemInMouse.getResource().getMaxStack) {
+            currentItemInMouse.setStack(remainingStack);
+        } else {
+            // Si la pile dépasse la capacité maximale, on laisse juste la partie du stack que l'inventaire peut accepter
+            int overflow = remainingStack - currentItemInMouse.getResource().getMaxStack;
+            currentItemInMouse.setStack(currentItemInMouse.getResource().getMaxStack);
+
+            // Retourner l'overflow à l'inventaire
+            StackItem overflowItem = new StackItem
+            {
+                Resource = currentItemInMouse.getResource(),
+                Stack = overflow
+            };
+            addItemToInventory(overflowItem);
+        }
+
+        if (currentItemInMouse.isEmpty()) {
+            setCurrentItemInMouse(null);
+        }
+    }
+
+
+    public void RemoveFromMouseItem(int quantity)
+    {
+        if (currentItemInMouse == null) return;
+        
+        currentItemInMouse.subtract(quantity);
+        
+        if (currentItemInMouse.isEmpty())
+        {
+            setCurrentItemInMouse(null);
         }
     }
     private Vector3 FindNearestFreeSpot(Vector3 origin)
@@ -96,15 +175,26 @@ public partial class InventoryManager : Node
 
     public int addItemToInventory(StackItem stack)
     {
-        int looseItem = 0;
+        int looseItem = stack.getStack();
+        bool added = false;
+
         foreach (Inventory inv in inventory)
-        { 
-            looseItem = inv.addItem(stack);
-            if (looseItem <= 0)
-                return 0;
+        {
+            int remainingStack = inv.addItem(stack);
+            if (remainingStack == 0)
+            {
+                added = true;
+                break;  
+            }
+            else
+            {
+                stack.setStack(remainingStack);
+            }
         }
+
         return looseItem;
     }
+
 
     public StackItem getCurrentItem()
     {
@@ -122,8 +212,16 @@ public partial class InventoryManager : Node
         }
         return null;
     }
-    public void addCurrentItemToHotbar()
+    public void removeCurrentItemToHotbar()
     {
+        if (currentItemInMouse != null)
+        {
+            if (getCurrentItem() == null || getCurrentItem().getResource() != currentItemInMouse.getResource())
+            {
+                hotbar.addItemToSlot(currentItemInMouse, currentSlotHotbar);
+            }
+        }
+
         if (currentSlotHotbar + 1 < hotbarSize)
         {
             currentSlotHotbar++;
@@ -132,22 +230,35 @@ public partial class InventoryManager : Node
         {
             currentSlotHotbar = 0;
         }
-        
+
+        OnHotbarSelectionChanged?.Invoke();
         StopPreview();
     }
-    public void removeCurrentItemToHotbar()
+
+    
+    public void addCurrentItemToHotbar()
     {
+        if (currentItemInMouse != null)
+        {
+            if (getCurrentItem() == null || getCurrentItem().getResource() != currentItemInMouse.getResource())
+            {
+                hotbar.addItemToSlot(currentItemInMouse, currentSlotHotbar);
+            }
+        }
+
         if (currentSlotHotbar - 1 >= 0)
         {
             currentSlotHotbar--;
         }
         else
         {
-            currentSlotHotbar = hotbarSize-1;
+            currentSlotHotbar = hotbarSize - 1;
         }
 
+        OnHotbarSelectionChanged?.Invoke();
         StopPreview();
     }
+
     
     private bool isItemAuSol(string path)
     {

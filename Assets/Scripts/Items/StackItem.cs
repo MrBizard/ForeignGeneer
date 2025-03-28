@@ -11,12 +11,20 @@ public partial class StackItem: Resource
     // Champs privés
     private ItemStatic _resource;
     private int _stack=0;
-
+    public event Action<StackItem> OnStackModified;
+    public event Action<StackItem> OnItemChanged;
     [Export]
     public ItemStatic Resource
     {
         get => _resource;
-        set => _resource = value;
+        set
+        {
+            if (_resource != value)
+            {
+                _resource = value;
+                OnItemChanged?.Invoke(this);
+            }
+        }
     }
 
     /// <summary>
@@ -26,7 +34,14 @@ public partial class StackItem: Resource
     public int Stack
     {
         get => _stack;
-        set => _stack = value;
+        set
+        {
+            if (_stack != value)
+            {
+                _stack = value;
+                OnStackModified?.Invoke(this);
+            }
+        }
     }
     
     /// <summary>
@@ -56,7 +71,8 @@ public partial class StackItem: Resource
     /// </summary>
     public void setStack(int value)
     {
-        _stack = value;
+        Stack = value;
+        
     }
 
     /// <summary>
@@ -73,7 +89,7 @@ public partial class StackItem: Resource
     public StackItem(ItemStatic resource, int nb = 1)
     {
         this._resource = resource;
-        this._stack = nb;
+        Stack = nb;
     }
 
     /// <summary>
@@ -87,11 +103,11 @@ public partial class StackItem: Resource
     {
         if (_stack + nb <= _resource.getMaxStack)
         {
-            _stack += nb;
+            Stack += nb;
             return 0;
         }
             int overflow = _stack + nb - _resource.getMaxStack;
-            _stack = _resource.getMaxStack;
+            Stack = _resource.getMaxStack;
             return overflow;
         
     }
@@ -109,7 +125,7 @@ public partial class StackItem: Resource
     /// <param name="nb">Le nombre d'items à retirer.</param>
     public void subtract(int nb)
     {
-        _stack = Math.Max(0, _stack - nb);
+        Stack = Math.Max(0, _stack - nb);
     }
 
     /// <summary>
@@ -134,7 +150,7 @@ public partial class StackItem: Resource
             return null;
 
         int splitAmount = _stack / 2;
-        _stack -= splitAmount;
+        Stack -= splitAmount;
 
         return new StackItem(_resource, splitAmount);
     }

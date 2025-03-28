@@ -20,33 +20,33 @@ public class Inventory : ISlotObservable
 
     public void addItemToSlot(StackItem item, int slotIndex)
     {
-        if (slotIndex >= slots.Count)
-            return;
+        if (slotIndex >= slots.Count) return;
 
-        bool success = false;
-
-        if (slots[slotIndex] == null)
+        // Détacher les observateurs de l'ancien item
+        if (slots[slotIndex] != null)
         {
-            slots[slotIndex] = item;
-            success = true;
-        }
-        else if (slots[slotIndex].getResource() == item.getResource())
-        {
-            int remaining = slots[slotIndex].add(item.getStack());
-            if (remaining == 0)
-            {
-                success = true;
-            }
-            else
-            {
-                item.setStack(remaining);
-            }
+            slots[slotIndex].OnStackModified -= OnItemModified;
+            slots[slotIndex].OnItemChanged -= OnItemModified;
         }
 
-        if (success)
+        slots[slotIndex] = item;
+
+        // Attacher les observateurs au nouvel item
+        if (item != null)
         {
-            onInventoryUpdated?.Invoke();
-            notify(slotIndex);  // Notify only the updated slot
+            item.OnStackModified += OnItemModified;
+            item.OnItemChanged += OnItemModified;
+        }
+
+        notify(slotIndex);
+    }
+
+    private void OnItemModified(StackItem item)
+    {
+        int index = slots.IndexOf(item);
+        if (index >= 0)
+        {
+            notify(index);
         }
     }
 
@@ -164,9 +164,18 @@ public class Inventory : ISlotObservable
         {
             foreach (var observer in _slotObservers[slotIndex])
             {
-                GD.Print(observer);
                 observer.update(null);
             }
         }
     }
+    private void OnStackItemModified(StackItem item)
+    {
+        // Trouver l'index de l'item modifié
+        int index = slots.IndexOf(item);
+        if (index >= 0)
+        {
+            notify(index);
+        }
+    }
+
 }

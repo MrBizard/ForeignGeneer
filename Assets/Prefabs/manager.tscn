@@ -16,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bo8sap88s0lgi" path="res://Assets/Scenes/UI/Centrale/solarUi.tscn" id="11_4hqb7"]
 [ext_resource type="Resource" uid="uid://ojkf6c4xovdt" path="res://Assets/Resource/Block/central/BiomasCentral.tres" id="12_r8hvi"]
 [ext_resource type="PackedScene" uid="uid://igq70ebc8pcg" path="res://Assets/Scenes/UI/Factory/CraftingTableUi.tscn" id="12_t0n70"]
-[ext_resource type="Resource" uid="uid://b2vs0cgl5sf3q" path="res://Assets/Resource/Items/pickaxe.tres" id="16_ju7om"]
+[ext_resource type="Resource" uid="uid://bibgkd4auq35e" path="res://Assets/Resource/Items/pickaxe.tres" id="16_ju7om"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/InterractionManager.cs" id="19_8bcaf"]
 [ext_resource type="Script" path="res://Assets/Scripts/manager/MiniGameManager.cs" id="19_qsjdc"]
 [ext_resource type="Resource" uid="uid://betqpgypraidr" path="res://Assets/Resource/recipe/circuit/c1.tres" id="20_o34gw"]
