@@ -110,10 +110,10 @@ public partial class Player : CharacterBody3D
     /// <summary>
     /// Active ou désactive le sprint du joueur.
     /// </summary>
-    public void SetSprinting(bool isSprinting)
+    public void SetSprinting()
     {
-        _isSprinting = isSprinting;
-        Speed = isSprinting ? 50.0f : 5.0f;
+        _isSprinting = !_isSprinting;
+        Speed = _isSprinting ? 20.0f : 5.0f;
     }
 
     /// <summary>

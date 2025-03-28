@@ -1,14 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://ktfq1ucdt8rt"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Items/BreakableResource.cs" id="1_rdbgr"]
-[ext_resource type="ArrayMesh" uid="uid://dnj5201aultlu" path="res://Assets/Model/pierre_resource.obj" id="1_upmjh"]
+[ext_resource type="ArrayMesh" uid="uid://b8n8llh5me478" path="res://Assets/Model/pierre_resource.obj" id="1_upmjh"]
 [ext_resource type="Resource" uid="uid://bp5ep2ssoix8n" path="res://Assets/Resource/Items/Ingots/CopperIngot.tres" id="2_w4qk8"]
-[ext_resource type="Script" path="res://Assets/Scripts/Items/StackItem.cs" id="3_kr52u"]
-
-[sub_resource type="Resource" id="Resource_yurwg"]
-script = ExtResource("3_kr52u")
-Resource = ExtResource("2_w4qk8")
-Stack = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tt5wn"]
 albedo_color = Color(0.507557, 0.502559, 0.475656, 1)
@@ -24,8 +18,8 @@ albedo_color = Color(0.667604, 0.32872, 0.195109, 1)
 
 [node name="CopperOre" type="StaticBody3D"]
 script = ExtResource("1_rdbgr")
-Item = SubResource("Resource_yurwg")
-ResourceStatic = ExtResource("2_w4qk8")
+_resourceStatic = ExtResource("2_w4qk8")
+RespawnTimer = 2.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.351125, 0, 0, 0, 0.351125, 0, 0, 0, 0.351125, 0.00318667, 0, -0.000541687)

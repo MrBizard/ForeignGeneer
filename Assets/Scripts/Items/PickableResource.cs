@@ -22,13 +22,11 @@ public partial class PickableResource : HarvestableResource
 
 	public override void Harvest()
 	{
-		GD.Print("harvesting");
 		if (_meshes.Count <= 1 || _meshes[1].Visible== false) return;
 
 
 		if (ItemResource is ItemStatic itemStatic)
 		{
-			GD.Print("if itemstatic");
 			InventoryManager.Instance.addItemToInventory(new StackItem(itemStatic, 1));
 		}
 

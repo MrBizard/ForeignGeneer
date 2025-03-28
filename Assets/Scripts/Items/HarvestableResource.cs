@@ -5,7 +5,6 @@ public abstract partial class HarvestableResource : StaticBody3D, IInteractable
 {
     [Export] public bool IsActive { get; set; } = false;
     [Export] public double RespawnTimer { get; set; } = 5.0;
-
     [Export] public Resource ItemResource { get; protected set; }
 
     public abstract void Harvest();

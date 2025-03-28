@@ -2,8 +2,7 @@ using Godot;
 
 public partial class BreakableResource : HarvestableResource
 {
-	[Export] public StackItem Item { get; set; }
-	[Export] public ResourceStatic ResourceStatic { get; set; }
+	[Export] private ItemStatic _resourceStatic { get; set; }
 
 	private CollisionShape3D _collisionShape;
 
@@ -11,7 +10,6 @@ public partial class BreakableResource : HarvestableResource
 	{
 		base._Ready();
 		_collisionShape = GetNode<CollisionShape3D>("CollisionShape3D");
-		ItemResource = ResourceStatic; 
 	}
 
 	public override void Harvest()
@@ -21,11 +19,8 @@ public partial class BreakableResource : HarvestableResource
 		IsActive = true;
 		Visible = false;
 		_collisionShape.Disabled = true;
-
-		if (Item != null)
-		{
-			InventoryManager.Instance.addItemToInventory(Item);
-		}
+		InventoryManager.Instance.addItemToInventory(new StackItem(_resourceStatic));
+		
 	}
 
 	public override void ResetResource()

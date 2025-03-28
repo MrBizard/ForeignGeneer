@@ -1,14 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cn0y2hdd0ln3x"]
+[gd_scene load_steps=7 format=3 uid="uid://cn0y2hdd0ln3x"]
 
 [ext_resource type="Script" path="res://Assets/Scripts/Items/BreakableResource.cs" id="1_uibr0"]
-[ext_resource type="ArrayMesh" uid="uid://dnj5201aultlu" path="res://Assets/Model/pierre_resource.obj" id="2_6jck3"]
-[ext_resource type="Resource" uid="uid://c4304nu2rd20a" path="res://Assets/Resource/Items/Ingots/GoldIngot.tres" id="2_tnrya"]
-[ext_resource type="Script" path="res://Assets/Scripts/Items/StackItem.cs" id="3_c32is"]
-
-[sub_resource type="Resource" id="Resource_76n2g"]
-script = ExtResource("3_c32is")
-Resource = ExtResource("2_tnrya")
-Stack = 1
+[ext_resource type="ArrayMesh" uid="uid://b8n8llh5me478" path="res://Assets/Model/pierre_resource.obj" id="2_6jck3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p2rgc"]
 albedo_color = Color(0.507557, 0.502559, 0.475656, 1)
@@ -24,8 +17,6 @@ albedo_color = Color(1, 1, 0.313726, 1)
 
 [node name="GoldOre" type="StaticBody3D"]
 script = ExtResource("1_uibr0")
-Item = SubResource("Resource_76n2g")
-ResourceStatic = ExtResource("2_tnrya")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.351125, 0, 0, 0, 0.351125, 0, 0, 0, 0.351125, 0.00318667, 0, -0.000541687)
