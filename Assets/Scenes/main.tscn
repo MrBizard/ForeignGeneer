@@ -1,9 +1,11 @@
-[gd_scene load_steps=274 format=3 uid="uid://dvxxm2v6se3nl"]
+[gd_scene load_steps=277 format=3 uid="uid://dvxxm2v6se3nl"]
 
 [ext_resource type="PackedScene" uid="uid://c6xr5ux6th5oq" path="res://Assets/Prefabs/manager.tscn" id="1_qiebo"]
 [ext_resource type="Texture2D" uid="uid://rt27fbhyelj" path="res://Assets/Texture/environnement/grass/grass.jpg" id="3_1wxhi"]
-[ext_resource type="PackedScene" uid="uid://pmk1ja4lcf6d" path="res://Assets/Prefabs/personnage.tscn" id="4_xqtcq"]
+[ext_resource type="Texture2D" uid="uid://bt7j41lk06g65" path="res://Assets/Texture/environnement/grass/Vol_42_1_Height.png" id="4_68x3c"]
+[ext_resource type="Texture2D" uid="uid://dg7t2fmpl3xxa" path="res://Assets/Texture/environnement/grass/Vol_42_1_Normal.png" id="5_ebkg3"]
 [ext_resource type="Texture2D" uid="uid://cudeq67hvx83c" path="res://Assets/Texture/environnement/rock/rock lowpoly.jpg" id="5_syapv"]
+[ext_resource type="Texture2D" uid="uid://y5uj23whiyk" path="res://Assets/Texture/environnement/grass/Vol_42_1_Roughness.png" id="6_l6wld"]
 [ext_resource type="Texture2D" uid="uid://cepqsjeudg6e0" path="res://Assets/Texture/environnement/dirt/dirt lowpoly.jpg" id="6_wvp2w"]
 [ext_resource type="Texture2D" uid="uid://yae1hgvln21n" path="res://Assets/Texture/environnement/Snow010A_2K-JPG/snow low poly.png" id="7_ng7kp"]
 [ext_resource type="Texture2D" uid="uid://cuvc6luogkmoi" path="res://Assets/Texture/environnement/Snow010A_2K-JPG/Snow010A_2K-JPG_NormalGL.jpg" id="8_xfrwm"]
@@ -216,7 +218,8 @@
 [ext_resource type="PackedScene" uid="uid://c0p10efv0exw4" path="res://Assets/Prefabs/map/tree/log_stack_2.tscn" id="227_csytl"]
 [ext_resource type="PackedScene" uid="uid://q7ufute2in0a" path="res://Assets/Prefabs/map/stone/stone_large_c_2_desert.tscn" id="227_ya7sj"]
 [ext_resource type="Texture2D" uid="uid://des51wvxqu44p" path="res://Assets/Scenes/Main/Object_-2_0_4.res" id="228_xbv0w"]
-[ext_resource type="PackedScene" uid="uid://1gkaot0e22ml" path="res://Assets/Model/map/antenna.glb" id="237_a8cvw"]
+[ext_resource type="PackedScene" uid="uid://pmk1ja4lcf6d" path="res://Assets/Prefabs/personnage.tscn" id="230_ju33g"]
+[ext_resource type="PackedScene" uid="uid://1gkaot0e22ml" path="res://Assets/Model/antenna.glb" id="237_a8cvw"]
 [ext_resource type="Texture2D" uid="uid://crxfboiu3ud2s" path="res://Assets/Scenes/Main/Object_-2_1_5.res" id="237_gqmeh"]
 [ext_resource type="Texture2D" uid="uid://cfvdabyhyfsin" path="res://Assets/Scenes/Main/Object_-2_0_5.res" id="255_twy3d"]
 [ext_resource type="PackedScene" uid="uid://df5m1xjunoflk" path="res://Assets/Prefabs/map/spaceship.tscn" id="265_cyamg"]
@@ -234,6 +237,9 @@
 script = ExtResource("23_5bc04")
 Name = "grass"
 AlbedoTexture = ExtResource("3_1wxhi")
+NormalTexture = ExtResource("5_ebkg3")
+RoughnessTexture = ExtResource("6_l6wld")
+HeightTexture = ExtResource("4_68x3c")
 TextureDetail = -1
 
 [sub_resource type="Resource" id="Resource_4t7b0"]
@@ -278,7 +284,7 @@ Mesh = SubResource("QuadMesh_v4t2y")
 MeshScale = Vector3(1, 1, 1)
 WindStrength = 0.0
 VisualInstanceLayers = 1
-LODLevels = 3
+LODLevels = 2
 LODRowsPerLevel = 50
 LODInitialCellWidth = 1.0
 Albedo = Color(0.235294, 0.654902, 0.215686, 1)
@@ -617,6 +623,9 @@ Objects = [SubResource("Resource_15aqs"), SubResource("Resource_snttn"), SubReso
 TerrainZones = SubResource("Resource_04nko")
 metadata/_edit_lock_ = false
 
+[node name="Camera3D" type="Camera3D" parent="TerraBrush"]
+transform = Transform3D(0.393445, 0, 0.919348, 0, 1, 0, -0.919348, 0, 0.393445, -5.0007, 1.42867, -18.0472)
+
 [node name="worldStructure" type="Node" parent="."]
 
 [node name="static" type="Node" parent="worldStructure"]
@@ -680,10 +689,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -251.755, 0.934986, -356.319)
 
 [node name="stone_largeC3" parent="worldStructure/static" instance=ExtResource("272_u3mem")]
 transform = Transform3D(-0.0565011, 0, 0.998403, 0, 1, 0, -0.998403, 0, -0.0565011, -280.261, -1.44677, -397.476)
-
-[node name="Personnage" parent="." instance=ExtResource("4_xqtcq")]
-process_priority = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.3956, 0, -12.4061)
 
 [node name="statue_block2" parent="." instance=ExtResource("266_xadqt")]
 transform = Transform3D(2.53054, 0, 1.61132, 0, 3, 0, -1.61132, 0, 2.53054, 322.966, -2.38419e-07, -158.256)
@@ -750,3 +755,6 @@ transform = Transform3D(0.705478, 0.112317, 0.699776, -0.157227, 0.987562, 0, -0
 
 [node name="statue_ring6" parent="." instance=ExtResource("268_jvfuu")]
 transform = Transform3D(0.732461, -0.000607893, 0.680809, 0.00363068, 0.999989, -0.00301327, -0.6808, 0.0046789, 0.732455, 298.682, 9.89526, 207.045)
+
+[node name="Personnage" parent="." instance=ExtResource("230_ju33g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.3624, 0, -19.2255)
