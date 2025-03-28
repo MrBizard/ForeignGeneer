@@ -15,7 +15,7 @@ public partial class SpawnerManager : Node3D
 	public PackedScene[] objectList = new PackedScene[0]; 
 
 	[Export]
-	public int SpawnCountPerObject = 10; 
+	public int SpawnCountPerObject = 100; 
 
 	private Vector2 MapSize;
 
@@ -65,17 +65,21 @@ public partial class SpawnerManager : Node3D
 		}
 
 		RandomNumberGenerator rng = new RandomNumberGenerator();
-
+		int a = 0; //TODO
 		foreach (PackedScene prefab in objectList)
 		{
+			a++;//TODO Retire le test
+			
 			if (prefab == null)
 				continue;
 
 			for (int i = 0; i < SpawnCountPerObject; i++)
 			{
-				
-				float x = rng.RandfRange(-MapSize.X, MapSize.X);
-				float z = rng.RandfRange(-MapSize.Y, MapSize.Y);
+
+				//float x = rng.RandfRange(-MapSize.X+100, MapSize.X-100);
+				float x = (a+1)*10;
+				//float z = rng.RandfRange(-MapSize.Y+100, MapSize.Y-100);
+				float z = 0;
 				float y = GetGroundHeight(new Vector3(x, 10, z)); 
 
 				Vector3 spawnPosition = new Vector3(x, y, z);

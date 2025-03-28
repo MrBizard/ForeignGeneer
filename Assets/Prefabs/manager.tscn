@@ -53,4 +53,3 @@ script = ExtResource("19_qsjdc")
 script = ExtResource("20_ju1ku")
 _manager = NodePath("..")
 objectList = [ExtResource("21_lhack"), ExtResource("22_8q55d"), ExtResource("23_e51xb"), ExtResource("24_dpein")]
-SpawnCountPerObject = 100

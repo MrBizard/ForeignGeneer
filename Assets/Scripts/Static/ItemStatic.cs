@@ -7,6 +7,9 @@ public partial class ItemStatic : Resource
 	[Export] private Material _material;
 	[Export] private Texture2D _inventoryIcon;
 	[Export] private string _description;
+	[Export]
+	public AudioStream useSoundEffect { get; private set; }
+	private AudioManager _audioManager;
 	public int getMaxStack
 	{
 		get => _maxStack;
@@ -82,6 +85,8 @@ public partial class ItemStatic : Resource
 
 	public virtual void RightClick()
 	{
+		_audioManager = AudioManager.instance;
+		PlaySoundEffect();
 		
 	}
 
@@ -90,4 +95,18 @@ public partial class ItemStatic : Resource
 		return " name : " + GetName() + "\n scenePath : " + _scenePath + "\n inventoryIcon : " 
 			   + _inventoryIcon.ToString() + "\n maxStack : " + _maxStack + "\n material : " + _material.ToString();
 	}
+
+	public virtual void PlaySoundEffect()
+	{
+		if (useSoundEffect != null && _audioManager != null)
+		{
+			GD.Print($"Playing eating sound: {useSoundEffect.ResourcePath}");
+			_audioManager.playSound(useSoundEffect);
+		}
+	}
+
+
+
+
+
 }

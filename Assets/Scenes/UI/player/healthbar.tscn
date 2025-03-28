@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://y5os6wh2ftgu" path="res://Assets/Texture/ui/healthBar/pngHealth.png" id="4_fj60h"]
 [ext_resource type="Texture2D" uid="uid://csbgi2vnu4q7n" path="res://Assets/Texture/ui/healthBar/pngPollution2.png" id="5_klnu4"]
 
-[node name="CircularProgressBar" type="TextureProgressBar" node_paths=PackedStringArray("healthBar", "pollutionBar", "hungerBar")]
+[node name="CircularProgressBar" type="TextureProgressBar" node_paths=PackedStringArray("HealthProgressBar", "PollutionProgressBar", "HungerProgressBar")]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -15,9 +15,9 @@ offset_top = -1.0
 offset_right = 1.0
 grow_vertical = 0
 script = ExtResource("1_2tskg")
-healthBar = NodePath("TextureProgressHealth")
-pollutionBar = NodePath("TextureProgressPollution")
-hungerBar = NodePath("TextureProgressHunger")
+HealthProgressBar = NodePath("TextureProgressHealth")
+PollutionProgressBar = NodePath("TextureProgressPollution")
+HungerProgressBar = NodePath("TextureProgressHunger")
 
 [node name="RondNoir" type="Sprite2D" parent="."]
 visibility_layer = 786433

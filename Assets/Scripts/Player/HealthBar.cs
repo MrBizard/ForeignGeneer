@@ -1,80 +1,89 @@
 using Godot;
-using System;
 
 public partial class HealthBar : Control
 {
-	//bar de progression
-	[Export] public TextureProgressBar healthBar ;
-    [Export] public TextureProgressBar pollutionBar;
-    [Export] public TextureProgressBar hungerBar;
+	[Export] public TextureProgressBar HealthProgressBar;
+	[Export] public TextureProgressBar PollutionProgressBar;
+	[Export] public TextureProgressBar HungerProgressBar;
 
-    public override void _Ready()
-    {
-        base._Ready();
+	private HealthData _healthData;
+	public override void _Ready()
+	{
+		HealthProgressBar.MinValue = 0;
+		HealthProgressBar.MaxValue = 100;
+		HungerProgressBar.MinValue = 0;
+		HungerProgressBar.MaxValue = 100;
+		PollutionProgressBar.MinValue = 0;
+		PollutionProgressBar.MaxValue = 10000;
 
-        //initialisation des valeur
-        healthBar.Value = 100;
-        pollutionBar.Value = 20;
-        hungerBar.Value = 100;
-    }
+		if (HealthManager.Instance != null)
+		{
+			Initialize(HealthManager.Instance.HealthData);
+		}
+		else
+		{
+			GD.Print("HealthManager not ready yet - will need manual initialization");
+		}
+	}
 
-    public void removeHealth(float healthpoint = 1)
-    {
-        if (healthBar.Value - healthpoint <= healthBar.MinValue)
-            healthBar.Value = healthBar.MinValue;
-        else
-        {
-            healthBar.Value -= healthpoint;
-        }
-    }
+	public void Initialize(HealthData healthData)
+	{
+		if (_healthData != null)
+		{
+			_healthData.HealthChanged -= updateHealthDisplay;
+			_healthData.HungerChanged -= updateHungerDisplay;
+			_healthData.PollutionChanged -= updatePollutionDisplay;
+		}
 
-    public void addHealth(float healthpoint = 1){
-        if (healthBar.Value + healthpoint > healthBar.MaxValue)
-            healthBar.Value = healthBar.MaxValue;
-        else
-        {
-            healthBar.Value += healthpoint;
-        }
-    }
+		_healthData = healthData;
 
-    public void removeHunger(float hungerpoint = 1){
+		if (_healthData != null)
+		{
+			_healthData.HealthChanged += updateHealthDisplay;
+			_healthData.HungerChanged += updateHungerDisplay;
+			_healthData.PollutionChanged += updatePollutionDisplay;
 
-        if (hungerBar.Value - hungerpoint <= hungerBar.MinValue)
-            hungerBar.Value = hungerBar.MinValue;
-        else
-        {
-            hungerBar.Value -= hungerpoint;
-        }
-    }
+			CallDeferred(nameof(updateDisplays));
+			GD.Print("HealthBar initialized with HealthData");
+		}
+		else
+		{
+			GD.PrintErr("Failed to initialize HealthBar - HealthData is null");
+		}
+	}
 
-    public void addHunger(float hungerpoint = 1)
-    {
-        if(!(hungerBar.Value + hungerpoint > hungerBar.MaxValue))
-        hungerBar.Value = hungerBar.MaxValue;
-        else
-        {
-            hungerBar.Value += hungerpoint;
-        }
-        
-    }
+	private void updateDisplays()
+	{
+		updateHealthDisplay();
+		updateHungerDisplay();
+		updatePollutionDisplay();
+	}
 
-    public void removePollution(float pollutionpoint = 1)
-    {
-        pollutionBar.Value-=pollutionpoint; 
-    }
+	private void updateHealthDisplay()
+	{
+		GD.Print($"Updating health display: {_healthData.Health}");
+		HealthProgressBar.Value = _healthData.Health;
+	}
 
-    public void addPollution(float pollutionpoint = 1)
-    {
-        pollutionBar.Value+=pollutionpoint;
-    }
+	private void updateHungerDisplay()
+	{
+		GD.Print($"Updating hunger display: {_healthData.Hunger}");
+		HungerProgressBar.Value = _healthData.Hunger;
+	}
 
-    public double get_health(){
-        return healthBar.Value;
-    }
-    public double get_hunger(){
-        return hungerBar.Value;
-    }
-    public double get_pollution(){
-        return pollutionBar.Value;
-    }
+	private void updatePollutionDisplay()
+	{
+		GD.Print($"Updating pollution display: {_healthData.Pollution}");
+		PollutionProgressBar.Value = _healthData.Pollution;
+	}
+
+	public override void _ExitTree()
+	{
+		if (_healthData != null)
+		{
+			_healthData.HealthChanged -= updateHealthDisplay;
+			_healthData.HungerChanged -= updateHungerDisplay;
+			_healthData.PollutionChanged -= updatePollutionDisplay;
+		}
+	}
 }

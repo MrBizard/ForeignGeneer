@@ -13,12 +13,12 @@ public abstract partial class HarvestableResource : StaticBody3D, IInteractable
 
     public virtual void ProcessRespawn(double delta)
     {
-        if (!IsActive) return;
 
         RespawnTimer -= delta;
         if (RespawnTimer <= 0)
         {
             ResetResource();
+
         }
     }
 

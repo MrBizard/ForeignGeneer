@@ -7,10 +7,10 @@
 
 [resource]
 script = ExtResource("2_fdxao")
-eatingSound = ExtResource("3_fu4qf")
-feedPower = 1.0
+FeedPower = 1.0
 _maxStack = 99
 _scenePath = "res://Assets/Model/Nourriture/Berry/Bush_Berry.glb"
 _material = ExtResource("2_rs1kt")
 _inventoryIcon = ExtResource("1_mvqy6")
 _description = "Des baies, parfait pour une petite faim !"
+useSoundEffect = ExtResource("3_fu4qf")

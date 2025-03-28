@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class LOD : MeshInstance3D
 {
@@ -10,11 +9,11 @@ public partial class LOD : MeshInstance3D
 	[Export]
 	private float[] distances = new float[] { 5f, 15f, 30f };
 
-	private Node3D player;
 	private int currentLOD = 0;
 
 	public override void _Ready()
 	{
+
 		lodMeshes = new MeshInstance3D[lodMeshPaths.Length];
 		for (int i = 0; i < lodMeshPaths.Length; i++)
 		{
@@ -35,49 +34,17 @@ public partial class LOD : MeshInstance3D
 			lodMeshes[0].Visible = true;
 			currentLOD = 0;
 		}
-
-		player = FindPlayer();
-
-		if (player == null)
-		{
-
-			Callable.From(FindPlayer).CallDeferred();
-		}
-	}
-
-	private Node3D FindPlayer()
-	{
-
-		if (player != null) return player;
-
-/*
-		var playerGroup = GetTree().GetNodesInGroup("player");
-		if (playerGroup.Count > 0)
-		{
-			return playerGroup[0] as Node3D;
-		}*/
-
-		var main = GetTree().CurrentScene;
-		if (main != null)
-		{
-			var possiblePlayer = main.GetNodeOrNull<Node3D>("Personnage");
-			if (possiblePlayer != null) return possiblePlayer;
-		}
-
-		return GetTree().Root.FindChild("Personnage", true, false) as Node3D;
 	}
 
 	public override void _Process(double delta)
 	{
-		if (player == null)
-		{
-			player = FindPlayer();
-			if (player == null) return;
-		}
+
+		if (Player.Instance == null) return;
 
 		if (lodMeshes.Length == 0) return;
 
-		float distance = GlobalPosition.DistanceTo(player.GlobalPosition);
+		float distance = GlobalPosition.DistanceTo(Player.Instance.GlobalPosition);
+
 		int newLOD = CalculateLODLevel(distance);
 
 		if (newLOD != currentLOD)

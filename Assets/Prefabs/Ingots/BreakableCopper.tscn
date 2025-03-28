@@ -22,7 +22,7 @@ radius = 0.413172
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kywt8"]
 albedo_color = Color(0.667604, 0.32872, 0.195109, 1)
 
-[node name="Node3D" type="StaticBody3D"]
+[node name="CopperOre" type="StaticBody3D"]
 script = ExtResource("1_rdbgr")
 Item = SubResource("Resource_yurwg")
 ResourceStatic = ExtResource("2_w4qk8")

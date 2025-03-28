@@ -11,4 +11,4 @@ _maxStack = 99
 _scenePath = "res://Assets/Prefabs/Ingots/Ingot.tscn"
 _material = ExtResource("2_6itel")
 _inventoryIcon = ExtResource("1_l3cbu")
-_description = ""
+_description = "Lingot de cuivre, trés bon conducteur d'éléctricité"
