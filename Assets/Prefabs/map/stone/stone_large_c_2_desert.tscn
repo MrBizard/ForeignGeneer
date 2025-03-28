@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://q7ufute2in0a"]
 
-[ext_resource type="PackedScene" uid="uid://bd7s1gtp6g285" path="res://Assets/Model/map/stone_largeC.glb" id="1_o8122"]
+[ext_resource type="PackedScene" uid="uid://ckw6k3jrm2hst" path="res://Assets/Model/map/stone_largeC.glb" id="1_o8122"]
 [ext_resource type="Material" uid="uid://d1h4t0nwekyn0" path="res://Assets/Prefabs/map/stone/stone_desert.tres" id="2_xe750"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hcovy"]

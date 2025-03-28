@@ -35,7 +35,7 @@ _inventoryBottomUi = NodePath("Node/InventoryBottom")
 _craftButton = NodePath("Craft/Craft/Button")
 _changeButton = NodePath("Craft/Reset/Button")
 _outputSlotUi = NodePath("Output/SlotUI")
-_slots = [NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi"), NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi2"), NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi3"), NodePath("circuitSlot/VFlowContainer/slots/slotCircuitUi4")]
+_slots = []
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 1
@@ -64,7 +64,6 @@ offset_left = -32.0
 offset_top = -32.0
 offset_right = 32.0
 offset_bottom = 32.0
-_isOutputSlot = true
 
 [node name="Label" type="Label" parent="Output"]
 layout_mode = 1

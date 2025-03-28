@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://eah624roj5w3"]
+[gd_scene load_steps=4 format=3 uid="uid://eah624roj5w3"]
 
-[ext_resource type="PackedScene" uid="uid://c0t2d4g5ekxqt" path="res://Assets/Model/map/log_stackLarge.glb" id="1_7aqej"]
+[ext_resource type="PackedScene" uid="uid://c3n7mm06f4jcf" path="res://Assets/Model/map/log_stackLarge.glb" id="1_7aqej"]
+[ext_resource type="Script" path="res://Assets/Scripts/Block/playerStructure/BaseStructure.cs" id="2_cc7cf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ugq6y"]
 size = Vector3(3.00279, 3.38821, 1.65137)
 
-[node name="log_stackLarge2" instance=ExtResource("1_7aqej")]
+[node name="log_stackLarge2" groups=["AXE"] instance=ExtResource("1_7aqej")]
+script = ExtResource("2_cc7cf")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="tmpParent/log_stackLarge" index="0"]
 

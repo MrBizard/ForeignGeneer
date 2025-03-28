@@ -61,8 +61,9 @@ public partial class SlotUI : Control,BaseUi
     public void updateUi()
     {
         var stackItem = _inventory.getItem(_slotIndex);
-
-        if (stackItem != null && stackItem.getStack() > 0 && stackItem.getResource() != null && _icon !=null && _countLabel != null)
+        if (_icon ==null || _countLabel == null)
+            return;
+        if (stackItem != null && stackItem.getStack() > 0 && stackItem.getResource() != null )
         {
             if(stackItem.getResource().getInventoryIcon!=null)
                 _icon.Texture = stackItem.getResource().getInventoryIcon;
@@ -249,5 +250,11 @@ public partial class SlotUI : Control,BaseUi
     public void initialize(object data)
     {
         
+    }
+
+    public override void _ExitTree()
+    {
+        detach();
+        base._ExitTree();
     }
 }

@@ -4,9 +4,9 @@ using Godot;
 
 namespace ForeignGeneer.Assets.Scripts.block.playerStructure;
 
-public partial class BaseStructure : StaticBody3D,IPlayerStructure<ItemStatic>
+public partial class BaseStructure : Node3D,IPlayerStructure<ItemStatic>
 {
-    public ItemStatic itemStatic { get; set; }
+    [Export]public ItemStatic itemStatic { get; set; }
 
     public void interact(InteractType interactType)
     {
