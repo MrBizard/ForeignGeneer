@@ -14,6 +14,7 @@ public partial class Video : BoxContainer
 			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
 		else
 			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+		
 	}
 
 	private void _brightnessUpdate(float newBrightness)
@@ -35,7 +36,7 @@ public partial class Video : BoxContainer
 	}
 	
 	private void _DaltonismChange(int Index){
-		
+		filterManager.Instance.SetFilter(Index);
 	}
 	
 }

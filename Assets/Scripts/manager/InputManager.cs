@@ -7,12 +7,12 @@ using ForeignGeneer.Assets.Scripts.manager;
 public partial class InputManager : Node
 {
     public static InputManager Instance { get; private set; }
-    
+    public bool dismantle = false;    
     public override void _Ready()
     {
             Instance = this;
     }
-
+    
     public override void _Process(double delta)
     {
         if (Input.IsActionJustPressed("inventory"))

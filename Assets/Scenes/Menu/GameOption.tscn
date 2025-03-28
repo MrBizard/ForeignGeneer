@@ -31,9 +31,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 1
 
 [node name="soundTab" type="Control" parent="GridContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -104,7 +105,6 @@ step = 0.001
 value = 1.0
 
 [node name="videoTab" type="Control" parent="GridContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -139,6 +139,30 @@ offset_left = 106.0
 offset_right = 177.0
 offset_bottom = 31.0
 text = "On"
+
+[node name="Label3" type="Label" parent="GridContainer/videoTab"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 65.0
+offset_right = 93.0
+offset_bottom = 88.0
+text = "Daltonism :"
+
+[node name="OptionButton" type="OptionButton" parent="GridContainer/videoTab/Label3"]
+layout_mode = 0
+offset_left = 101.0
+offset_right = 133.0
+offset_bottom = 20.0
+selected = 0
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 3
+popup/item_1/text = "Protanopia"
+popup/item_1/id = 1
+popup/item_2/text = "Deutranopia"
+popup/item_2/id = 1
+popup/item_3/text = "Tritanopia"
+popup/item_3/id = 2
 
 [node name="controlTab" type="Control" parent="GridContainer"]
 visible = false
@@ -290,6 +314,7 @@ metadata/_tab_index = 4
 [connection signal="value_changed" from="GridContainer/soundTab/optionVolume/ressourceVolume/RM" to="GridContainer/soundTab/optionVolume" method="_onRMUpdate"]
 [connection signal="value_changed" from="GridContainer/videoTab/optionVideo/Label/brightness" to="GridContainer/videoTab/optionVideo" method="_brightnessUpdate"]
 [connection signal="button_down" from="GridContainer/videoTab/optionVideo/Label2/fullscreenButton" to="GridContainer/videoTab/optionVideo" method="_FullscreenToggled"]
+[connection signal="item_selected" from="GridContainer/videoTab/Label3/OptionButton" to="GridContainer/videoTab/optionVideo" method="_DaltonismChange"]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/forward/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["forward"]]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/backward/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["backward"]]
 [connection signal="button_down" from="GridContainer/controlTab/optionControl/left/Button" to="GridContainer/controlTab/optionControl" method="_onControlChange" binds= ["left"]]
